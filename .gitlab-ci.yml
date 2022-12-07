@@ -1,0 +1,27 @@
+image: node:14-alpine
+
+stages:
+  - lint
+  - build
+
+
+lint:
+  stage: lint
+  environment:
+    name: production
+  script:
+    - npm install
+    - npm run lint
+
+build:
+  stage: build
+  environment:
+    name: production
+  only:
+    - master
+  script:
+    - npm install
+    - npm run build
+
+
+

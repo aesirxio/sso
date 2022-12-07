@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "listEmittedFiles": false,
+    "outDir": "build/lib/types",
+    "declaration": true, 
+    "declarationMap": true,
+    "module": "ESNext",
+    "target": "ES6",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "removeComments": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "sourceMap": true,
+    "pretty": true,
+    "allowJs": true,
+    "jsx": "react",
+    "lib": [
+      "es2016",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "./node_modules/**/*",
+    "./build/**/*",
+    "./src/intergration.js",
+  ],
+}
