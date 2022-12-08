@@ -1,6 +1,8 @@
 # Intergration SSO
 
 ## Setup instructions
+#### Required install aesirx-dma-lib package
+`npm i aesirx-dma-lib`
 
 #### Usage in ReactJS
 
@@ -18,6 +20,7 @@ REACT_APP_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
 
 ```
 import { SSOContextProvider } from 'aesirx-sso';
+
 <SSOContextProvider>
   <App />
 </SSOContextProvider>
@@ -26,6 +29,8 @@ import { SSOContextProvider } from 'aesirx-sso';
 ##### Using `<SSOButtonReact />` to create Login Button
 you can pass `className` and `text` props to control it
 ```
+import { SSOButtonReact } from 'aesirx-sso';
+
  <SSOButtonReact
     className="btn w-100 fw-medium btn-success position-relative d-flex align-item-center justify-content-center mt-3"
     text={"SSOLogin"}
