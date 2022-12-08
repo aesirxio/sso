@@ -5,57 +5,33 @@
 
 import React from 'react';
 import axios from 'axios';
-import AesirxAuthenticationApiService from 'aesirx-dma-lib/src/Authentication/Authentication';
-import Storage from 'aesirx-dma-lib/src/Utils/Storage';
-import BaseRoute from 'aesirx-dma-lib/src/Abstract/BaseRoute';
-import qs from 'query-string';
 export const SSOContext = React.createContext();
 
 export class SSOContextProvider extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
-  static async getDerivedStateFromProps() {
+  static async getDerivedStateFromProps(nextProps) {
     try {
-      const endPoint = process.env.REACT_APP_ENDPOINT_URL;
-      const clientID = process.env.REACT_APP_SSO_CLIENT_ID;
-      const clientSecret = process.env.REACT_APP_SSO_CLIENT_SECRET;
+      const endPoint = process.env.REACT_APP_ENDPOINT_URL ?? process.env.NEXT_PUBLIC_ENDPOINT_URL;
+      const clientID = process.env.REACT_APP_SSO_CLIENT_ID ?? process.env.NEXT_PUBLIC_SSO_CLIENT_ID;
+
+      const clientSecret =
+        process.env.REACT_APP_SSO_CLIENT_SECRET ?? process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET;
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-
       if (urlParams.get('code')) {
-        const reqAuthFormData = {
+        const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
           grant_type: 'authorization_code',
           code: urlParams.get('code'),
           client_id: clientID,
           client_secret: clientSecret,
-        };
-
-        const AUTHORIZED_CODE_URL = BaseRoute.__createRequestURL(
-          {
-            option: 'token',
-            api: 'oauth2',
-          },
-          false,
-          endPoint
-        );
-
-        const config = {
-          method: 'post',
-          url: AUTHORIZED_CODE_URL,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          data: qs.stringify(reqAuthFormData),
-        };
-        const { data } = await axios(config);
-        if (data?.access_token) {
-          const authService = new AesirxAuthenticationApiService();
-          await authService.setTokenUser(data, false);
-          Storage.setItem('auth', true);
+        });
+        if (res.data) {
+          await nextProps.onGetData(res.data);
           window.close();
-          window.opener.location.reload(false);
         }
       }
 

@@ -1,3 +1,2 @@
-export { default as SSOButtonNext } from './SSOButtonNext';
-export { default as SSOButtonReact } from './SSOButtonReact';
+export { default as SSOButton } from './SSOButton';
 export { SSOContextProvider } from './utils/SSOContextProvider';
