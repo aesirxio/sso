@@ -1,3 +1,3 @@
-export { default as SSONext } from './SSONext';
-export { default as SSOReact } from './SSOReact';
-export { default as SSOProvider } from './utils/SSOProvider';
+export { default as SSOButtonNext } from './SSOButtonNext';
+export { default as SSOButtonReact } from './SSOButtonReact';
+export { SSOContextProvider } from './utils/SSOContextProvider';

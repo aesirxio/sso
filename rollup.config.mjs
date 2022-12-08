@@ -23,8 +23,9 @@ const configPlugins = [
   json(),
   replace({
     'process.env': JSON.stringify({
-      ENDPOINT_SSO_URL: process.env.ENDPOINT_SSO_URL,
+      ENDPOINT_URL: process.env.ENDPOINT_URL,
       SSO_CLIENT_ID: process.env.SSO_CLIENT_ID,
+      SSO_CLIENT_SECRET: process.env.SSO_CLIENT_SECRET,
     }),
     preventAssignment: true,
   }),
@@ -64,12 +65,12 @@ export default [
     ],
   },
   {
-    input: 'src/intergration.js',
+    input: 'src/sso.js',
     output: [
       {
-        file: 'build/intergration.js',
+        file: 'build/sso.js',
         format: 'iife',
-        name: 'IntergrationSSO',
+        name: 'SSO',
       },
     ],
     plugins: configPlugins,
