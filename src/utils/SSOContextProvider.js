@@ -13,7 +13,7 @@ export class SSOContextProvider extends React.Component {
     this.state = {};
   }
 
-  static async getDerivedStateFromProps(nextProps) {
+  static async getDerivedStateFromProps() {
     try {
       const endPoint = process.env.REACT_APP_ENDPOINT_URL ?? process.env.NEXT_PUBLIC_ENDPOINT_URL;
       const clientID = process.env.REACT_APP_SSO_CLIENT_ID ?? process.env.NEXT_PUBLIC_SSO_CLIENT_ID;
@@ -30,7 +30,7 @@ export class SSOContextProvider extends React.Component {
           client_secret: clientSecret,
         });
         if (res.data) {
-          await nextProps.onGetData(res.data);
+          window.opener.sso_response = res.data;
           window.close();
         }
       }
