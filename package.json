@@ -29,7 +29,7 @@
     "lint": "eslint --fix \"src/**/\"",
     "lint:check": "eslint \"src/**/\"",
     "lint:nowarns": "eslint --quiet \"src/**/\"",
-    "preinstall": "npm install --ignore-scripts --legacy-peer-deps && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "eslintConfig": {
     "extends": [
@@ -74,5 +74,9 @@
   },
   "overrides": {
     "autoprefixer": "10.4.5"
-  }
+  },
+  "files": [
+    "build",
+    "src"
+  ]
 }
