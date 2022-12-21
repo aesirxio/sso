@@ -22,16 +22,35 @@ export class SSOContextProvider extends React.Component {
         process.env.REACT_APP_SSO_CLIENT_SECRET ?? process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET;
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-      if (urlParams.get('code')) {
-        const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
-          grant_type: 'authorization_code',
-          code: urlParams.get('code'),
-          client_id: clientID,
-          client_secret: clientSecret,
-        });
-        if (res.data) {
-          window.opener.sso_response = res.data;
-          window.close();
+
+      if (urlParams.get('state') === 'sso') {
+        if (urlParams.get('code')) {
+          const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
+            grant_type: 'authorization_code',
+            code: urlParams.get('code'),
+            client_id: clientID,
+            client_secret: clientSecret,
+          });
+          if (res.data) {
+            window.opener.sso_response = res.data;
+            window.close();
+          }
+        } else {
+          const data = {};
+          urlParams.get('access_token') &&
+            Object.assign(data, { access_token: urlParams.get('access_token') });
+          urlParams.get('expires_in') &&
+            Object.assign(data, { expires_in: urlParams.get('expires_in') });
+          urlParams.get('refresh_token') &&
+            Object.assign(data, { refresh_token: urlParams.get('refresh_token') });
+          urlParams.get('scope') && Object.assign(data, { scope: urlParams.get('scope') });
+          urlParams.get('token_type') &&
+            Object.assign(data, { scope: urlParams.get('token_type') });
+
+          if (Object.keys(data).length) {
+            window.opener.sso_response = data;
+            window.close();
+          }
         }
       }
 
