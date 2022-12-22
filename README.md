@@ -1,4 +1,4 @@
-# Intergration SSO
+# Integration SSO
 
 ## Installation
 `npm i aesirx-sso`
