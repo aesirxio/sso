@@ -36,7 +36,7 @@ export class SSOContextProvider extends React.Component {
             window.close();
           }
         } else {
-          const data = {};
+          const data = { profile: { lastVisitDate: '' } };
           urlParams.get('access_token') &&
             Object.assign(data, { access_token: urlParams.get('access_token') });
           urlParams.get('expires_in') &&
