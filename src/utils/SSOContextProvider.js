@@ -5,6 +5,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import Spinner from '../Spinner/index';
 export const SSOContext = React.createContext();
 
 export class SSOContextProvider extends React.Component {
@@ -63,6 +64,7 @@ export class SSOContextProvider extends React.Component {
   render() {
     return (
       <SSOContext.Provider value={{ ...this.props.value }}>
+        {window?.opener && <Spinner />}
         {this.props.children}
       </SSOContext.Provider>
     );
