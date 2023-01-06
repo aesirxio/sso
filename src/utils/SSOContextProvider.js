@@ -5,6 +5,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import Spinner from '../Spinner/index';
 export const SSOContext = React.createContext();
 
 export class SSOContextProvider extends React.Component {
@@ -20,7 +21,7 @@ export class SSOContextProvider extends React.Component {
 
       const clientSecret =
         process.env.REACT_APP_SSO_CLIENT_SECRET ?? process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET;
-      const queryString = window.location.search;
+      const queryString = typeof window !== 'undefined' && window.location.search;
       const urlParams = new URLSearchParams(queryString);
 
       if (urlParams.get('state') === 'sso') {
@@ -31,7 +32,7 @@ export class SSOContextProvider extends React.Component {
             client_id: clientID,
             client_secret: clientSecret,
           });
-          if (res.data) {
+          if (res.data && typeof window !== 'undefined') {
             window.opener.sso_response = res.data;
             window.close();
           }
@@ -47,7 +48,7 @@ export class SSOContextProvider extends React.Component {
           urlParams.get('token_type') &&
             Object.assign(data, { scope: urlParams.get('token_type') });
 
-          if (Object.keys(data).length) {
+          if (Object.keys(data).length && typeof window !== 'undefined') {
             window.opener.sso_response = data;
             window.close();
           }
@@ -63,6 +64,7 @@ export class SSOContextProvider extends React.Component {
   render() {
     return (
       <SSOContext.Provider value={{ ...this.props.value }}>
+        {typeof window !== 'undefined' && window?.opener && <Spinner />}
         {this.props.children}
       </SSOContext.Provider>
     );
