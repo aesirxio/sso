@@ -15,11 +15,36 @@ const SSOButton = ({ className, text, onGetData }) => {
         }
       }
     }, 1000);
+    window.addEventListener(
+      'message',
+      (e) => {
+        if (e.origin !== endPoint) return;
+        if (e.data && e.data.walletResponse) {
+          let walletReponse = new URLSearchParams(e.data.walletResponse);
+          const data = { profile: { lastVisitDate: '' } };
+          walletReponse.get('access_token') &&
+            Object.assign(data, { access_token: walletReponse.get('access_token') });
+          walletReponse.get('expires_in') &&
+            Object.assign(data, { expires_in: walletReponse.get('expires_in') });
+          walletReponse.get('refresh_token') &&
+            Object.assign(data, { refresh_token: walletReponse.get('refresh_token') });
+          walletReponse.get('scope') && Object.assign(data, { scope: walletReponse.get('scope') });
+          walletReponse.get('token_type') &&
+            Object.assign(data, { scope: walletReponse.get('token_type') });
+          onGetData(data);
+          popup.close();
+        }
+      },
+      false
+    );
   };
+
   return (
-    <button type="button" className={`btn ${className}`} onClick={handleSSO}>
-      {text}
-    </button>
+    <>
+      <button type="button" className={`btn ${className}`} onClick={handleSSO}>
+        {text}
+      </button>
+    </>
   );
 };
 export default SSOButton;
