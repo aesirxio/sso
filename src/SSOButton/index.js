@@ -40,11 +40,9 @@ const SSOButton = ({ className, text, onGetData }) => {
   };
 
   return (
-    <>
-      <button type="button" className={`btn ${className}`} onClick={handleSSO}>
-        {text}
-      </button>
-    </>
+    <button type="button" className={`btn ${className}`} onClick={handleSSO}>
+      {text}
+    </button>
   );
 };
 export default SSOButton;
