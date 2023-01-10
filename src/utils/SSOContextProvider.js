@@ -36,22 +36,6 @@ export class SSOContextProvider extends React.Component {
             window.opener.sso_response = res.data;
             window.close();
           }
-        } else {
-          const data = { profile: { lastVisitDate: '' } };
-          urlParams.get('access_token') &&
-            Object.assign(data, { access_token: urlParams.get('access_token') });
-          urlParams.get('expires_in') &&
-            Object.assign(data, { expires_in: urlParams.get('expires_in') });
-          urlParams.get('refresh_token') &&
-            Object.assign(data, { refresh_token: urlParams.get('refresh_token') });
-          urlParams.get('scope') && Object.assign(data, { scope: urlParams.get('scope') });
-          urlParams.get('token_type') &&
-            Object.assign(data, { scope: urlParams.get('token_type') });
-
-          if (Object.keys(data).length && typeof window !== 'undefined') {
-            window.opener.sso_response = data;
-            window.close();
-          }
         }
       }
 
@@ -60,7 +44,6 @@ export class SSOContextProvider extends React.Component {
       return false;
     }
   }
-
   render() {
     return (
       <SSOContext.Provider value={{ ...this.props.value }}>
