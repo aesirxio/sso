@@ -3,6 +3,7 @@ const aesirxSSO = async () => {
   const endPoint = window.aesirxEndpoint ? window.aesirxEndpoint : '';
   const clientID = window.aesirxClientID ? window.aesirxClientID : '';
   const clientSecret = window.aesirxClientSecret ? window.aesirxClientSecret : '';
+  const ssoState = window.aesirxSSOState ? window.aesirxSSOState : '';
   let aesirxSSOLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=sso`;
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -41,7 +42,7 @@ const aesirxSSO = async () => {
       false
     );
   };
-  if (urlParams.get('state') === 'sso') {
+  if (ssoState && urlParams.get('state') === ssoState) {
     if (urlParams.get('code')) {
       const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
         grant_type: 'authorization_code',
