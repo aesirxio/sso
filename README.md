@@ -4,7 +4,7 @@
 `npm i aesirx-sso`
 
 #### Usage in SSR site
-1. Download analytics.js from [https://github.com/aesirxio/sso/releases/latest](https://github.com/aesirxio/sso/releases/latest)
+1. Download sso.js from [https://github.com/aesirxio/sso/releases/latest](https://github.com/aesirxio/sso/releases/latest)
 1. copy `sso.js` to your project
 1. Add script to `<head>`:
 ```
