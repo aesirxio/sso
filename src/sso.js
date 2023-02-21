@@ -34,7 +34,6 @@ const aesirxSSO = async () => {
             Object.assign(data, { scope: walletReponse.get('token_type') });
           if (data && typeof window !== 'undefined') {
             window.sso_response = data;
-            onGetData(data);
             popup.close();
           }
         }
@@ -43,18 +42,16 @@ const aesirxSSO = async () => {
     );
   };
   if (urlParams.get('state') === 'sso') {
-    if (document.readyState !== 'loading') {
-      if (urlParams.get('code')) {
-        const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
-          grant_type: 'authorization_code',
-          code: urlParams.get('code'),
-          client_id: clientID,
-          client_secret: clientSecret,
-        });
-        if (res.data && typeof window !== 'undefined') {
-          window.opener.sso_response = res.data;
-          window.close();
-        }
+    if (urlParams.get('code')) {
+      const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
+        grant_type: 'authorization_code',
+        code: urlParams.get('code'),
+        client_id: clientID,
+        client_secret: clientSecret,
+      });
+      if (res.data && typeof window !== 'undefined') {
+        window.opener.sso_response = res.data;
+        window.close();
       }
     }
   }
