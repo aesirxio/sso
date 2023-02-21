@@ -8,9 +8,11 @@
 1. copy `sso.js` to your project
 1. Add script to `<head>`:
 ```
-<script>window.aesirxEndpoint="https://example.com"</script>
-<script>window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"</script>
-<script>window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"</script>
+<script>
+  window.aesirxEndpoint="https://example.com"
+  window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"
+  window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"
+</script>
 <script async defer src="YOUR_PROJECT_PATH/sso.js"></script>
 ```
 1. `CLIENT_ID` replace this with the provided `CLIENT_ID` from https://sso.aesirx.io/
