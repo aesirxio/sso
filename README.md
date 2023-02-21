@@ -3,11 +3,35 @@
 ## Installation
 `npm i aesirx-sso`
 
+#### Usage in SSR site
+1. Download analytics.js from [https://github.com/aesirxio/sso/releases/latest](https://github.com/aesirxio/sso/releases/latest)
+1. copy `sso.js` to your project
+1. Add script to `<head>`:
+```
+<script>window.aesirxEndpoint="https://example.com"</script>
+<script>window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"</script>
+<script>window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"</script>
+<script async defer src="YOUR_PROJECT_PATH/sso.js"></script>
+```
+1. `CLIENT_ID` replace this with the provided `CLIENT_ID` from https://sso.aesirx.io/
+2. `CLIENT_SECRET` replace this with the provided `CLIENT_SECRET` from https://sso.aesirx.io/
+##### Create button with window.handleSSO()
+```
+<script>
+  const onGetData = async (response) => {
+    //response is a Object that return from SSO, you can use it to handle Authentication in your Site
+  };
+  const onClickSSO = async () => {
+    await window.handleSSO(onGetData);
+  };
+</script>
+<button onclick="onClickSSO()"> SSO Login </button>
+
+```
 #### Usage in ReactJS
 ##### Add the environment variable file (`.env`)
 
 ```
-REACT_APP_ENDPOINT_URL=https://example.com
 REACT_APP_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
 REACT_APP_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
 ```
@@ -48,7 +72,6 @@ import { SSOButton } from 'aesirx-sso';
 ##### Add the environment variable file (`.env`)
 
 ```
-NEXT_PUBLIC_ENDPOINT_URL=https://example.com
 NEXT_PUBLIC_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
 NEXT_PUBLIC_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
 ```
