@@ -60,3 +60,4 @@ const aesirxSSO = async () => {
   }
 };
 window.aesirxSSO = aesirxSSO();
+export default aesirxSSO;
