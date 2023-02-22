@@ -36,6 +36,8 @@ export class SSOContextProvider extends React.Component {
             window.opener.sso_response = res.data;
             window.close();
           }
+        } else if (urlParams.get('error')) {
+          window.close();
         }
       }
 

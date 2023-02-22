@@ -54,6 +54,8 @@ const aesirxSSO = async () => {
         window.opener.sso_response = res.data;
         window.close();
       }
+    } else if (urlParams.get('error')) {
+      window.close();
     }
   }
 };
