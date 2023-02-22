@@ -12,7 +12,6 @@
   window.aesirxEndpoint="https://example.com"
   window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"
   window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"
-  window.aesirxSSOState="sso"
 </script>
 <script async defer src="YOUR_PROJECT_PATH/sso.js"></script>
 ```
