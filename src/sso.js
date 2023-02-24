@@ -4,7 +4,11 @@ const aesirxSSO = async () => {
   const clientID = window.aesirxClientID ? window.aesirxClientID : '';
   const clientSecret = window.aesirxClientSecret ? window.aesirxClientSecret : '';
   const ssoState = window.aesirxSSOState ? window.aesirxSSOState : 'sso';
+  const aesirxAllowedLogins = window.aesirxAllowedLogins ? window.aesirxAllowedLogins : ["concordium","metamask","regular"];
   let aesirxSSOLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}`;
+  for (var i = 0; i < aesirxAllowedLogins.length; i++) {
+    aesirxSSOLink += "&login[]=" + aesirxAllowedLogins[i];
+  }
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
   window.handleSSO = async (onGetData) => {
