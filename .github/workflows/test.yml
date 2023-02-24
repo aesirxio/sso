@@ -1,10 +1,10 @@
-name: Format
+name: Test
 
 on:
   pull_request:
 
 jobs:
-  code:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,6 +15,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Run Build
+        run: CI=false yarn run build
 
       - name: Run Prettier
         run: npm run format:check
