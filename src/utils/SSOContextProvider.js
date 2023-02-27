@@ -37,7 +37,7 @@ export class SSOContextProvider extends React.Component {
             window.close();
           }
         } else if (urlParams.get('error')) {
-          window.close();
+          typeof window !== 'undefined' && window.close();
         }
       }
 
@@ -47,9 +47,13 @@ export class SSOContextProvider extends React.Component {
     }
   }
   render() {
+    const queryString = typeof window !== 'undefined' && window.location.search;
+    const urlParams = new URLSearchParams(queryString);
     return (
       <SSOContext.Provider value={{ ...this.props.value }}>
-        {typeof window !== 'undefined' && window?.opener && <Spinner />}
+        {typeof window !== 'undefined' && window?.opener && urlParams.get('state') === 'sso' && (
+          <Spinner />
+        )}
         {this.props.children}
       </SSOContext.Provider>
     );
