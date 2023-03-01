@@ -62,9 +62,11 @@ const aesirxSSO = async () => {
         window.close();
       }
     } else if (urlParams.get('error')) {
-      window.close();
+      typeof window !== 'undefined' && window.close();
     }
   }
 };
-window.aesirxSSO = aesirxSSO();
+if (typeof window !== 'undefined') {
+  window.aesirxSSO = aesirxSSO();
+}
 export default aesirxSSO;
