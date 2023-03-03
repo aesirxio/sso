@@ -1,5 +1,10 @@
-import axios from 'axios';
-
+let cache;
+const assign = (a, b) => {
+  Object.keys(b).forEach((key) => {
+    if (b[key] !== undefined) a[key] = b[key];
+  });
+  return a;
+};
 const aesirxSSO = async () => {
   const endPoint = window.aesirxEndpoint ? window.aesirxEndpoint.replace(/\/+$/, '') : '';
   const clientID = window.aesirxClientID ? window.aesirxClientID : '';
@@ -51,14 +56,19 @@ const aesirxSSO = async () => {
   };
   if (ssoState && urlParams.get('state') === ssoState) {
     if (urlParams.get('code')) {
-      const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
-        grant_type: 'authorization_code',
-        code: urlParams.get('code'),
-        client_id: clientID,
-        client_secret: clientSecret,
+      const fetchData = await fetch(endPoint + '/index.php?option=token&api=oauth2', {
+        method: 'POST',
+        body: JSON.stringify({
+          grant_type: 'authorization_code',
+          code: urlParams.get('code'),
+          client_id: clientID,
+          client_secret: clientSecret,
+        }),
+        headers: assign({ 'Content-Type': 'application/json' }, { ['x-tracker-cache']: cache }),
       });
-      if (res.data && typeof window !== 'undefined') {
-        window.opener.sso_response = res.data;
+      const res = await fetchData.json();
+      if (res && typeof window !== 'undefined') {
+        window.opener.sso_response = res;
         window.close();
       }
     } else if (urlParams.get('error')) {
@@ -69,4 +79,5 @@ const aesirxSSO = async () => {
 if (typeof window !== 'undefined') {
   window.aesirxSSO = aesirxSSO();
 }
+
 export default aesirxSSO;
