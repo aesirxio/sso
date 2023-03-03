@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import axios from 'axios';
 import Spinner from '../Spinner/index';
 export const SSOContext = React.createContext();
 
@@ -26,14 +25,19 @@ export class SSOContextProvider extends React.Component {
 
       if (urlParams.get('state') === 'sso') {
         if (urlParams.get('code')) {
-          const res = await axios.post(endPoint + '/index.php?option=token&api=oauth2', {
-            grant_type: 'authorization_code',
-            code: urlParams.get('code'),
-            client_id: clientID,
-            client_secret: clientSecret,
+          const fetchData = await fetch(endPoint + '/index.php?option=token&api=oauth2', {
+            method: 'POST',
+            body: JSON.stringify({
+              grant_type: 'authorization_code',
+              code: urlParams.get('code'),
+              client_id: clientID,
+              client_secret: clientSecret,
+            }),
+            headers: assign({ 'Content-Type': 'application/json' }, { ['x-tracker-cache']: cache }),
           });
-          if (res.data && typeof window !== 'undefined') {
-            window.opener.sso_response = res.data;
+          const res = await fetchData.json();
+          if (res && typeof window !== 'undefined') {
+            window.opener.sso_response = res;
             window.close();
           }
         } else if (urlParams.get('error')) {
@@ -59,3 +63,10 @@ export class SSOContextProvider extends React.Component {
     );
   }
 }
+let cache;
+const assign = (a, b) => {
+  Object.keys(b).forEach((key) => {
+    if (b[key] !== undefined) a[key] = b[key];
+  });
+  return a;
+};
