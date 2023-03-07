@@ -31,6 +31,7 @@ const SSOButton = ({ className, text, onGetData }) => {
           walletReponse.get('scope') && Object.assign(data, { scope: walletReponse.get('scope') });
           walletReponse.get('token_type') &&
             Object.assign(data, { scope: walletReponse.get('token_type') });
+          walletReponse.get('jwt') && Object.assign(data, { jwt: walletReponse.get('jwt') });
           onGetData(data);
           popup.close();
         }
