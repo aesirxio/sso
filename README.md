@@ -1,23 +1,35 @@
 # Integration SSO
 
 ## Installation
+
 `npm i aesirx-sso`
 
 #### Usage in SSR site
+
 1. Download sso.js from [https://github.com/aesirxio/sso/releases/latest](https://github.com/aesirxio/sso/releases/latest)
 1. copy `sso.js` to your project
 1. Add script to `<head>`:
+
 ```
 <script>
   window.aesirxEndpoint="https://example.com"
   window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"
   window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"
+  window.aesirxAllowedLogins=['concordium', 'metamask', 'regular']
 </script>
 <script async defer src="YOUR_PROJECT_PATH/sso.js"></script>
 ```
+
 1. `CLIENT_ID` replace this with the provided `CLIENT_ID` from https://sso.aesirx.io/
 2. `CLIENT_SECRET` replace this with the provided `CLIENT_SECRET` from https://sso.aesirx.io/
+3. `aesirxAllowedLogins` are for which logins do you want to use and you have wallets set up
+
+- `concordium` - Concordium wallet login
+- `metamask` - Metamask wallet login
+- `regular` - Regular login to your site
+
 ##### Create button with window.handleSSO()
+
 ```
 <script>
   const onGetData = async (response) => {
@@ -30,7 +42,9 @@
 <button onclick="onClickSSO()"> SSO Login </button>
 
 ```
+
 #### Usage in ReactJS
+
 ##### Add the environment variable file (`.env`)
 
 ```
@@ -49,7 +63,15 @@ import { SSOContextProvider } from 'aesirx-sso';
 ```
 
 ##### Using `<SSOButton />` to create Login Button
-you can pass `className`, `text` props and `onGetData` function to control it
+
+you can pass `className`, `text`, `options` props and `onGetData` function to control it
+
+`options` are for which logins do you want to use and you have wallets set up:
+
+- `concordium` - Concordium wallet login
+- `metamask` - Metamask wallet login
+- `regular` - Regular login to your site
+
 ```
 import { SSOButton } from 'aesirx-sso';
 
@@ -67,10 +89,12 @@ import { SSOButton } from 'aesirx-sso';
     className="btn w-100 fw-medium btn-success position-relative d-flex align-item-center justify-content-center mt-3"
     text={"SSO Login"}
     onGetData={onGetData}
+    options={['concordium', 'metamask', 'regular']}
 />
 ```
 
 #### Usage in NextJS
+
 ##### Add the environment variable file (`.env`)
 
 ```
@@ -89,7 +113,15 @@ import { SSOContextProvider } from 'aesirx-sso';
 ```
 
 ##### Using `<SSOButton />` to create Login Button
+
 you can pass `className`, `text` props and `onGetData` function to control it
+
+`options` are for which logins do you want to use and you have wallets set up:
+
+- `concordium` - Concordium wallet login
+- `metamask` - Metamask wallet login
+- `regular` - Regular login to your site
+
 ```
 import { SSOButton } from 'aesirx-sso';
 
@@ -106,5 +138,6 @@ import { SSOButton } from 'aesirx-sso';
     className="btn w-100 fw-medium btn-success position-relative d-flex align-item-center justify-content-center mt-3"
     text={"SSO Login"}
     onGetData={onGetData}
+    options={['concordium', 'metamask', 'regular']}
 />
 ```
