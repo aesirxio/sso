@@ -1,9 +1,16 @@
 import React from 'react';
 
-const SSOButton = ({ className, text, onGetData }) => {
+const SSOButton = ({ className, text, onGetData, options }) => {
   const endPoint = process.env.REACT_APP_ENDPOINT_URL ?? process.env.NEXT_PUBLIC_ENDPOINT_URL;
   const clientID = process.env.REACT_APP_SSO_CLIENT_ID ?? process.env.NEXT_PUBLIC_SSO_CLIENT_ID;
-  const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=sso`;
+  const optionList = options?.length
+    ? options
+        ?.map((item) => {
+          return `&login[]=${item}`;
+        })
+        .join('')
+    : '';
+  const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=sso${optionList}`;
   const handleSSO = async () => {
     let popup = window.open(popupLink, 'SSO', 'status=1,height=650,width=650');
 
