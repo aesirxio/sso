@@ -1,6 +1,6 @@
 {
   "name": "aesirx-sso",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "license": "GPL-3.0-only",
   "author": "AesirX",
   "repository": "https://github.com/aesirxio/sso",
@@ -15,6 +15,7 @@
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
+    "react": "^18.2.0",
     "react-spinners": "^0.13.6"
   },
   "scripts": {
@@ -48,10 +49,6 @@
       "last 1 safari version"
     ]
   },
-  "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.1"
-  },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
@@ -65,11 +62,11 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-replace": "^5.0.2",
     "babel-plugin-module-resolver": "^5.0.0",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^4.1.2",
     "eslint": "^8.35",
     "eslint-plugin-react": "^7.31.10",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.8.7",
+    "rimraf": "^4.1.2",
     "rollup": "^2.79.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
