@@ -6,7 +6,9 @@ const aesirxSSO = async () => {
       window.aesirxEndpoint,
       window.aesirxClientID,
       onGetData,
-      window.aesirxAllowedLogins
+      window.aesirxAllowedLogins,
+      window.demoUser,
+      window.demoPassword
     );
   };
   handleRegularReponse(
