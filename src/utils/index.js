@@ -2,14 +2,18 @@ const handleWalletResponse = (
   _endPoint,
   clientID,
   onGetData,
-  aesirxAllowedLogins = ['concordium', 'metamask', 'regular']
+  aesirxAllowedLogins = ['concordium', 'metamask', 'regular'],
+  demoUser,
+  demoPassword
 ) => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
   const optionList = aesirxAllowedLogins?.length
     ? aesirxAllowedLogins?.map((item) => `&login[]=${item}`).join('')
     : '';
   const ssoState = 'sso';
-  const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}${optionList}`;
+  const demoAccount =
+    demoUser && demoPassword ? '&demo_user=' + demoUser + '&demo_password=' + demoPassword : '';
+  const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}${optionList}${demoAccount}`;
   let popup = window.open(popupLink, 'SSO', 'status=1,height=650,width=650');
   var timer = setInterval(async () => {
     if (popup.closed) {
