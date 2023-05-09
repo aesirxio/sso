@@ -16,8 +16,6 @@
   window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"
   window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"
   window.aesirxAllowedLogins=['concordium', 'metamask', 'regular']
-  window.demoUser=demo-user
-  window.demoPassword=demo-password
 </script>
 <script async defer src="YOUR_PROJECT_PATH/sso.js"></script>
 ```
@@ -92,8 +90,6 @@ import { SSOButton } from 'aesirx-sso';
     text={"SSO Login"}
     onGetData={onGetData}
     options={['concordium', 'metamask', 'regular']}
-    demoUser="demo-user"
-    demoPassword="demo-password"
 />
 ```
 
@@ -143,7 +139,5 @@ import { SSOButton } from 'aesirx-sso';
     text={"SSO Login"}
     onGetData={onGetData}
     options={['concordium', 'metamask', 'regular']}
-    demoUser="demo-user"
-    demoPassword="demo-password"
 />
 ```
