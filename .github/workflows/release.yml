@@ -21,7 +21,7 @@ jobs:
       - uses: JS-DevTools/npm-publish@v2
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          check-version: true
+          strategy: upgrade
 
       - name: Release
         uses: ncipollo/release-action@v1
