@@ -10,7 +10,13 @@ interface SSOButtonProps {
   demoPassword: string;
 }
 
-const SSOButton: React.FC<SSOButtonProps> = ({ className, text, options, demoUser, demoPassword }) => {
+const SSOButton: React.FC<SSOButtonProps> = ({
+  className,
+  text,
+  options,
+  demoUser,
+  demoPassword,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSSO = async () => {
@@ -25,9 +31,7 @@ const SSOButton: React.FC<SSOButtonProps> = ({ className, text, options, demoUse
     );
   };
 
-  const onGetData = (data: any) => {
-   
-  };
+  const onGetData = (data: any) => {};
 
   if (loading) {
     return <Spinner />;

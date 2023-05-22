@@ -23,7 +23,7 @@ export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => 
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get('code');
-  
+
   useEffect(() => {
     const init = async () => {
       if (code) {

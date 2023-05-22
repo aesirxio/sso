@@ -9,7 +9,6 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "removeComments": false,
-    "suppressImplicitAnyIndexErrors": true,
     "sourceMap": true,
     "pretty": true,
     "allowJs": true,
@@ -17,14 +16,19 @@
     "lib": [
       "es2016",
       "dom"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "nodenext"
   },
   "include": [
     "src/**/*"
   ],
+  "files": [
+    "types.d.ts",
+  ],
   "exclude": [
     "./node_modules/**/*",
     "./build/**/*",
-    "src/sso.js",
+    "src/sso.tsx",
   ],
 }

@@ -4,7 +4,7 @@ const handleWalletResponse = (
   onGetData: (data: any) => void,
   aesirxAllowedLogins: string[] = ['concordium', 'metamask', 'regular'],
   demoUser?: string,
-  demoPassword?: string,
+  demoPassword?: string
 ): void => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
   const optionList = aesirxAllowedLogins?.length
@@ -50,7 +50,12 @@ const handleWalletResponse = (
   );
 };
 
-const handleRegularReponse = async (_endPoint: string, ssoState: string, clientID: string, clientSecret: string): Promise<void> => {
+const handleRegularReponse = async (
+  _endPoint: string,
+  ssoState: string,
+  clientID: string,
+  clientSecret: string
+): Promise<void> => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
   let cache;
   const queryString = typeof window !== 'undefined' && window.location.search;
@@ -78,7 +83,7 @@ const handleRegularReponse = async (_endPoint: string, ssoState: string, clientI
   }
 };
 
-const assign = (a : any , b : any) => {
+const assign = (a: any, b: any) => {
   Object.keys(b).forEach((key) => {
     if (b[key] !== undefined) a[key] = b[key];
   });
