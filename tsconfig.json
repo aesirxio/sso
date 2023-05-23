@@ -20,11 +20,12 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "nodenext"
   },
+ 
   "include": [
     "src/**/*"
   ],
   "files": [
-    "types.d.ts",
+    "src/types.d.ts",
   ],
   "exclude": [
     "./node_modules/**/*",

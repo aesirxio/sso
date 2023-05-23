@@ -7,23 +7,18 @@ import React, { useEffect, useState } from 'react';
 import Spinner from '../Spinner/index';
 import { handleRegularReponse } from './index';
 
-interface SSOContextValue {
-  // Định nghĩa các thuộc tính và phương thức trong context (nếu có)
-}
-
-const SSOContext = React.createContext<SSOContextValue | undefined>(undefined);
-
 interface SSOContextProviderProps {
-  value: SSOContextValue;
+  value?: any;
   children: React.ReactNode;
 }
+
+const SSOContext = React.createContext<undefined>(undefined);
 
 export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => {
   const [loading, setLoading] = useState(true);
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get('code');
-
   useEffect(() => {
     const init = async () => {
       if (code) {
@@ -44,7 +39,6 @@ export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => 
     };
     init();
   }, [code]);
-
   return (
     <SSOContext.Provider value={{ ...props.value }}>
       {typeof window !== 'undefined' && window?.opener && urlParams.get('state') === 'sso' && (
