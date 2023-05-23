@@ -1,11 +1,12 @@
+
 const handleWalletResponse = (
-  _endPoint: string,
-  clientID: string,
-  onGetData: (data: any) => void,
-  aesirxAllowedLogins: string[] = ['concordium', 'metamask', 'regular'],
+  _endPoint : string,
+  clientID : string,
+  onGetData: (_: string) => void,
+  aesirxAllowedLogins = ['concordium', 'metamask', 'regular'],
   demoUser?: string,
   demoPassword?: string
-): void => {
+) => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
   const optionList = aesirxAllowedLogins?.length
     ? aesirxAllowedLogins?.map((item) => `&login[]=${item}`).join('')
@@ -14,18 +15,18 @@ const handleWalletResponse = (
   const demoAccount =
     demoUser && demoPassword ? '&demo_user=' + demoUser + '&demo_password=' + demoPassword : '';
   const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}${optionList}${demoAccount}`;
-  let popup = window.open(popupLink, 'SSO', 'status=1,height=650,width=650');
+  const popup = window.open(popupLink, 'SSO', 'status=1,height=650,width=650');
   const timer = setInterval(async () => {
     if (popup.closed) {
       clearInterval(timer);
-      if (window.sso_response) {
-        onGetData(window.sso_response);
+      if (window["sso_response"]) {
+        onGetData(window["sso_response"]);
       }
     }
   }, 1000);
   window.addEventListener(
     'message',
-    (e: MessageEvent) => {
+    (e) => {
       if (e.origin !== endPoint) return;
       if (e.data && e.data.walletResponse) {
         const walletReponse = new URLSearchParams(e.data.walletResponse);
@@ -50,12 +51,10 @@ const handleWalletResponse = (
   );
 };
 
-const handleRegularReponse = async (
-  _endPoint: string,
+const handleRegularReponse = async ( _endPoint: string,
   ssoState: string,
   clientID: string,
-  clientSecret: string
-): Promise<void> => {
+  clientSecret: string) => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
   let cache;
   const queryString = typeof window !== 'undefined' && window.location.search;
@@ -83,7 +82,7 @@ const handleRegularReponse = async (
   }
 };
 
-const assign = (a: any, b: any) => {
+const assign = (a:any, b :any) => {
   Object.keys(b).forEach((key) => {
     if (b[key] !== undefined) a[key] = b[key];
   });
