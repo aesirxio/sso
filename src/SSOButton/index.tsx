@@ -11,7 +11,14 @@ interface SSOButtonProps {
   onGetData: () => void;
 }
 
-const SSOButton: React.FC<SSOButtonProps> = ({ className, text, onGetData, options, demoUser, demoPassword }) => {
+const SSOButton: React.FC<SSOButtonProps> = ({
+  className,
+  text,
+  onGetData,
+  options,
+  demoUser,
+  demoPassword,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSSO = async () => {

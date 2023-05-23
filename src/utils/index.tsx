@@ -1,7 +1,6 @@
-
 const handleWalletResponse = (
-  _endPoint : string,
-  clientID : string,
+  _endPoint: string,
+  clientID: string,
   onGetData: (_: string) => void,
   aesirxAllowedLogins = ['concordium', 'metamask', 'regular'],
   demoUser?: string,
@@ -19,8 +18,8 @@ const handleWalletResponse = (
   const timer = setInterval(async () => {
     if (popup.closed) {
       clearInterval(timer);
-      if (window["sso_response"]) {
-        onGetData(window["sso_response"]);
+      if (window['sso_response']) {
+        onGetData(window['sso_response']);
       }
     }
   }, 1000);
@@ -51,10 +50,12 @@ const handleWalletResponse = (
   );
 };
 
-const handleRegularReponse = async ( _endPoint: string,
+const handleRegularReponse = async (
+  _endPoint: string,
   ssoState: string,
   clientID: string,
-  clientSecret: string) => {
+  clientSecret: string
+) => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
   let cache;
   const queryString = typeof window !== 'undefined' && window.location.search;
@@ -82,7 +83,7 @@ const handleRegularReponse = async ( _endPoint: string,
   }
 };
 
-const assign = (a:any, b :any) => {
+const assign = (a: any, b: any) => {
   Object.keys(b).forEach((key) => {
     if (b[key] !== undefined) a[key] = b[key];
   });
