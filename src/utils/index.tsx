@@ -14,7 +14,7 @@ const handleWalletResponse = (
   const demoAccount =
     demoUser && demoPassword ? '&demo_user=' + demoUser + '&demo_password=' + demoPassword : '';
   const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}${optionList}${demoAccount}`;
-  const popup = window.open(popupLink, 'SSO', 'status=1,height=650,width=650');
+  const popup = window.open(popupLink, 'SSO', 'status=1,height=750,width=650');
   const timer = setInterval(async () => {
     if (popup.closed) {
       clearInterval(timer);
