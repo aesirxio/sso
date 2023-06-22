@@ -25,9 +25,7 @@ export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => 
         if (loading) {
           try {
             await handleRegularReponse(
-              process.env.REACT_APP_ENDPOINT_URL
-                ? process.env.NEXT_PUBLIC_ENDPOINT_URL
-                : 'https://api.aesirx.io/',
+              process.env.REACT_APP_ENDPOINT_URL ?? process.env.NEXT_PUBLIC_ENDPOINT_URL,
               'sso',
               process.env.REACT_APP_SSO_CLIENT_ID ?? process.env.NEXT_PUBLIC_SSO_CLIENT_ID,
               process.env.REACT_APP_SSO_CLIENT_SECRET ?? process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET
