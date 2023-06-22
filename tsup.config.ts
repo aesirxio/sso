@@ -23,15 +23,16 @@ const tsupConfig = defineConfig([
  },
  },
  {
-    format: ['esm'],
+    format: ['iife'],
     sourcemap:false,
     outDir: 'build',
     entry: ['src/sso.{ts,tsx}'],
+    // name: 'SSO',
     external: ['react', 'react-dom'],
     bundle: true,
     minify: true,
     target: 'es2020',
-    clean: true,
+    clean: false,
     dts: false,
     loader: {
       '.js': 'jsx',

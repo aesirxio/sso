@@ -6,7 +6,7 @@ const handleWalletResponse = (
   demoUser?: string,
   demoPassword?: string
 ) => {
-  const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
+  const endPoint = _endPoint ? new URL(_endPoint)?.origin : 'https://api.aesirx.io/';
   const optionList = aesirxAllowedLogins?.length
     ? aesirxAllowedLogins?.map((item) => `&login[]=${item}`).join('')
     : '';
@@ -56,7 +56,7 @@ const handleRegularReponse = async (
   clientID: string,
   clientSecret: string
 ) => {
-  const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
+  const endPoint = _endPoint ? new URL(_endPoint)?.origin : 'https://api.aesirx.io/';
   let cache;
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
