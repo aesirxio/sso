@@ -15,9 +15,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.21.0":
-  version: 7.21.0
-  resolution: "@babel/cli@npm:7.21.0"
+"@babel/cli@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/cli@npm:7.22.5"
   dependencies:
     "@jridgewell/trace-mapping": ^0.3.17
     "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
@@ -38,7 +38,7 @@ __metadata:
   bin:
     babel: ./bin/babel.js
     babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: 2168c0c7e93368f2fcb77a0be132f1cb1a7195f63017fce325fcae81c14325b7f0a031e849cc177ef1615248c860c32c53d8c8592eaaa5cedb55aba21a1afc9b
+  checksum: 8f436e72e15a77088c347ae189e33545d346d032dab54a10acb63dbf78c9ce5f180d7e9f7ed1fed1a3b005802700ae7c6c18727e57d805e14b412a059b3ba050
   languageName: node
   linkType: hard
 
@@ -1968,7 +1968,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aesirx-sso@workspace:."
   dependencies:
-    "@babel/cli": ^7.21.0
+    "@babel/cli": ^7.22.5
     "@babel/core": ^7.21.5
     "@babel/eslint-parser": ^7.21
     "@babel/plugin-transform-runtime": ^7.21.4
