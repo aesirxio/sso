@@ -4,11 +4,11 @@
   "license": "GPL-3.0-only",
   "author": "AesirX",
   "repository": "https://github.com/aesirxio/sso",
-  "main": "build/lib/cjs/index.js",
-  "module": "build/lib/esm/index.js",
+  "main": "build/lib/index.js",
+  "module": "build/lib/index.js",
   "exports": {
-    "require": "./build/lib/cjs/index.js",
-    "import": "./build/lib/esm/index.js"
+    "require": "./build/lib/index.js",
+    "import": "./build/lib/index.js"
   },
   "types": "build/lib/types/index.d.ts",
   "source": "src/index.js",
