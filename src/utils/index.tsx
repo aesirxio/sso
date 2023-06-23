@@ -1,12 +1,12 @@
 const handleWalletResponse = (
-  _endPoint,
-  clientID,
-  onGetData,
+  _endPoint: string,
+  clientID: string,
+  onGetData: (_: string) => void,
   aesirxAllowedLogins = ['concordium', 'metamask', 'regular'],
-  demoUser,
-  demoPassword
+  demoUser?: string,
+  demoPassword?: string
 ) => {
-  const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
+  const endPoint = _endPoint ? new URL(_endPoint)?.origin : 'https://api.aesirx.io/';
   const optionList = aesirxAllowedLogins?.length
     ? aesirxAllowedLogins?.map((item) => `&login[]=${item}`).join('')
     : '';
@@ -14,12 +14,12 @@ const handleWalletResponse = (
   const demoAccount =
     demoUser && demoPassword ? '&demo_user=' + demoUser + '&demo_password=' + demoPassword : '';
   const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}${optionList}${demoAccount}`;
-  let popup = window.open(popupLink, 'SSO', 'status=1,height=750,width=650');
-  var timer = setInterval(async () => {
+  const popup = window.open(popupLink, 'SSO', 'status=1,height=750,width=650');
+  const timer = setInterval(async () => {
     if (popup.closed) {
       clearInterval(timer);
-      if (window.sso_response) {
-        onGetData(window.sso_response);
+      if (window['sso_response']) {
+        onGetData(window['sso_response']);
       }
     }
   }, 1000);
@@ -28,7 +28,7 @@ const handleWalletResponse = (
     (e) => {
       if (e.origin !== endPoint) return;
       if (e.data && e.data.walletResponse) {
-        let walletReponse = new URLSearchParams(e.data.walletResponse);
+        const walletReponse = new URLSearchParams(e.data.walletResponse);
         const data = { profile: { lastVisitDate: '' } };
         walletReponse.get('access_token') &&
           Object.assign(data, { access_token: walletReponse.get('access_token') });
@@ -50,8 +50,13 @@ const handleWalletResponse = (
   );
 };
 
-const handleRegularReponse = async (_endPoint, ssoState, clientID, clientSecret) => {
-  const endPoint = _endPoint ? new URL(_endPoint)?.origin : '';
+const handleRegularReponse = async (
+  _endPoint: string,
+  ssoState: string,
+  clientID: string,
+  clientSecret: string
+) => {
+  const endPoint = _endPoint ? new URL(_endPoint)?.origin : 'https://api.aesirx.io/';
   let cache;
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -78,7 +83,7 @@ const handleRegularReponse = async (_endPoint, ssoState, clientID, clientSecret)
   }
 };
 
-const assign = (a, b) => {
+const assign = (a: any, b: any) => {
   Object.keys(b).forEach((key) => {
     if (b[key] !== undefined) a[key] = b[key];
   });

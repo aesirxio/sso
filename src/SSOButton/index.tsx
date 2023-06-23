@@ -2,7 +2,23 @@ import React, { useState } from 'react';
 import { handleWalletResponse } from '../utils/index';
 import Spinner from '../Spinner/index';
 
-const SSOButton = ({ className, text, onGetData, options, demoUser, demoPassword }) => {
+interface SSOButtonProps {
+  className: string;
+  text: string;
+  options: any;
+  demoUser: string;
+  demoPassword: string;
+  onGetData: () => void;
+}
+
+const SSOButton: React.FC<SSOButtonProps> = ({
+  className,
+  text,
+  onGetData,
+  options,
+  demoUser,
+  demoPassword,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSSO = async () => {
@@ -20,10 +36,12 @@ const SSOButton = ({ className, text, onGetData, options, demoUser, demoPassword
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <button type="button" className={`btn ${className}`} onClick={handleSSO}>
       {text}
     </button>
   );
 };
+
 export default SSOButton;
