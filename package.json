@@ -1,6 +1,6 @@
 {
   "name": "aesirx-sso",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "license": "GPL-3.0-only",
   "author": "AesirX",
   "repository": "https://github.com/aesirxio/sso",
@@ -27,7 +27,6 @@
     "clean": true
   },
   "scripts": {
-    "clean": "rimraf lib",
     "build": "tsup",
     "lint": "eslint --fix \"src/**/\"",
     "lint:check": "eslint \"src/**/\"",
@@ -68,14 +67,9 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.35",
     "eslint-plugin-react": "^7.31.10",
-    "npm-run-all": "^4.1.5",
     "prettier": "^2.8.7",
-    "rimraf": "^5.0.0",
     "tsup": "^6.7.0",
     "typescript": "^4.9.5"
-  },
-  "overrides": {
-    "autoprefixer": "10.4.5"
   },
   "files": [
     "build",

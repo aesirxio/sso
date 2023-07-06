@@ -3,9 +3,8 @@ import { defineConfig } from 'tsup';
 const tsupConfig = defineConfig([
   {
     format: ['esm'],
-    sourcemap: true,
     outDir: 'build/lib',
-    entry: ['src/index.{ts,tsx}', 'src/**/*.{ts,tsx}', '!src/sso.{ts,tsx}','!src/**/*.d.ts'],
+    entry: ['src/index.{ts,tsx}'],
     external: ['react', 'react-dom'],
     bundle: true,
     minify: true,
@@ -15,16 +14,16 @@ const tsupConfig = defineConfig([
     loader: {
       '.js': 'jsx',
     },
- 
- outExtension() {
-   return {
-     js: `.js`,
-   };
- },
- },
- {
+
+    outExtension() {
+      return {
+        js: `.js`,
+      };
+    },
+  },
+  {
     format: ['iife'],
-    sourcemap:false,
+    sourcemap: false,
     outDir: 'build',
     entry: ['src/sso.{ts,tsx}'],
     // name: 'SSO',
@@ -39,9 +38,9 @@ const tsupConfig = defineConfig([
     },
 
     outExtension() {
-    return {
-      js: `.js`,
-    };
+      return {
+        js: `.js`,
+      };
     },
   },
 ]);

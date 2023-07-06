@@ -14,10 +14,10 @@ jobs:
           node-version: 16.x
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run Build
         run: CI=false yarn run build
 
       - name: Run Prettier
-        run: npm run format:check
+        run: yarn run format:check
