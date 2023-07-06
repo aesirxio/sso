@@ -7,9 +7,14 @@ import React, { useEffect, useState } from 'react';
 import Spinner from '../Spinner/index';
 import { handleRegularReponse } from './index';
 
-const SSOContext = React.createContext();
+interface SSOContextProviderProps {
+  value?: any;
+  children: React.ReactNode;
+}
 
-export const SSOContextProvider = (props) => {
+const SSOContext = React.createContext<undefined>(undefined);
+
+export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => {
   const [loading, setLoading] = useState(true);
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
