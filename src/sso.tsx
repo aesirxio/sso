@@ -1,7 +1,6 @@
 import { handleRegularReponse, handleWalletResponse } from './utils/index';
 
 const aesirxSSO = async () => {
-  
   window.handleSSO = async (onGetData) => {
     handleWalletResponse(
       window.aesirxEndpoint,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { handleWalletResponse } from '../utils/index';
-import Spinner from '../Spinner/index';
+// import Spinner from '../Spinner/index';
 
 interface SSOButtonProps {
   className: string;
