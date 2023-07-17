@@ -12,6 +12,7 @@
   },
   "types": "build/lib/types/index.d.ts",
   "source": "src/index.js",
+  "type": "module",
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",

@@ -14,16 +14,14 @@ const tsupConfig = defineConfig([
     loader: {
       '.js': 'jsx',
     },
-
-    outExtension() {
-      return {
-        js: `.js`,
-      };
-    },
-  },
-  {
+ outExtension() {
+   return {
+     js: `.js`,
+   };
+ },
+ },
+ {
     format: ['iife'],
-    sourcemap: false,
     outDir: 'build',
     entry: ['src/sso.{ts,tsx}'],
     // name: 'SSO',
@@ -38,9 +36,9 @@ const tsupConfig = defineConfig([
     },
 
     outExtension() {
-      return {
-        js: `.js`,
-      };
+    return {
+      js: `.js`,
+    };
     },
   },
 ]);

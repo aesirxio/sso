@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { handleWalletResponse } from '../utils/index';
-import Spinner from '../Spinner/index';
+// import Spinner from '../Spinner/index';
 
 interface SSOButtonProps {
   className: string;
@@ -22,7 +22,7 @@ const SSOButton: React.FC<SSOButtonProps> = ({
   const [loading, setLoading] = useState(false);
 
   const handleSSO = async () => {
-    setLoading(true);
+    // setLoading(true);
     handleWalletResponse(
       process.env.REACT_APP_ENDPOINT_URL ?? process.env.NEXT_PUBLIC_ENDPOINT_URL,
       process.env.REACT_APP_SSO_CLIENT_ID ?? process.env.NEXT_PUBLIC_SSO_CLIENT_ID,
@@ -33,9 +33,9 @@ const SSOButton: React.FC<SSOButtonProps> = ({
     );
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  // if (loading) {
+  //   return <Spinner />;
+  // }
 
   return (
     <button type="button" className={`btn ${className}`} onClick={handleSSO}>

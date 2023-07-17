@@ -18,7 +18,7 @@ const aesirxSSO = async () => {
     window.aesirxClientSecret
   );
 };
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && window.aesirxClientID) {
   window.aesirxSSO = aesirxSSO();
 }
 
