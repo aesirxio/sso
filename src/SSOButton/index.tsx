@@ -42,7 +42,7 @@ const SSOButton: React.FC<SSOButtonProps> = ({
 
   return (
     <button type="button" className={`btn ${className}`} onClick={handleSSO}>
-      {text} abc
+      {text}
     </button>
   );
 };
