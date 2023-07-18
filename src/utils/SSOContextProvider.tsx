@@ -19,6 +19,7 @@ export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => 
   const queryString = typeof window !== 'undefined' && window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get('code');
+  const ssoState = urlParams.get('state');
   useEffect(() => {
     const init = async () => {
       if (code) {
@@ -26,7 +27,7 @@ export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => 
           try {
             await handleRegularReponse(
               process.env.REACT_APP_ENDPOINT_URL ?? process.env.NEXT_PUBLIC_ENDPOINT_URL,
-              'sso',
+              ssoState,
               process.env.REACT_APP_SSO_CLIENT_ID ?? process.env.NEXT_PUBLIC_SSO_CLIENT_ID,
               process.env.REACT_APP_SSO_CLIENT_SECRET ?? process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET
             );

@@ -4,13 +4,13 @@ const handleWalletResponse = (
   onGetData: (_: string) => void,
   aesirxAllowedLogins = ['concordium', 'metamask', 'regular'],
   demoUser?: string,
-  demoPassword?: string
+  demoPassword?: string,
+  ssoState = 'sso'
 ) => {
   const endPoint = _endPoint ? new URL(_endPoint)?.origin : 'https://api.aesirx.io/';
   const optionList = aesirxAllowedLogins?.length
     ? aesirxAllowedLogins?.map((item) => `&login[]=${item}`).join('')
     : '';
-  const ssoState = 'sso';
   const demoAccount =
     demoUser && demoPassword ? '&demo_user=' + demoUser + '&demo_password=' + demoPassword : '';
   const popupLink = `${endPoint}/index.php?option=authorize&api=oauth2&response_type=code&client_id=${clientID}&state=${ssoState}${optionList}${demoAccount}`;
@@ -62,20 +62,26 @@ const handleRegularReponse = async (
   const urlParams = new URLSearchParams(queryString);
   if (ssoState && urlParams.get('state') === ssoState) {
     if (urlParams.get('code')) {
-      const fetchData = await fetch(endPoint + '/index.php?option=token&api=oauth2', {
-        method: 'POST',
-        body: JSON.stringify({
-          grant_type: 'authorization_code',
-          code: urlParams.get('code'),
-          client_id: clientID,
-          client_secret: clientSecret,
-        }),
-        headers: assign({ 'Content-Type': 'application/json' }, { ['x-tracker-cache']: cache }),
-      });
+      const fetchData = await fetch(
+        endPoint +
+          `/index.php?option=token&api=oauth2${ssoState === 'noscopes' ? '&state=noscopes' : ''}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            grant_type: 'authorization_code',
+            code: urlParams.get('code'),
+            client_id: clientID,
+            client_secret: clientSecret,
+          }),
+          headers: assign({ 'Content-Type': 'application/json' }, { ['x-tracker-cache']: cache }),
+        }
+      );
       const res = await fetchData.json();
       if (res && typeof window !== 'undefined') {
         window.opener.sso_response = res;
-        window.close();
+        if (!res?.error) {
+          window.close();
+        }
       }
     } else if (urlParams.get('error')) {
       typeof window !== 'undefined' && window.close();
