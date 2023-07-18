@@ -8,6 +8,7 @@ interface SSOButtonProps {
   options: any;
   demoUser: string;
   demoPassword: string;
+  ssoState: string;
   onGetData: () => void;
 }
 
@@ -18,6 +19,7 @@ const SSOButton: React.FC<SSOButtonProps> = ({
   options,
   demoUser,
   demoPassword,
+  ssoState,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +31,8 @@ const SSOButton: React.FC<SSOButtonProps> = ({
       onGetData,
       options,
       demoUser,
-      demoPassword
+      demoPassword,
+      ssoState
     );
   };
 
