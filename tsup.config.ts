@@ -7,7 +7,6 @@ const tsupConfig = defineConfig([
     entry: ['src/index.{ts,tsx}'],
     external: ['react', 'react-dom'],
     bundle: true,
-    minify: true,
     target: 'es2020',
     clean: true,
     dts: true,
