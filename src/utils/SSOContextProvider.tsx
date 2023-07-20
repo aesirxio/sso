@@ -42,10 +42,10 @@ export const SSOContextProvider: React.FC<SSOContextProviderProps> = (props) => 
   }, [code]);
   return (
     <SSOContext.Provider value={{ ...props.value }}>
-      {/* {typeof window !== 'undefined' && window?.opener && urlParams.get('state') === 'sso' && (
+      {typeof window !== 'undefined' && window?.opener && urlParams.get('state') === 'sso' && (
         <Spinner />
-      )} */}
-      {props.children}
+      )}
+      {!loading && props.children}
     </SSOContext.Provider>
   );
 };
