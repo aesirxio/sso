@@ -1,0 +1,27 @@
+$enable-important-utilities: false;
+$enable-negative-margins: true;
+$enable-dark-mode: false;
+$prefix: aesirxsso-;
+
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+
+.modal-backdrop {
+  display: none;
+}
+
+.aesirxsso {
+  color: $black;
+  .modal {
+    background: rgba(0, 0, 0, 0.5);
+
+    .modal-content {
+      background-color: $white;
+    }
+  }
+
+  @import 'bootstrap/scss/utilities';
+  @import 'bootstrap/scss/modal';
+}

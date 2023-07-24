@@ -96,4 +96,23 @@ const assign = (a: any, b: any) => {
   return a;
 };
 
-export { handleWalletResponse, handleRegularReponse };
+const shortenString = (str: string) => {
+  return str.substring(0, 6) + '...' + str.substring(str.length - 4);
+};
+
+const getClientApp = () => {
+  const endpoint =
+    process.env.REACT_APP_ENDPOINT_URL ||
+    process.env.NEXT_PUBLIC_ENDPOINT_URL ||
+    'https://api.aesirx.io';
+
+  const client_id =
+    process.env.REACT_APP_SSO_CLIENT_ID || process.env.NEXT_PUBLIC_SSO_CLIENT_ID || '';
+
+  const client_secret =
+    process.env.REACT_APP_SSO_CLIENT_SECRET || process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET || '';
+
+  return { endpoint, client_id, client_secret };
+};
+
+export { handleWalletResponse, handleRegularReponse, shortenString, getClientApp };
