@@ -11,7 +11,6 @@ const tsupConfig = defineConfig([
     target: 'es2020',
     clean: true,
     dts: true,
-    sourcemap: true,
     loader: {
       '.js': 'jsx',
     },
