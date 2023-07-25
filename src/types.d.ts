@@ -13,3 +13,5 @@ declare global {
     handleSSO: (onGetData: any) => void;
   }
 }
+declare module '*.png';
+declare module '*.svg';
