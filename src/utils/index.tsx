@@ -112,7 +112,12 @@ const getClientApp = () => {
   const client_secret =
     process.env.REACT_APP_SSO_CLIENT_SECRET || process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET || '';
 
-  return { endpoint, client_id, client_secret };
+  const network =
+    process.env.REACT_APP_SSO_CONCORDIUM_NETWORK ||
+    process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK ||
+    'mainnet';
+
+  return { endpoint, client_id, client_secret, network };
 };
 
 export { handleWalletResponse, handleRegularReponse, shortenString, getClientApp };

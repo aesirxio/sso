@@ -14,6 +14,7 @@ import {
 import ConnectConcordium from './connect';
 import SignMessageConcordium from './sign';
 import secureLocalStorage from 'react-secure-storage';
+import { getClientApp } from '../../../utils';
 
 const SSOConcordiumProvider = () => {
   return (
@@ -52,15 +53,24 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
         return status.genesisBlock;
       })
         .then((hash: any) => {
-          console.log('NODE_ENV', process.env.NODE_ENV);
+          const { network } = getClientApp();
 
-          if (process.env.NODE_ENV === 'development' && hash !== TESTNET.genesisHash) {
-            throw new Error(`Please change the network to Testnet in Wallet`);
+          let r = false;
+
+          switch (network) {
+            case 'testnet':
+              r = hash === TESTNET.genesisHash;
+              break;
+
+            default:
+              r = hash === MAINNET.genesisHash;
           }
 
-          if (process.env.NODE_ENV === 'production' && hash !== MAINNET.genesisHash) {
-            throw new Error(`Please change the network to Mainnet in Wallet`);
+          if (!r) {
+            const { network } = getClientApp();
+            throw new Error(`Please change the network to ${network} in Wallet`);
           }
+
           setRpcGenesisHash(hash);
           setRpcError('');
         })
