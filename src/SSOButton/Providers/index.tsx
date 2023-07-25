@@ -19,23 +19,26 @@ const SSOProviders = () => {
   return (
     <>
       {hasMetamask && (
-        <Suspense fallback={<></>}>
-          <div className="control-group mb-3">
-            <SSOEthereumProvider />
-          </div>
-        </Suspense>
+        <div className="control-group mb-3 p-2 border text-center rounded-2">
+          <Suspense fallback={<>Loading...</>}>
+            <SSOEthereumProvider />{' '}
+          </Suspense>
+        </div>
       )}
 
       {hasConcordium && (
-        <Suspense fallback={<></>}>
-          <div className="control-group mb-3">
-            <SSOConcordiumProvider />
-          </div>
-        </Suspense>
+        <div className="control-group mb-3 p-2 border text-center rounded-2">
+          <Suspense fallback={<>Loading...</>}>
+            <SSOConcordiumProvider />{' '}
+          </Suspense>
+        </div>
       )}
-      <Suspense fallback={<></>}>
-        <SSOEmailProvider />
-      </Suspense>
+
+      <div className="control-group mb-3 p-2 ">
+        <Suspense fallback={<>Loading...</>}>
+          <SSOEmailProvider />
+        </Suspense>
+      </div>
     </>
   );
 };

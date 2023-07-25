@@ -12,11 +12,7 @@ const ConnectMetamask = () => {
   }
 
   return (
-    <button
-      onClick={onOpen}
-      disabled={loading}
-      className="btn btn-white bg-white border fw-semibold"
-    >
+    <button onClick={onOpen} disabled={loading} className="btn btn-secondary">
       {loading ? (
         <>
           <span
@@ -27,7 +23,7 @@ const ConnectMetamask = () => {
           Waiting for signing...
         </>
       ) : (
-        'Connect to Ethereum wallets'
+        'Connect'
       )}
     </button>
   );

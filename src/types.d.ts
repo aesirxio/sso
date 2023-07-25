@@ -14,3 +14,4 @@ declare global {
   }
 }
 declare module '*.png';
+declare module '*.svg';

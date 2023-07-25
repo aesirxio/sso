@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Modal } from 'bootstrap';
+import React, { Suspense } from 'react';
+import logoImg from './logo.svg';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 interface SSSOModalContextProps {
   handleOnData: (data: any) => void;
@@ -9,45 +10,31 @@ export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefi
 
 const SSOProviders = React.lazy(() => import('./Providers'));
 
-const SSOModal = ({ onGetData }: any) => {
-  const bsModal = useRef<Modal>();
-  useEffect(() => {
-    bsModal.current = new Modal('#ssoModal');
-  }, []);
-
+const SSOModal = ({ onGetData, show, toggle }: any) => {
   const handleOnData = (data: any) => {
     onGetData(data);
-    bsModal.current.hide();
+    toggle();
   };
 
   return (
-    <div
-      className="modal fade"
-      id="ssoModal"
-      tabIndex={-1}
-      aria-labelledby="ssoModalLabel"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h4 className="modal-title fs-5" id="ssoModalLabel">
-              Welcome to AesirX SSO <br /> Sign in to get started
-            </h4>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+    <div className="aesirxsso">
+      <Modal fade={false} toggle={toggle} isOpen={show} container=".aesirxsso">
+        <ModalHeader className="justify-content-center text-center">
+          <div className="d-flex fs-2 align-items-baseline">
+            <span className="me-2">Welcome to </span>
+            <img src={logoImg} alt="AesirX" />
+            <span className="ms-2">SSO</span>
           </div>
-          <div className="modal-body">
+          <div>Sign in to get started</div>
+        </ModalHeader>
+        <ModalBody>
+          <Suspense fallback={<>Loading...</>}>
             <SSOModalContext.Provider value={{ handleOnData: handleOnData }}>
               <SSOProviders />
             </SSOModalContext.Provider>
-          </div>
-        </div>
-      </div>
+          </Suspense>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

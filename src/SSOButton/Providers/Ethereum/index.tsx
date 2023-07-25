@@ -130,6 +130,7 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains);
 const SSOEthereumProvider = () => {
   return (
     <>
+      <div className="pb-2">Ethereum wallets</div>
       <WagmiConfig config={wagmiConfig}>
         <SSOEthereumApp />
       </WagmiConfig>

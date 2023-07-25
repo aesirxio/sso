@@ -90,6 +90,7 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
   };
   return (
     <>
+      <div className="pb-2">Concordium wallets</div>
       {activeConnectorError && <div>Connector error: {activeConnectorError}.</div>}
 
       {!account || rpcError ? (
@@ -105,18 +106,13 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
           {rpcGenesisHash ? (
             <SignMessageConcordium account={account} connection={connection} />
           ) : (
-            <div className="p-2 bg-white border fw-semibold text-center rounded-2">
-              <div className="pb-2">Connect to Concordium</div>
-              <div className="d-flex">
-                <button className="btn btn-secondary bg-secondary fw-semibold text-white w-50 py-3">
-                  <span
-                    className="spinner-border spinner-border-sm me-1"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                </button>
-              </div>
-            </div>
+            <button className="btn btn-secondary">
+              <span
+                className="spinner-border spinner-border-sm me-1"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            </button>
           )}
         </>
       )}

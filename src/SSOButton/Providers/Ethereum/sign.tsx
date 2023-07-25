@@ -35,14 +35,10 @@ const SignMessage = () => {
   return (
     <>
       <p className="text-break">
-        <span className="fw-semibold">Ethereum Wallet:</span>
+        <span className="fw-semibold">Wallet:</span>
         <span className="ms-1">{address && shortenString(address)}</span>
       </p>
-      <button
-        disabled={isLoading}
-        className="btn btn-secondary border fw-semibold"
-        onClick={handleSignMessage}
-      >
+      <button disabled={isLoading} className="btn btn-secondary" onClick={handleSignMessage}>
         {status ? (
           <div className="d-flex align-items-center">
             <span

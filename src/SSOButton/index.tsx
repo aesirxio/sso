@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
-
-const SSOModal = React.lazy(() => import('./modal'));
+import SSOModal from './modal';
 
 interface SSOButtonProps {
   className: string;
@@ -9,23 +8,17 @@ interface SSOButtonProps {
 }
 
 const SSOButton: React.FC<SSOButtonProps> = ({ className, text = 'Login', onGetData }) => {
-  const [domLoaded, setDomLoaded] = useState(false);
-  useEffect(() => {
-    setDomLoaded(true);
-  }, []);
+  const [show, setShow] = useState(false);
+
+  const toggle = () => setShow(!show);
 
   return (
-    <div className="aesirxsso">
-      <button
-        type="button"
-        className={`btn ${className}`}
-        data-bs-toggle="modal"
-        data-bs-target="#ssoModal"
-      >
+    <>
+      <button type="button" className={`btn ${className}`} onClick={toggle}>
         {text}
       </button>
-      <Suspense fallback={<></>}>{domLoaded ? <SSOModal onGetData={onGetData} /> : null}</Suspense>
-    </div>
+      <SSOModal onGetData={onGetData} show={show} toggle={toggle} />
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import logo from './concordium.png';
 import useWallet from '../../../Hooks/useWallet';
 
 import { toast } from 'react-toastify';
@@ -38,13 +37,10 @@ const SignMessageConcordium = ({ account, connection }: any) => {
   return (
     <>
       <p className="text-break">
-        <span className="fw-semibold">Concordium Wallet:</span>
+        <span className="fw-semibold">Wallet:</span>
         <span className="ms-1">{account && shortenString(account)}</span>
       </p>
-      <button
-        className="btn btn-secondary bg-secondary fw-semibold text-white"
-        onClick={handleConnect}
-      >
+      <button className="btn btn-secondary" onClick={handleConnect}>
         {status ? (
           <div className="d-flex align-items-center">
             <span
@@ -59,10 +55,7 @@ const SignMessageConcordium = ({ account, connection }: any) => {
             </span>
           </div>
         ) : (
-          <>
-            <img className="me-2" width={20} height={21} src={logo} alt="logo-concordium" />
-            Sign in via Concordium
-          </>
+          <>Sign in via Concordium</>
         )}
       </button>
     </>
