@@ -10,9 +10,8 @@ const SSOEmailProvider = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-
+    setLoading(true);
     try {
-      setLoading(true);
       const { endpoint, client_id, client_secret } = getClientApp();
 
       const form = event.target;
@@ -43,6 +42,7 @@ const SSOEmailProvider = () => {
       toast('Wrong authentication', { closeOnClick: false });
       return false;
     }
+    setLoading(false);
   };
   return (
     <form onSubmit={handleSubmit}>
