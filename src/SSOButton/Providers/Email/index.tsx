@@ -6,7 +6,7 @@ import { SSOModalContext } from '../../modal';
 
 const SSOEmailProvider = () => {
   const [loading, setLoading] = useState(false);
-  const { handleOnData } = useContext(SSOModalContext);
+  const { handleOnData, demoUser, demoPassword } = useContext(SSOModalContext);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -46,17 +46,25 @@ const SSOEmailProvider = () => {
   };
   return (
     <form onSubmit={handleSubmit}>
+      <h5>Demo email: {demoUser} </h5>
+      <h5>Demo password: {demoPassword} </h5>
       <div className="mb-3">
         <label htmlFor="ssoemail" className="form-label">
           Email address
         </label>
-        <input type="email" className="form-control" name="ssoemail" />
+        <input type="email" className="form-control" name="ssoemail" defaultValue={demoUser} />
       </div>
       <div className="mb-3">
         <label htmlFor="ssoepassword" className="form-label">
           Password
         </label>
-        <input type="password" className="form-control" name="ssoepassword" required />
+        <input
+          type="password"
+          className="form-control"
+          name="ssoepassword"
+          defaultValue={demoPassword}
+          required
+        />
       </div>
 
       <button type="submit" className="btn btn-secondary">

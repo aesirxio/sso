@@ -4,13 +4,29 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 interface SSSOModalContextProps {
   handleOnData: (data: any) => void;
+  demoUser?: string;
+  demoPassword?: string;
+}
+
+interface SSSOModalProps {
+  onGetData: (data: any) => void;
+  show: boolean;
+  toggle: () => void;
+  demoUser?: string;
+  demoPassword?: string;
 }
 
 export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefined);
 
 const SSOProviders = React.lazy(() => import('./Providers'));
 
-const SSOModal = ({ onGetData, show, toggle }: any) => {
+const SSOModal: React.FC<SSSOModalProps> = ({
+  onGetData,
+  show,
+  toggle,
+  demoUser,
+  demoPassword,
+}) => {
   const handleOnData = (data: any) => {
     onGetData(data);
     toggle();
@@ -29,7 +45,9 @@ const SSOModal = ({ onGetData, show, toggle }: any) => {
         </ModalHeader>
         <ModalBody>
           <Suspense fallback={<>Loading...</>}>
-            <SSOModalContext.Provider value={{ handleOnData: handleOnData }}>
+            <SSOModalContext.Provider
+              value={{ handleOnData: handleOnData, demoUser: demoUser, demoPassword: demoPassword }}
+            >
               <SSOProviders />
             </SSOModalContext.Provider>
           </Suspense>
