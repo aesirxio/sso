@@ -46,8 +46,12 @@ const SSOEmailProvider = () => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <h5>Demo email: {demoUser} </h5>
-      <h5>Demo password: {demoPassword} </h5>
+      {demoUser && demoUser && (
+        <>
+          <h5>Demo email: {demoUser} </h5>
+          <h5>Demo password: {demoPassword} </h5>
+        </>
+      )}
       <div className="mb-3">
         <label htmlFor="ssoemail" className="form-label">
           Email address
