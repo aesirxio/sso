@@ -52,15 +52,6 @@ REACT_APP_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
 REACT_APP_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
 ```
 
-##### Wrap your App in `<SSOContextProvider>`:
-
-```
-import { SSOContextProvider } from 'aesirx-sso';
-
-<SSOContextProvider>
-  <App />
-</SSOContextProvider>
-```
 
 ##### Using `<SSOButton />` to create Login Button
 
@@ -100,16 +91,6 @@ import { SSOButton } from 'aesirx-sso';
 ```
 NEXT_PUBLIC_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
 NEXT_PUBLIC_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
-```
-
-##### Wrap your App in `<SSOContextProvider>`:
-
-```
-import { SSOContextProvider } from 'aesirx-sso';
-
-<SSOContextProvider>
-  <App />
-</SSOContextProvider>
 ```
 
 ##### Using `<SSOButton />` to create Login Button
