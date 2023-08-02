@@ -49,7 +49,10 @@ const ConnectConcordium = ({
               aria-hidden="true"
             ></span>
           ) : (
-            'QR Code'
+            <>
+              <img src={concordium_logo} className="me-2 align-text-bottom" alt="Concordium logo" />
+              QR Code
+            </>
           )}
         </button>
       )}

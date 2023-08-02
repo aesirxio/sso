@@ -10,6 +10,7 @@ const useWallet = (wallet: any, publicAddress: string) => {
       const reqAuthFormData = {
         publicAddress: publicAddress,
         wallet: wallet,
+        text: `Login with nonce: {}`,
       };
 
       const config = {
