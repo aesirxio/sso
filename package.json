@@ -78,7 +78,7 @@
     "esbuild-plugin-inline-image": "^0.0.9",
     "esbuild-sass-plugin": "^2.10.0",
     "eslint": "^8.35",
-    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react": "^7.33.1",
     "prettier": "^2.8.7",
     "tsup": "^6.7.0",
     "typescript": "^5.1.6"
