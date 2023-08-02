@@ -101,16 +101,18 @@ const shortenString = (str: string) => {
 };
 
 const getClientApp = () => {
-  const endpoint =
-    process.env.REACT_APP_ENDPOINT_URL ||
-    process.env.NEXT_PUBLIC_ENDPOINT_URL ||
-    'https://api.aesirx.io';
+  const endpoint = window['aesirxEndpoint']
+    ? window['aesirxEndpoint']
+    : process.env.REACT_APP_ENDPOINT_URL ||
+      process.env.NEXT_PUBLIC_ENDPOINT_URL ||
+      'https://api.aesirx.io';
 
-  const client_id =
-    process.env.REACT_APP_SSO_CLIENT_ID || process.env.NEXT_PUBLIC_SSO_CLIENT_ID || '';
-
-  const client_secret =
-    process.env.REACT_APP_SSO_CLIENT_SECRET || process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET || '';
+  const client_id = window['aesirxClientID']
+    ? window['aesirxClientID']
+    : process.env.REACT_APP_SSO_CLIENT_ID || process.env.NEXT_PUBLIC_SSO_CLIENT_ID || '';
+  const client_secret = window['aesirxClientSecret']
+    ? window['aesirxClientSecret']
+    : process.env.REACT_APP_SSO_CLIENT_SECRET || process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET || '';
 
   const network =
     process.env.REACT_APP_SSO_CONCORDIUM_NETWORK ||
