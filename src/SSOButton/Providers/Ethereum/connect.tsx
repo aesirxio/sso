@@ -1,5 +1,6 @@
 import { useWeb3Modal } from '@web3modal/react';
 import React, { useState } from 'react';
+import logo from '../../images/ethereum_logo.png';
 
 const ConnectMetamask = () => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +13,11 @@ const ConnectMetamask = () => {
   }
 
   return (
-    <button onClick={onOpen} disabled={loading} className="btn btn-secondary">
+    <button
+      onClick={onOpen}
+      disabled={loading}
+      className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center"
+    >
       {loading ? (
         <>
           <span
@@ -23,7 +28,10 @@ const ConnectMetamask = () => {
           Waiting for signing...
         </>
       ) : (
-        'Connect'
+        <>
+          <img className="me-3" src={logo} alt="Ethereum Logo" />
+          Ethereum wallets
+        </>
       )}
     </button>
   );

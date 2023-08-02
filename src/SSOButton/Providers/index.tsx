@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import '../index.scss';
+import privacy_icon from '../images/privacy_icon.png';
 
 const SSOConcordiumProvider = React.lazy(() => import('./Concordium'));
 const SSOEthereumProvider = React.lazy(() => import('./Ethereum'));
@@ -18,23 +19,28 @@ const SSOProviders = () => {
 
   return (
     <>
-      {hasMetamask && (
-        <div className="control-group mb-3 p-2 border text-center rounded-2">
-          <Suspense fallback={<>Loading...</>}>
-            <SSOEthereumProvider />{' '}
-          </Suspense>
-        </div>
-      )}
+      <div className="pt-5 pb-4 px-4 block-wallet rounded-top">
+        <div className="px-3 text-center">
+          <img src={privacy_icon} alt="Privacy Icon" />
+          <h3 className="fs-2 fw-semibold mt-2 mb-4 text-primary">Welcome to AesirX SSO</h3>
+          {hasMetamask && (
+            <div className="mb-3">
+              <Suspense fallback={<>Loading...</>}>
+                <SSOEthereumProvider />{' '}
+              </Suspense>
+            </div>
+          )}
 
-      {hasConcordium && (
-        <div className="control-group mb-3 p-2 border text-center rounded-2">
-          <Suspense fallback={<>Loading...</>}>
-            <SSOConcordiumProvider />{' '}
-          </Suspense>
+          {hasConcordium && (
+            <div>
+              <Suspense fallback={<>Loading...</>}>
+                <SSOConcordiumProvider />{' '}
+              </Suspense>
+            </div>
+          )}
         </div>
-      )}
-
-      <div className="control-group mb-3 p-2 ">
+      </div>
+      <div className="control-group pt-3 px-4 pb-5">
         <Suspense fallback={<>Loading...</>}>
           <SSOEmailProvider />
         </Suspense>

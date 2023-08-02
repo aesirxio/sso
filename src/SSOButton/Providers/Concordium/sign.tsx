@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { shortenString } from '../../../utils';
 import { stringMessage } from '@concordium/react-components';
 import { SSOModalContext } from '../../modal';
+import concordium_logo from '../../images/concordium_logo.png';
 
 const SignMessageConcordium = ({ account, connection }: any) => {
   const [status, setStatus] = useState('');
@@ -36,11 +37,11 @@ const SignMessageConcordium = ({ account, connection }: any) => {
   };
   return (
     <>
-      <p className="text-break">
-        <span className="fw-semibold">Wallet:</span>
-        <span className="ms-1">{account && shortenString(account)}</span>
-      </p>
-      <button className="btn btn-secondary" onClick={handleConnect}>
+      <button
+        disabled={status !== ''}
+        className="btn btn-dark btn-concordium w-100 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center"
+        onClick={handleConnect}
+      >
         {status ? (
           <div className="d-flex align-items-center">
             <span
@@ -55,7 +56,10 @@ const SignMessageConcordium = ({ account, connection }: any) => {
             </span>
           </div>
         ) : (
-          <>Sign in via Concordium</>
+          <>
+            <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium logo" />
+            Sign in via Concordium ({account && shortenString(account)})
+          </>
         )}
       </button>
     </>
