@@ -45,33 +45,50 @@ const SSOEmailProvider = () => {
     setLoading(false);
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="px-3" onSubmit={handleSubmit}>
+      <div className="line mb-4 text-center">
+        <span className="bg-white px-2 position-relative">or</span>
+      </div>
       {demoUser && demoUser && (
         <>
-          <h5>Demo email: {demoUser} </h5>
-          <h5>Demo password: {demoPassword} </h5>
+          <h5 className="text-primary">Demo email: {demoUser} </h5>
+          <h5 className="mb-3 text-primary">Demo password: {demoPassword} </h5>
         </>
       )}
-      <div className="mb-3">
-        <label htmlFor="ssoemail" className="form-label">
+      <div className="mb-4">
+        <label htmlFor="ssoemail" className="form-label text-primary mb-2">
           Email address
         </label>
-        <input type="email" className="form-control" name="ssoemail" defaultValue={demoUser} />
+        <input
+          type="email"
+          className="form-control lh-sm"
+          name="ssoemail"
+          defaultValue={demoUser}
+        />
       </div>
-      <div className="mb-3">
-        <label htmlFor="ssoepassword" className="form-label">
+      <div className="mb-4">
+        <label htmlFor="ssoepassword" className="form-label text-primary mb-2">
           Password
         </label>
         <input
           type="password"
-          className="form-control"
+          className="form-control lh-sm"
           name="ssoepassword"
           defaultValue={demoPassword}
           required
         />
       </div>
-
-      <button type="submit" className="btn btn-secondary">
+      <p className="text-end mb-4">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://dapp.web3id.aesirx.io/auth/forgot-password"
+          className="text-decoration-none"
+        >
+          Forgot password ?
+        </a>
+      </p>
+      <button type="submit" className="btn btn-success w-100 lh-sm text-white fw-semibold">
         {loading ? (
           <>
             <span

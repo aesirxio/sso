@@ -100,8 +100,6 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
   };
   return (
     <>
-      <div className="pb-2">Concordium wallets</div>
-      {activeConnectorError && <div>Connector error: {activeConnectorError}.</div>}
 
       {!account || rpcError ? (
         <ConnectConcordium
@@ -116,7 +114,7 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
           {rpcGenesisHash ? (
             <SignMessageConcordium account={account} connection={connection} />
           ) : (
-            <button className="btn btn-secondary">
+            <button className="btn btn-dark">
               <span
                 className="spinner-border spinner-border-sm me-1"
                 role="status"
@@ -126,8 +124,8 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
           )}
         </>
       )}
-
-      {rpcError && <div className="mt-1">RPC error: {rpcError}</div>}
+      {activeConnectorError && <div className="mt-1 fs-7 text-danger text-start">Connector error: {activeConnectorError}.</div>}
+      {rpcError && <div className="mt-1 fs-7 text-danger text-start">RPC error: {rpcError}</div>}
     </>
   );
 };

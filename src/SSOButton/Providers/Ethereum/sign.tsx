@@ -6,6 +6,7 @@ import { useAccount } from 'wagmi';
 import useWallet from '../../../Hooks/useWallet';
 import { shortenString } from '../../../utils';
 import { SSOModalContext } from '../../modal';
+import logo from '../../images/ethereum_logo.png';
 
 const SignMessage = () => {
   const wallet = 'metamask';
@@ -34,11 +35,11 @@ const SignMessage = () => {
 
   return (
     <>
-      <p className="text-break">
-        <span className="fw-semibold">Wallet:</span>
-        <span className="ms-1">{address && shortenString(address)}</span>
-      </p>
-      <button disabled={isLoading} className="btn btn-secondary" onClick={handleSignMessage}>
+      <button
+        disabled={isLoading}
+        className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center"
+        onClick={handleSignMessage}
+      >
         {status ? (
           <div className="d-flex align-items-center">
             <span
@@ -53,7 +54,10 @@ const SignMessage = () => {
             </span>
           </div>
         ) : (
-          <>Sign in via {connector?.name}</>
+          <>
+            <img className="me-3" src={logo} alt="Ethereum Logo" />
+            Sign in via {connector?.name} ({address && shortenString(address)})
+          </>
         )}
       </button>
     </>

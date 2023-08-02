@@ -2,7 +2,11 @@ $enable-important-utilities: false;
 $enable-negative-margins: true;
 $enable-dark-mode: false;
 $prefix: aesirxsso-;
-$secondary: #1ab394;
+$primary: #132342;
+$secondary: #627eea;
+$dark: #0f1314;
+$success: #1ab394;
+$modal-md: 620px;
 
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
@@ -24,12 +28,43 @@ $secondary: #1ab394;
   @import 'bootstrap/scss/helpers';
   @import 'bootstrap/scss/utilities/api';
 
-  .btn-secondary {
-    color: $white;
-
+  .block-wallet {
+    background-color: #f0f3fb;
+  }
+  .fs-18 {
+    font-size: 18px;
+  }
+  .form-control {
+    padding: 13px;
+  }
+  .btn {
+    min-height: 48px;
+    &:not(.btn-ethereum, .btn-concordium) {
+      padding: 13px 24px;
+    }
     &:hover {
-      background-color: $white;
-      color: $black;
+      &.text-white {
+        color: $white;
+      }
+    }
+    &:disabled,
+    &.disabled {
+      opacity: 1;
+      background: #a5a4b5;
+      color: $white;
+      border-color: transparent;
+    }
+  }
+  .line {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      top: 50%;
+      left: 0;
+      background-color: #e9e9e9;
     }
   }
 }
