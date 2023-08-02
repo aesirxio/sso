@@ -24,7 +24,7 @@ const SSOProviders = () => {
           <img src={privacy_icon} alt="Privacy Icon" />
           <h3 className="fs-2 fw-semibold mt-2 mb-4 text-primary">Welcome to AesirX SSO</h3>
           {hasMetamask && (
-            <div className='mb-3'>
+            <div className="mb-3">
               <Suspense fallback={<>Loading...</>}>
                 <SSOEthereumProvider />{' '}
               </Suspense>

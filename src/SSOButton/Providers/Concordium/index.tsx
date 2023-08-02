@@ -100,7 +100,6 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
   };
   return (
     <>
-
       {!account || rpcError ? (
         <ConnectConcordium
           isConnecting={isConnecting}
@@ -124,7 +123,11 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
           )}
         </>
       )}
-      {activeConnectorError && <div className="mt-1 fs-7 text-danger text-start">Connector error: {activeConnectorError}.</div>}
+      {activeConnectorError && (
+        <div className="mt-1 fs-7 text-danger text-start">
+          Connector error: {activeConnectorError}.
+        </div>
+      )}
       {rpcError && <div className="mt-1 fs-7 text-danger text-start">RPC error: {rpcError}</div>}
     </>
   );

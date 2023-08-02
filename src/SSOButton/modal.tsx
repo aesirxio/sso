@@ -34,7 +34,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   return (
     <div className="aesirxsso">
       <Modal centered fade={false} toggle={toggle} isOpen={show} container=".aesirxsso">
-        <ModalBody className='p-0'>
+        <ModalBody className="p-0">
           <Suspense fallback={<>Loading...</>}>
             <SSOModalContext.Provider
               value={{ handleOnData: handleOnData, demoUser: demoUser, demoPassword: demoPassword }}
