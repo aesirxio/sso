@@ -26,7 +26,7 @@ const SSOProviders = () => {
           {hasMetamask && (
             <div className="mb-3">
               <Suspense fallback={<>Loading...</>}>
-                <SSOEthereumProvider />{' '}
+                <SSOEthereumProvider />
               </Suspense>
             </div>
           )}
@@ -34,7 +34,7 @@ const SSOProviders = () => {
           {hasConcordium && (
             <div>
               <Suspense fallback={<>Loading...</>}>
-                <SSOConcordiumProvider />{' '}
+                <SSOConcordiumProvider />
               </Suspense>
             </div>
           )}
