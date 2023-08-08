@@ -28,7 +28,7 @@ $modal-md: 620px;
   @import 'bootstrap/scss/helpers';
   @import 'bootstrap/scss/utilities/api';
 
-  .block-wallet {
+  .block-wallet,.modal-header {
     background-color: #f0f3fb;
   }
   .fs-18 {
