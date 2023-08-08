@@ -11,11 +11,11 @@ const ConnectConcordium = ({
   activeConnector,
 }: any) => {
   return (
-    <div className="d-flex flex-row flex-wrap">
+    <div className="d-flex">
       {isDesktop && (
         <button
           disabled={isConnecting}
-          className="btn btn-dark btn-concordium flex-grow-1 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-center mb-3"
+          className="btn btn-dark btn-concordium fw-medium text-nowrap py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-center"
           onClick={() => handleOnConnect(BROWSER_WALLET, 'browser')}
         >
           {isConnecting ? (
@@ -30,14 +30,16 @@ const ConnectConcordium = ({
           ) : (
             <>
               <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium" />
-              Concordium Browser Wallet
+              Browser Wallet
             </>
           )}
         </button>
       )}
 
       <button
-        className="btn btn-dark btn-concordium flex-grow-1 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-center"
+        className={`btn btn-dark btn-concordium flex-grow-1 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-center ${
+          !isMobile && 'ms-3'
+        }`}
         onClick={() => handleOnConnect(WALLET_CONNECT, 'walletconnect')}
       >
         {!activeConnectorError && activeConnectorType && !activeConnector ? (
@@ -48,8 +50,10 @@ const ConnectConcordium = ({
           ></span>
         ) : (
           <>
-            <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium" />
-            {isMobile ? 'Concordium or CryptoX' : 'QR Code (Concordium Mobile or CryptoX Mobile)'}
+            <div className="d-flex text-start align-items-center">
+              <p className="mb-0 fs-18 text-nowrap pe-3 me-3 border-end text-nowrap">QR Code</p>
+              <p className="mb-0 fs-12">Concordium or CrytoX Mobile Wallets</p>
+            </div>
           </>
         )}
       </button>
