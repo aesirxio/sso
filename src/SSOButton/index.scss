@@ -28,11 +28,15 @@ $modal-md: 620px;
   @import 'bootstrap/scss/helpers';
   @import 'bootstrap/scss/utilities/api';
 
-  .block-wallet,.modal-header {
+  .block-wallet,
+  .modal-header {
     background-color: #f0f3fb;
   }
   .fs-18 {
     font-size: 18px;
+  }
+  .fs-12 {
+    font-size: 14px;
   }
   .fs-12 {
     font-size: 12px;
@@ -69,5 +73,9 @@ $modal-md: 620px;
       left: 0;
       background-color: #e9e9e9;
     }
+  }
+  .bg-success-light {
+    background-color: #d1fae5;
+    color: #0f674c;
   }
 }

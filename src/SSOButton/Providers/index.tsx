@@ -20,7 +20,7 @@ const SSOProviders = () => {
   return (
     <>
       <div className="pt-0 pb-4 px-4 block-wallet rounded-top">
-        <div className="px-3 text-center">
+        <div className="px-lg-3 text-center">
           <img src={privacy_icon} alt="Privacy Icon" />
           <h3 className="fs-2 fw-semibold mt-2 mb-4 text-primary">Welcome to AesirX SSO</h3>
           {hasMetamask && (
