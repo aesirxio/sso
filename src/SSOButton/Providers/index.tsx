@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import '../index.scss';
+import '../styles/index.scss';
 import privacy_icon from '../images/privacy_icon.png';
 
 const SSOConcordiumProvider = React.lazy(() => import('./Concordium'));

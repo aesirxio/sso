@@ -1,0 +1,13 @@
+$body-bg-dark: #101529 !default;
+$link-color-dark: $white !default;
+[data-bs-theme='dark'] {
+  .aesirxsso {
+    .block-wallet,
+    .modal-header {
+      background-color: #101529;
+    }
+    .bloack-wallet {
+      background-color: #0c1124;
+    }
+  }
+}
