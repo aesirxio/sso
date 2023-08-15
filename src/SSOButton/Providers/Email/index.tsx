@@ -82,7 +82,7 @@ const SSOEmailProvider = () => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://dapp.web3id.aesirx.io/auth/forgot-password"
+          href="https://dapp.shield.aesirx.io/auth/forgot-password"
           className="text-decoration-none"
         >
           Forgot password ?

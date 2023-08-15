@@ -1,6 +1,5 @@
 $enable-important-utilities: false;
 $enable-negative-margins: true;
-$enable-dark-mode: false;
 $prefix: aesirxsso-;
 $primary: #132342;
 $secondary: #627eea;
@@ -10,6 +9,8 @@ $modal-md: 620px;
 
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
+@import './variables-dark';
+@import 'bootstrap/scss/variables-dark';
 @import 'bootstrap/scss/maps';
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/root';
