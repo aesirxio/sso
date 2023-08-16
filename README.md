@@ -13,7 +13,6 @@
 ```
 <script>
   window.aesirxEndpoint="https://example.com"
-  window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"
   window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"
   window.aesirxAllowedLogins=['concordium', 'metamask', 'regular']
 </script>
@@ -21,8 +20,7 @@
 ```
 
 1. `CLIENT_ID` replace this with the provided `CLIENT_ID` from https://sso.aesirx.io/
-2. `CLIENT_SECRET` replace this with the provided `CLIENT_SECRET` from https://sso.aesirx.io/
-3. `aesirxAllowedLogins` are for which logins do you want to use and you have wallets set up
+2. `aesirxAllowedLogins` are for which logins do you want to use and you have wallets set up
 
 - `concordium` - Concordium wallet login
 - `metamask` - Metamask wallet login
@@ -49,7 +47,6 @@
 
 ```
 REACT_APP_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
-REACT_APP_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
 ```
 
 
@@ -90,7 +87,6 @@ import { SSOButton } from 'aesirx-sso';
 
 ```
 NEXT_PUBLIC_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
-NEXT_PUBLIC_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
 ```
 
 ##### Using `<SSOButton />` to create Login Button
