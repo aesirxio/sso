@@ -1,5 +1,6 @@
 $body-bg-dark: #101529 !default;
 $link-color-dark: $white !default;
+
 [data-bs-theme='dark'] {
   .aesirxsso {
     .block-wallet,
@@ -8,6 +9,20 @@ $link-color-dark: $white !default;
     }
     .bloack-wallet {
       background-color: #0c1124;
+    }
+    .border,
+    .border-bottom,
+    .border-top,
+    .border-start,
+    .border-end {
+      border-color: #1e4284 !important;
+    }
+    .btn-dark {
+      --#{$prefix}btn-bg: #132342;
+      --#{$prefix}btn-border-color: #132342;
+    }
+    .line::before {
+      background-color: #1e4284 !important;
     }
   }
 }
