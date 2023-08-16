@@ -47,7 +47,7 @@ const SSOEmailProvider = () => {
   return (
     <form className="px-3" onSubmit={handleSubmit}>
       <div className="line mb-4 text-center">
-        <span className="bg-white px-2 position-relative">or</span>
+        <span className="bg-white px-2 position-relative text-dark">or</span>
       </div>
       {demoUser && demoUser && (
         <>
@@ -61,7 +61,7 @@ const SSOEmailProvider = () => {
         </label>
         <input
           type="email"
-          className="form-control lh-sm"
+          className="form-control lh-sm border"
           name="ssoemail"
           defaultValue={demoUser}
         />
@@ -72,7 +72,7 @@ const SSOEmailProvider = () => {
         </label>
         <input
           type="password"
-          className="form-control lh-sm"
+          className="form-control lh-sm border"
           name="ssoepassword"
           defaultValue={demoPassword}
           required
@@ -99,7 +99,7 @@ const SSOEmailProvider = () => {
             Waiting...
           </>
         ) : (
-          'Log in'
+          'Login'
         )}
       </button>
     </form>
