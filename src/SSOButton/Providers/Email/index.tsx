@@ -38,11 +38,12 @@ const SSOEmailProvider = () => {
       const { data: result } = await axios(config);
 
       handleOnData(result);
+      setLoading(false);
     } catch (error) {
       toast('Wrong authentication', { closeOnClick: false });
+      setLoading(false);
       return false;
     }
-    setLoading(false);
   };
   return (
     <form className="px-3" onSubmit={handleSubmit}>
