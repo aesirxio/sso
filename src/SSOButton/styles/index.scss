@@ -1,15 +1,16 @@
 $enable-important-utilities: false;
 $enable-negative-margins: true;
-$enable-dark-mode: false;
 $prefix: aesirxsso-;
 $primary: #132342;
 $secondary: #627eea;
 $dark: #0f1314;
 $success: #1ab394;
 $modal-md: 620px;
-
+$btn-close-opacity: 1;
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
+@import './variables-dark';
+@import 'bootstrap/scss/variables-dark';
 @import 'bootstrap/scss/maps';
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/root';
@@ -28,11 +29,18 @@ $modal-md: 620px;
   @import 'bootstrap/scss/helpers';
   @import 'bootstrap/scss/utilities/api';
 
-  .block-wallet {
+  .block-wallet,
+  .modal-header {
     background-color: #f0f3fb;
   }
   .fs-18 {
     font-size: 18px;
+  }
+  .fs-12 {
+    font-size: 14px;
+  }
+  .fs-12 {
+    font-size: 12px;
   }
   .form-control {
     padding: 13px;
@@ -67,4 +75,9 @@ $modal-md: 620px;
       background-color: #e9e9e9;
     }
   }
+  .bg-success-light {
+    background-color: #d1fae5;
+    color: #0f674c;
+  }
 }
+@import './color-mode.scss';

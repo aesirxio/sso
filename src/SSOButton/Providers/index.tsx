@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import '../index.scss';
+import '../styles/index.scss';
 import privacy_icon from '../images/privacy_icon.png';
 
 const SSOConcordiumProvider = React.lazy(() => import('./Concordium'));
@@ -19,14 +19,14 @@ const SSOProviders = () => {
 
   return (
     <>
-      <div className="pt-5 pb-4 px-4 block-wallet rounded-top">
-        <div className="px-3 text-center">
+      <div className="pt-0 pb-4 px-4 block-wallet rounded-top">
+        <div className="px-lg-3 text-center">
           <img src={privacy_icon} alt="Privacy Icon" />
           <h3 className="fs-2 fw-semibold mt-2 mb-4 text-primary">Welcome to AesirX SSO</h3>
           {hasMetamask && (
             <div className="mb-3">
               <Suspense fallback={<>Loading...</>}>
-                <SSOEthereumProvider />{' '}
+                <SSOEthereumProvider />
               </Suspense>
             </div>
           )}
@@ -34,7 +34,7 @@ const SSOProviders = () => {
           {hasConcordium && (
             <div>
               <Suspense fallback={<>Loading...</>}>
-                <SSOConcordiumProvider />{' '}
+                <SSOConcordiumProvider />
               </Suspense>
             </div>
           )}

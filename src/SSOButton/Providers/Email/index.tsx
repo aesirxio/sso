@@ -38,16 +38,17 @@ const SSOEmailProvider = () => {
       const { data: result } = await axios(config);
 
       handleOnData(result);
+      setLoading(false);
     } catch (error) {
       toast('Wrong authentication', { closeOnClick: false });
+      setLoading(false);
       return false;
     }
-    setLoading(false);
   };
   return (
     <form className="px-3" onSubmit={handleSubmit}>
       <div className="line mb-4 text-center">
-        <span className="bg-white px-2 position-relative">or</span>
+        <span className="bg-white px-2 position-relative text-dark">or</span>
       </div>
       {demoUser && demoUser && (
         <>
@@ -61,7 +62,7 @@ const SSOEmailProvider = () => {
         </label>
         <input
           type="email"
-          className="form-control lh-sm"
+          className="form-control lh-sm border"
           name="ssoemail"
           defaultValue={demoUser}
         />
@@ -72,7 +73,7 @@ const SSOEmailProvider = () => {
         </label>
         <input
           type="password"
-          className="form-control lh-sm"
+          className="form-control lh-sm border"
           name="ssoepassword"
           defaultValue={demoPassword}
           required
@@ -82,7 +83,7 @@ const SSOEmailProvider = () => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://dapp.web3id.aesirx.io/auth/forgot-password"
+          href="https://dapp.shield.aesirx.io/auth/forgot-password"
           className="text-decoration-none"
         >
           Forgot password ?
@@ -99,7 +100,7 @@ const SSOEmailProvider = () => {
             Waiting...
           </>
         ) : (
-          'Log in'
+          'Login'
         )}
       </button>
     </form>

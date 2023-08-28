@@ -1,0 +1,22 @@
+@include color-mode(dark) {
+  .aesirxsso {
+    .block-wallet,
+    .modal-header {
+      background-color: var(--#{$prefix}body-bg);
+    }
+    .border,
+    .border-bottom,
+    .border-top,
+    .border-start,
+    .border-end {
+      border-color: var(--#{$prefix}border-color);
+    }
+    .btn-dark {
+      border-color: var(--#{$prefix}dark-border-subtle);
+      background-color: var(--#{$prefix}dark-bg-subtle);
+    }
+    .line::before {
+      background-color: var(--#{$prefix}border-color);
+    }
+  }
+}
