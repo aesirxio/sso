@@ -2547,10 +2547,10 @@
   dependencies:
     valtio "1.10.7"
 
-"@web3modal/ethereum@^2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@web3modal/ethereum/-/ethereum-2.7.0.tgz#6275e1eb5a1eee76290143027663b9e35200b712"
-  integrity sha512-JudpjRjpt5ZGIxmdzG2abi4SDkQqu0HFXa7CtQ2KYjTrXRB4GI+5WDxsjCtl4G8K84Tx23G4YPr0CiX+LdL8gQ==
+"@web3modal/ethereum@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@web3modal/ethereum/-/ethereum-2.7.1.tgz#464dbc1d00d075c16961b77e9a353b1966538653"
+  integrity sha512-1x3qhYh9qgtvw1MDQD4VeDf2ZOsVANKRPtUty4lF+N4L8xnAIwvNKUAMA4j6T5xSsjqUfq5Tdy5mYsNxLmsWMA==
 
 "@web3modal/react@^2.7.0":
   version "2.7.0"
