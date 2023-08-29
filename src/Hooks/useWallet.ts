@@ -35,6 +35,9 @@ const useWallet = (wallet: any, publicAddress: string) => {
 
   const verifySignature = async (wallet: any, publicAddress: string, signature: any) => {
     try {
+      // Get return
+      const returnParams = new URLSearchParams(window.location.search)?.get('return');
+
       const reqAuthFormData = {
         wallet: wallet,
         publicAddress: publicAddress,
@@ -43,7 +46,9 @@ const useWallet = (wallet: any, publicAddress: string) => {
 
       const config = {
         method: 'post',
-        url: `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=walletLogin&api=hal`,
+        url: `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=walletLogin&api=hal&return=${
+          returnParams ?? null
+        }`,
         headers: {
           'Content-Type': 'application/json',
         },
