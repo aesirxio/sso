@@ -53,7 +53,7 @@ const ConnectConcordium = ({
             <>
               <div className="d-flex text-start align-items-center">
                 <p className="mb-0 fs-18 text-nowrap pe-3 me-3 border-end text-nowrap">QR Code</p>
-                <p className="mb-0 fs-12">Concordium or CrytoX Mobile Wallets</p>
+                <p className="mb-0 fs-12">Concordium or CryptoX Mobile Wallets</p>
               </div>
             </>
           )}
