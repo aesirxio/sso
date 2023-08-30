@@ -24,7 +24,6 @@ const SSOSocialProvider = ({ typeSocial }: any) => {
         'message',
         (e) => {
           if (e.origin !== endpoint) return;
-          console.log('e.data', e.data);
           if (e.data && e.data.socialLogin) {
             const dataLogin = JSON.parse(e.data.socialLogin);
             handleOnData(dataLogin);
@@ -42,9 +41,9 @@ const SSOSocialProvider = ({ typeSocial }: any) => {
   };
 
   return (
-    <form className="px-3 mt-3" onSubmit={handleSubmit}>
+    <form className="mt-3" onSubmit={handleSubmit}>
       {!isAccountExist && (
-        <div className="text-danger">Your account not link to {typeSocial} yet</div>
+        <div className="text-danger text-center">Your account not link to {typeSocial} yet</div>
       )}
       <button type="submit" className="btn btn-success w-100 lh-sm text-white fw-semibold">
         {loading ? (
