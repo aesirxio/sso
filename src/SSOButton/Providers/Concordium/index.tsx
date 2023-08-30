@@ -89,7 +89,11 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
   }, [activeConnector]);
 
   useEffect(() => {
-    if (connectError) {
+    if (
+      connectError &&
+      connectError !==
+        'A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received'
+    ) {
       toast(connectError);
     }
   }, [connectError]);
