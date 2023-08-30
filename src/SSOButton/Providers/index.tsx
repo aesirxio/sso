@@ -5,6 +5,7 @@ import privacy_icon from '../images/privacy_icon.png';
 const SSOConcordiumProvider = React.lazy(() => import('./Concordium'));
 const SSOEthereumProvider = React.lazy(() => import('./Ethereum'));
 const SSOEmailProvider = React.lazy(() => import('./Email'));
+const SSOSocialProvider = React.lazy(() => import('./Social'));
 
 const SSOProviders = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -38,6 +39,23 @@ const SSOProviders = () => {
               </Suspense>
             </div>
           )}
+          <div className="row gx-1">
+            <div className="col-lg-12 mb-1">
+              <Suspense fallback={<>Loading...</>}>
+                <SSOSocialProvider typeSocial="google" />
+              </Suspense>
+            </div>
+            <div className="col-lg-12 mb-1">
+              <Suspense fallback={<>Loading...</>}>
+                <SSOSocialProvider typeSocial="twitter" />
+              </Suspense>
+            </div>
+            <div className="col-lg-12">
+              <Suspense fallback={<>Loading...</>}>
+                <SSOSocialProvider typeSocial="facebook" />
+              </Suspense>
+            </div>
+          </div>
         </div>
       </div>
       <div className="control-group pt-3 px-4 pb-5">
