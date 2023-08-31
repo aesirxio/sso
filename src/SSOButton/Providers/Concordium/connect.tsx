@@ -12,11 +12,11 @@ const ConnectConcordium = ({
 }: any) => {
   return (
     <>
-      <div className="d-flex">
+      <div className="">
         {isDesktop && (
           <button
             disabled={isConnecting}
-            className="btn btn-dark btn-concordium fw-medium text-nowrap py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-center"
+            className="btn btn-dark btn-concordium fw-medium text-nowrap py-2 px-4 mb-3 fs-18 lh-sm text-white d-flex align-items-center justify-content-start w-100"
             onClick={() => handleOnConnect(BROWSER_WALLET, 'browser')}
           >
             {isConnecting ? (
@@ -38,9 +38,7 @@ const ConnectConcordium = ({
         )}
 
         <button
-          className={`btn btn-dark btn-concordium flex-grow-1 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-center ${
-            !isMobile && 'ms-3'
-          }`}
+          className={`btn btn-dark btn-concordium flex-grow-1 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-start w-100`}
           onClick={() => handleOnConnect(WALLET_CONNECT, 'walletconnect')}
         >
           {!activeConnectorError && activeConnectorType && !activeConnector ? (

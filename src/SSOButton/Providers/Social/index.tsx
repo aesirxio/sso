@@ -3,10 +3,12 @@ import { getClientApp } from '../../../utils';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SSOModalContext } from '../../modal';
+import fb_icon from '../../images/fb_icon.png';
+import google_icon from '../../images/google_icon.png';
+import twitter_icon from '../../images/twitter_icon.png';
 
-const SSOSocialProvider = ({ typeSocial }: any) => {
+const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: any) => {
   const [loading, setLoading] = useState(false);
-  const [isAccountExist, setIsAccountExist] = useState(true);
   const { handleOnData, demoUser, demoPassword } = useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const handleSubmit = async (event: any) => {
@@ -28,7 +30,7 @@ const SSOSocialProvider = ({ typeSocial }: any) => {
             const dataLogin = JSON.parse(e.data.socialLogin);
             handleOnData(dataLogin);
           } else if (e.data.error) {
-            setIsAccountExist(false);
+            setIsAccountExist({ status: false, type: typeSocial });
           }
         },
         false
@@ -42,10 +44,10 @@ const SSOSocialProvider = ({ typeSocial }: any) => {
 
   return (
     <form className="mt-3" onSubmit={handleSubmit}>
-      {!isAccountExist && (
-        <div className="text-danger text-center">Your account not link to {typeSocial} yet</div>
-      )}
-      <button type="submit" className="btn btn-success w-100 lh-sm text-white fw-semibold">
+      <button
+        type="submit"
+        className="btn btn-outline w-100 lh-sm fw-semibold d-flex align-items-center"
+      >
         {loading ? (
           <>
             <span
@@ -57,8 +59,21 @@ const SSOSocialProvider = ({ typeSocial }: any) => {
           </>
         ) : (
           <>
-            {isAccountExist ? 'Login' : 'Create account'} with{' '}
-            <span className="text-capitalize">{typeSocial}</span>
+            <img
+              src={
+                typeSocial === 'google'
+                  ? google_icon
+                  : typeSocial === 'facebook'
+                  ? fb_icon
+                  : twitter_icon
+              }
+              alt="Back Icon"
+              className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
+            />
+            {isAccountExist ? 'Log in' : 'Create account'} with
+            <span className="text-capitalize ms-1">
+              {typeSocial?.charAt(0).toUpperCase() + typeSocial?.slice(1)}
+            </span>
           </>
         )}
       </button>

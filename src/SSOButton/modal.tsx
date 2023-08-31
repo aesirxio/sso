@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader, CloseButton } from 'reactstrap';
 
 interface SSSOModalContextProps {
   handleOnData: (data: any) => void;
@@ -34,8 +34,8 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   return (
     <div className="aesirxsso">
       <Modal centered fade={false} toggle={toggle} isOpen={show} container=".aesirxsso">
-        <ModalHeader className="border-0" toggle={toggle}></ModalHeader>
-        <ModalBody className="p-0 bg-white">
+        <CloseButton onClick={toggle} />
+        <ModalBody className="p-0 bg-white rounded-3">
           <Suspense fallback={<>Loading...</>}>
             <SSOModalContext.Provider
               value={{ handleOnData: handleOnData, demoUser: demoUser, demoPassword: demoPassword }}
