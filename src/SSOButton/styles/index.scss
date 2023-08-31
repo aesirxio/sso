@@ -99,6 +99,7 @@ $btn-close-color: #fff;
 @include media-breakpoint-down(lg) {
   .aesirxsso {
     .modal-dialog {
+      max-width: 100%;
       height: 100%;
       margin: 0;
       .modal-content {
