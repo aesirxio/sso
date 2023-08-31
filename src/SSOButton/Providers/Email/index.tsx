@@ -46,10 +46,7 @@ const SSOEmailProvider = () => {
     }
   };
   return (
-    <form className="px-3" onSubmit={handleSubmit}>
-      <div className="line mb-4 text-center">
-        <span className="bg-white px-2 position-relative text-dark">or</span>
-      </div>
+    <form onSubmit={handleSubmit}>
       {demoUser && demoUser && (
         <>
           <h5 className="text-primary">Demo email: {demoUser} </h5>
