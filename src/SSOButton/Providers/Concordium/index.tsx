@@ -17,8 +17,11 @@ import secureLocalStorage from 'react-secure-storage';
 import { getClientApp } from '../../../utils';
 
 const SSOConcordiumProvider = () => {
+
+  const { network } = getClientApp();
+
   return (
-    <WithWalletConnector network={process.env.NODE_ENV === 'development' ? TESTNET : MAINNET}>
+    <WithWalletConnector network={network === 'testnet' ? TESTNET : MAINNET}>
       {(props) => <ConcordiumApp {...props} />}
     </WithWalletConnector>
   );
