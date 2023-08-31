@@ -24,7 +24,7 @@ const SSOProviders = () => {
 
   return (
     <>
-      <div className="row gx-0 align-items-center">
+      <div className="row gx-0 align-items-center w-100">
         <div className="col-lg-7">
           <div className="pt-0 pb-4 px-4 block-wallet">
             <div className="py-4 px-lg-4">
