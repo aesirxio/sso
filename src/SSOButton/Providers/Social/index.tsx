@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { getClientApp } from '../../../utils';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { SSOModalContext } from '../../modal';
 import fb_icon from '../../images/fb_icon.png';
 import google_icon from '../../images/google_icon.png';
@@ -9,7 +8,7 @@ import twitter_icon from '../../images/twitter_icon.png';
 
 const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: any) => {
   const [loading, setLoading] = useState(false);
-  const { handleOnData, demoUser, demoPassword } = useContext(SSOModalContext);
+  const { handleOnData } = useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -17,7 +16,9 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
     try {
       const response: any = await axios.get(
         `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=${
-          isAccountExist ? 'getSocialLoginUrl' : 'getSocialCreateUrl'
+          !isAccountExist?.status && isAccountExist?.type === typeSocial
+            ? 'getSocialCreateUrl'
+            : 'getSocialLoginUrl'
         }&api=hal&socialType=${typeSocial}`
       );
       response?.data.result[0] &&
@@ -70,7 +71,10 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
               alt="Back Icon"
               className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
             />
-            {isAccountExist ? 'Log in' : 'Create account'} with
+            {!isAccountExist?.status && isAccountExist?.type === typeSocial
+              ? 'Create account'
+              : 'Log in'}{' '}
+            with
             <span className="text-capitalize ms-1">
               {typeSocial?.charAt(0).toUpperCase() + typeSocial?.slice(1)}
             </span>

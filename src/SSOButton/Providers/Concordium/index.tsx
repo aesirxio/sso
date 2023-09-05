@@ -17,7 +17,6 @@ import secureLocalStorage from 'react-secure-storage';
 import { getClientApp } from '../../../utils';
 
 const SSOConcordiumProvider = () => {
-
   const { network } = getClientApp();
 
   return (
