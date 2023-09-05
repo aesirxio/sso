@@ -8,7 +8,7 @@ import twitter_icon from '../../images/twitter_icon.png';
 
 const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: any) => {
   const [loading, setLoading] = useState(false);
-  const { handleOnData, demoUser, demoPassword } = useContext(SSOModalContext);
+  const { handleOnData } = useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const handleSubmit = async (event: any) => {
     event.preventDefault();
