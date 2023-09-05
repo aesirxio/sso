@@ -17,7 +17,9 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
     try {
       const response: any = await axios.get(
         `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=${
-          isAccountExist ? 'getSocialLoginUrl' : 'getSocialCreateUrl'
+          !isAccountExist?.status && isAccountExist?.type === typeSocial
+            ? 'getSocialCreateUrl'
+            : 'getSocialLoginUrl'
         }&api=hal&socialType=${typeSocial}`
       );
       response?.data.result[0] &&
@@ -30,6 +32,7 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
             const dataLogin = JSON.parse(e.data.socialLogin);
             handleOnData(dataLogin);
           } else if (e.data.error) {
+            console.log('typeSocial', typeSocial);
             setIsAccountExist({ status: false, type: typeSocial });
           }
         },
@@ -70,7 +73,10 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
               alt="Back Icon"
               className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
             />
-            {isAccountExist ? 'Log in' : 'Create account'} with
+            {!isAccountExist?.status && isAccountExist?.type === typeSocial
+              ? 'Create account'
+              : 'Log in'}{' '}
+            with
             <span className="text-capitalize ms-1">
               {typeSocial?.charAt(0).toUpperCase() + typeSocial?.slice(1)}
             </span>
