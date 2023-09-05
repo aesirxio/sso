@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { getClientApp } from '../../../utils';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { SSOModalContext } from '../../modal';
 import fb_icon from '../../images/fb_icon.png';
 import google_icon from '../../images/google_icon.png';
@@ -32,7 +31,6 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
             const dataLogin = JSON.parse(e.data.socialLogin);
             handleOnData(dataLogin);
           } else if (e.data.error) {
-            console.log('typeSocial', typeSocial);
             setIsAccountExist({ status: false, type: typeSocial });
           }
         },
