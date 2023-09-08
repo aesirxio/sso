@@ -1,6 +1,6 @@
 {
   "name": "aesirx-sso",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "license": "GPL-3.0-only",
   "author": "AesirX",
   "repository": "https://github.com/aesirxio/sso",
@@ -62,9 +62,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
+    "@babel/cli": "^7.22.10",
     "@babel/core": "^7.21.5",
-    "@babel/eslint-parser": "^7.21",
+    "@babel/eslint-parser": "^7.22",
     "@babel/plugin-transform-runtime": "^7.21.4",
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-react": "^7.18.6",
@@ -78,10 +78,10 @@
     "esbuild-plugin-inline-image": "^0.0.9",
     "esbuild-sass-plugin": "^2.10.0",
     "eslint": "^8.35",
-    "eslint-plugin-react": "^7.31.10",
-    "prettier": "^2.8.7",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.0.3",
     "tsup": "^6.7.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "files": [
     "build"
