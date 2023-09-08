@@ -40,7 +40,7 @@ const SSOProviders = () => {
                       setExpand('wallet');
                     }}
                   >
-                    Log in with Wallet
+                    Log in with Web3 Wallets
                   </button>
                   <button
                     type="button"
