@@ -31,7 +31,7 @@ const ConnectConcordium = ({
             ) : (
               <>
                 <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium" />
-                Browser Wallet
+                Concordium Browser Wallet
               </>
             )}
           </button>
