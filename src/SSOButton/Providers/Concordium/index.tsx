@@ -15,18 +15,20 @@ import ConnectConcordium from './connect';
 import SignMessageConcordium from './sign';
 import secureLocalStorage from 'react-secure-storage';
 import { getClientApp } from '../../../utils';
-
-const SSOConcordiumProvider = () => {
+interface WalletConnectionPropsExtends extends WalletConnectionProps {
+  setIsAccountExist: any;
+}
+const SSOConcordiumProvider = ({ setIsAccountExist }: any) => {
   const { network } = getClientApp();
 
   return (
     <WithWalletConnector network={network === 'testnet' ? TESTNET : MAINNET}>
-      {(props) => <ConcordiumApp {...props} />}
+      {(props) => <ConcordiumApp {...props} setIsAccountExist={setIsAccountExist} />}
     </WithWalletConnector>
   );
 };
 
-const ConcordiumApp = (props: WalletConnectionProps) => {
+const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
   const {
     activeConnectorType,
     activeConnector,
@@ -35,6 +37,7 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
     connectedAccounts,
     genesisHashes,
     setActiveConnectorType,
+    setIsAccountExist,
   } = props;
 
   const { connection, setConnection, account, genesisHash } = useConnection(
@@ -117,7 +120,11 @@ const ConcordiumApp = (props: WalletConnectionProps) => {
       ) : (
         <>
           {rpcGenesisHash ? (
-            <SignMessageConcordium account={account} connection={connection} />
+            <SignMessageConcordium
+              account={account}
+              connection={connection}
+              setIsAccountExist={setIsAccountExist}
+            />
           ) : (
             <button className="btn btn-dark">
               <span

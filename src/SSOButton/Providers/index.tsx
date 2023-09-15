@@ -76,6 +76,18 @@ const SSOProviders = () => {
               )}
               {expand === 'wallet' && (
                 <>
+                  {!isAccountExist?.status && (
+                    <div className="bg-danger text-white px-3 py-2 rounded-2 d-flex align-items-center mb-3">
+                      <img
+                        className="me-1"
+                        src={cancel}
+                        alt="cancel Icon"
+                        width="16px"
+                        height="16px"
+                      />
+                      Your account not exist
+                    </div>
+                  )}
                   {hasMetamask && (
                     <div className="mb-3">
                       <Suspense fallback={<>Loading...</>}>
@@ -87,7 +99,7 @@ const SSOProviders = () => {
                   {hasConcordium && (
                     <div>
                       <Suspense fallback={<>Loading...</>}>
-                        <SSOConcordiumProvider />
+                        <SSOConcordiumProvider setIsAccountExist={setIsAccountExist} />
                       </Suspense>
                     </div>
                   )}

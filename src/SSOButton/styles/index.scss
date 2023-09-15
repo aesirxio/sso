@@ -96,6 +96,11 @@ $btn-close-color: #fff;
     z-index: 1;
   }
 }
+.aesirxsso-register {
+  .modal-dialog {
+    height: 100%;
+  }
+}
 @include media-breakpoint-down(lg) {
   .aesirxsso {
     .modal-dialog {
