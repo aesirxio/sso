@@ -250,89 +250,6 @@ const validateEmail = async (email: any) => {
   }
 };
 
-const registerWeb3id = async (data: any) => {
-  const { dappEndpoint } = getClientApp();
-  try {
-    return await axios.post(`${dappEndpoint}/api/web3id`, data);
-  } catch (error) {
-    console.log('registerWeb3id', error);
-    throw error;
-  }
-};
-
-// const createAesirXAccount = async (
-//   accountAddress: any,
-//   connection: any,
-//   email: string,
-//   walletType = 'concordium'
-// ) => {
-//   const { endpoint } = getClientApp();
-//   const nonce = (
-//     await axios.post(
-//       `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=reditem&view=item_wallet_requests_66&api=hal`,
-//       {
-//         public_address: accountAddress,
-//         wallet: walletType,
-//         text: 'Create AesirX Account : {}',
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     )
-//   ).data?.nonce;
-
-//   const signature = await connection.signMessage(accountAddress, stringMessage(`${nonce}`));
-
-//   const signedNonce =
-//     typeof signature === 'object' && signature !== null ? signature : JSON.parse(signature);
-
-//   const aesirXID = (
-//     await axios.post(
-//       `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=reditem&view=item_wallet_requests_66&task=validateSignature&api=hal`,
-//       {
-//         public_address: accountAddress,
-//         wallet: 'concordium',
-//         signature: signedNonce,
-//         email: email,
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     )
-//   ).data?.result?.id;
-//   return aesirXID;
-// };
-
-const activation = async (web3id: any, code: any) => {
-  const { web3Endpoint } = getClientApp();
-  return await axios.put(`${web3Endpoint}/preregistration/activation/${web3id}/${code}`);
-};
-
-const linkAccount = async (web3Id: any, accountAddress: any, signedNonce: any) => {
-  const { web3Endpoint } = getClientApp();
-  await axios.put(
-    `${web3Endpoint}/preregistration/id/${web3Id}/account/${accountAddress}/?signature=${signedNonce}&network=${process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK}`
-  );
-};
-
-const linkAesirXAccount = async (web3id: any, jwt: any) => {
-  const { web3Endpoint } = getClientApp();
-  await axios.put(
-    `${web3Endpoint}/preregistration/aesirx/${web3id}`,
-    {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + jwt,
-      },
-    }
-  );
-};
-
 const loginAesirXAccount = async (
   accountAddress: any,
   signedNonce: any,
@@ -429,10 +346,6 @@ export {
   verifyProof,
   validateWeb3Id,
   validateEmail,
-  registerWeb3id,
-  activation,
-  linkAccount,
-  linkAesirXAccount,
   loginAesirXAccount,
   createMember,
   login,

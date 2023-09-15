@@ -2,14 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import {
-  activation,
   autoRegisterWeb3id,
   createMember,
   getClientApp,
-  linkAccount,
-  linkAesirXAccount,
   login,
-  registerWeb3id,
   validateEmail,
   validateWeb3Id,
 } from '../../../utils';
