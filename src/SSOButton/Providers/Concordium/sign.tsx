@@ -67,7 +67,6 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
       const statement = await getStatement();
       const provider = await detectConcordiumProvider();
       const proof = await provider.requestIdProof(account ?? '', statement, challenge);
-      console.log('proof', proof);
       const re = await verifyProof(challenge, proof);
 
       if (re) {
@@ -148,6 +147,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
             setIsAccountExist={setIsAccountExist}
             accountAddress={account}
             connection={connection}
+            wallet={'concordium'}
           />
         </ModalBody>
       </Modal>

@@ -289,13 +289,15 @@ const createMember = async (bodyData: any) => {
     });
 
     console.log('createMember', bodyData);
+    if (rs?.ok === false) {
+      throw await rs.json();
+    }
 
     return await rs.json();
-  } catch (error) {
+  } catch (error: any) {
     console.log('createMember', error);
+    throw error;
   }
-
-  return {};
 };
 const login = async (username: any, password: any) => {
   const { partnerEndpoint } = getClientApp();
@@ -313,6 +315,7 @@ const login = async (username: any, password: any) => {
     return data;
   } catch (error) {
     console.log('login error', error);
+    throw error;
   }
 };
 
@@ -320,7 +323,8 @@ const autoRegisterWeb3id = async (
   data: any,
   clientJwt: any,
   signedNonce: any,
-  walletAccount: any
+  walletAccount: any,
+  isLinkWallet: any
 ) => {
   const { dappEndpoint } = getClientApp();
   try {
@@ -329,6 +333,7 @@ const autoRegisterWeb3id = async (
       clientJwt,
       signedNonce,
       walletAccount,
+      isLinkWallet,
     });
   } catch (error: any) {
     console.log('autoRegisterWeb3id', error);

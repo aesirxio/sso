@@ -35,6 +35,7 @@ const CreateAccount = ({
   setIsAccountExist,
   accountAddress,
   connection,
+  wallet,
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -47,17 +48,22 @@ const CreateAccount = ({
   const [fetch, setFetch] = useState(true);
 
   const getNonce = async (accountAddress: any, connection: any, text: string) => {
-    const nonce = (await axios.get(`${web3Endpoint}/account/${accountAddress}/nonce?text=${text}`))
-      .data.nonce;
+    if (wallet === 'concordium') {
+      const nonce = (
+        await axios.get(`${web3Endpoint}/account/${accountAddress}/nonce?text=${text}`)
+      ).data.nonce;
 
-    const signature = await connection.signMessage(accountAddress, stringMessage(`${nonce}`));
+      const signature = await connection.signMessage(accountAddress, stringMessage(`${nonce}`));
 
-    const signedNonce = Buffer.from(
-      typeof signature === 'object' && signature !== null ? JSON.stringify(signature) : signature,
-      'utf-8'
-    ).toString('base64');
+      const signedNonce = Buffer.from(
+        typeof signature === 'object' && signature !== null ? JSON.stringify(signature) : signature,
+        'utf-8'
+      ).toString('base64');
 
-    return signedNonce;
+      return signedNonce;
+    } else {
+      return '';
+    }
   };
 
   useEffect(() => {
@@ -80,7 +86,6 @@ const CreateAccount = ({
   }, []);
 
   const generateInitialValue = (data: any) => {
-    console.log('datadatadata', data);
     const initialValue: { [key: string]: string } = {};
     data?.forEach((item: Fields) => {
       if (item.fieldtype == 'email') {
@@ -146,7 +151,7 @@ const CreateAccount = ({
               .required(`Please enter your ${item.name}`)
               .test('isUrl', 'URL is not allowed', (value) => {
                 const urlRegex =
-                  /^(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))?$/gi;
+                  /^(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.))[^\s()<>]+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’])*$/gi;
                 const isUrl = urlRegex.test(value);
                 return !isUrl;
               });
@@ -163,77 +168,87 @@ const CreateAccount = ({
       let isSuccess = true;
       setSending(true);
       try {
-        // const verify = await axios.post(`${partnerEndpoint}/api/verifyform`, {
-        //   solution: captcha,
-        // });
+        const verify = await axios.post(`${partnerEndpoint}/api/verifyform`, {
+          solution: captcha,
+        });
 
-        // if (!verify?.data?.success) {
-        //   const message = verify?.data?.errors?.[0]
-        //     ? verify?.data?.errors?.[0].replaceAll('_', ' ')
-        //     : 'Something went wrong please try again or contact us!';
-        //   toast.error(message);
-        //   return;
-        // }
+        if (!verify?.data?.success) {
+          const message = verify?.data?.errors?.[0]
+            ? verify?.data?.errors?.[0].replaceAll('_', ' ')
+            : 'Something went wrong please try again or contact us!';
+          toast.error(message);
+          return;
+        }
         setLoading('sign');
 
         const signedNonce = await getNonce(accountAddress, connection, 'Create AesirX Account: {}');
 
-        if (signedNonce) {
-          const data: any = { ...values };
-          data.form_id = formID;
-          data[`field${registerForm.username}_1`] = '@' + data[`field${registerForm.username}_1`];
-          data[`field${registerForm.product}_1`] = 'community';
+        const data: any = { ...values };
+        data.form_id = formID;
+        data[`field${registerForm.username}_1`] = '@' + data[`field${registerForm.username}_1`];
+        data[`field${registerForm.product}_1`] = 'community';
 
-          const fpPromise = FingerprintJS.load({ monitoring: false });
-          const fp = await fpPromise;
-          const result = await fp.get();
-          data.visitorId = result.visitorId;
-          const apiData = {
-            id: data[`field${registerForm.username}_1`],
-            orderId: data[`field${registerForm.order_id}_1`] ?? '',
-            first_name: data[`field${registerForm.first_name}_1`],
-            sur_name: data[`field${registerForm.last_name}_1`],
-            product: data[`field${registerForm.product}_1`],
-            organization:
-              data[`field${registerForm.organization}_1`] ??
-              data[`field${registerForm.email}_1_email`],
-            email: data[`field${registerForm.email}_1_email`],
-            message: data[`field${registerForm.message}_1`] ?? '',
-            visitorId: result.visitorId,
-          };
+        const fpPromise = FingerprintJS.load({ monitoring: false });
+        const fp = await fpPromise;
+        const result = await fp.get();
+        data.visitorId = result.visitorId;
+        const apiData = {
+          id: data[`field${registerForm.username}_1`],
+          orderId: data[`field${registerForm.order_id}_1`] ?? '',
+          first_name: data[`field${registerForm.first_name}_1`],
+          sur_name: data[`field${registerForm.last_name}_1`],
+          product: data[`field${registerForm.product}_1`],
+          organization:
+            data[`field${registerForm.organization}_1`] ??
+            data[`field${registerForm.email}_1_email`],
+          email: data[`field${registerForm.email}_1_email`],
+          message: data[`field${registerForm.message}_1`] ?? '',
+          visitorId: result.visitorId,
+        };
 
-          const member = {
-            username: data[`field${registerForm.email}_1_email`],
-            password: Math.random().toString(36).slice(2),
-            organisation: data[`field${registerForm.organization}_1`]
-              ? data[`field${registerForm.organization}_1`]
-              : data[`field${registerForm.email}_1_email`],
-            email: data[`field${registerForm.email}_1_email`],
-            block: 0,
-            wallet_concordium: accountAddress,
-          };
-          const createResponse = await createMember(member);
-          if (createResponse?.result?.success) {
-            const { jwt } = await login(member?.username, member?.password);
-            console.log('jwt', jwt);
-            setLoading('saving');
-            try {
-              const response = await autoRegisterWeb3id(apiData, jwt, signedNonce, accountAddress);
-              if (response) {
-                toast.success('Successfully.');
-                setIsExist(true);
-                setIsAccountExist({ status: true, type: 'concordium' });
-              }
-            } catch (error) {
-              console.log(error);
-              toast.error(error);
+        const crypto = window['crypto'] || window['msCrypto'];
+        const array = new Uint32Array(1);
+        crypto.getRandomValues(array); // Compliant for security-sensitive use cases
+        const passwordGenerate = array[0];
+
+        const member = {
+          username: data[`field${registerForm.email}_1_email`],
+          password: passwordGenerate,
+          organisation: data[`field${registerForm.organization}_1`]
+            ? data[`field${registerForm.organization}_1`]
+            : data[`field${registerForm.email}_1_email`],
+          email: data[`field${registerForm.email}_1_email`],
+          block: 0,
+          ...(wallet === 'concordium'
+            ? { wallet_concordium: accountAddress }
+            : { wallet_metamask: accountAddress }),
+        };
+        const createResponse = await createMember(member);
+        if (createResponse?.result?.success) {
+          const { jwt } = await login(member?.username, member?.password);
+          setLoading('saving');
+          try {
+            const response = await autoRegisterWeb3id(
+              apiData,
+              jwt,
+              signedNonce,
+              accountAddress,
+              wallet === 'concordium' ? true : false
+            );
+            if (response) {
+              toast.success('Successfully.');
+              setIsExist(true);
+              setIsAccountExist({ status: true, type: 'concordium' });
             }
+          } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.error || error?.message);
           }
         }
       } catch (error: any) {
         isSuccess = false;
         console.log('Submit Error', error);
-        toast.error(error?.response?.data?.error || error?.message);
+        toast.error(error?.response?.data?.error || error?._messages[0]?.message || error?.message);
       }
       setLoading('');
       setShow(!isSuccess);
@@ -245,6 +260,15 @@ const CreateAccount = ({
       {!fetch ? (
         data ? (
           <Form onSubmit={formik.handleSubmit}>
+            {loading && (
+              <div className="custom-loading position-absolute top-50 start-50 translate-middle z-1 w-100 h-100 d-flex align-items-center justify-content-center">
+                <span
+                  className="spinner-border spinner-border-lg me-1"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </div>
+            )}
             <Row>
               {data?.map((field: Fields, index: number) => {
                 return (

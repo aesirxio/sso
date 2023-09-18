@@ -22,6 +22,7 @@ declare global {
     aesirxSSOState: any;
     aesirxClientSecret: string;
     aesirxSSO: any;
+    msCrypto: any;
     handleSSO: (onGetData: any) => void;
   }
 }

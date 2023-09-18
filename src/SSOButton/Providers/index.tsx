@@ -91,7 +91,7 @@ const SSOProviders = () => {
                   {hasMetamask && (
                     <div className="mb-3">
                       <Suspense fallback={<>Loading...</>}>
-                        <SSOEthereumProvider />
+                        <SSOEthereumProvider setIsAccountExist={setIsAccountExist} />
                       </Suspense>
                     </div>
                   )}

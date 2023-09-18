@@ -95,6 +95,9 @@ $btn-close-color: #fff;
     right: 32px;
     z-index: 1;
   }
+  .custom-loading {
+    background: rgba($white, 0.25);
+  }
 }
 .aesirxsso-register {
   .modal-dialog {
