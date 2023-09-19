@@ -34,7 +34,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
 
         if (signature) {
           const data = await verifySignature(wallet, account, convertedSignature);
-          handleOnData(data);
+          handleOnData({ ...data, loginType: 'concordium' });
         }
       } catch (error) {
         toast(error.message);

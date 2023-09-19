@@ -223,6 +223,7 @@ const CreateAccount = ({
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
             : { wallet_metamask: accountAddress }),
+          web3id: data[`field${registerForm.username}_1`],
         };
         const createResponse = await createMember(member);
         if (createResponse?.result?.success) {
@@ -237,11 +238,17 @@ const CreateAccount = ({
               wallet === 'concordium' ? true : false
             );
             if (response) {
-              const responseMintWeb3ID = await mintWeb3ID(jwt);
-              if (responseMintWeb3ID?.data?.success) {
+              if (wallet === 'concordium') {
                 toast.success('Successfully.');
                 setIsExist(true);
-                setIsAccountExist({ status: true, type: 'concordium' });
+                setIsAccountExist({ status: true, type: 'metamask' });
+              } else {
+                const responseMintWeb3ID = await mintWeb3ID(jwt);
+                if (responseMintWeb3ID?.data?.success) {
+                  toast.success('Successfully.');
+                  setIsExist(true);
+                  setIsAccountExist({ status: true, type: 'metamask' });
+                }
               }
             }
           } catch (error) {

@@ -23,7 +23,7 @@ const SignMessage = ({ setIsAccountExist }: any) => {
     async onSuccess(data, variables) {
       const address = verifyMessage(variables.message, data);
       const res = await verifySignature(wallet, address, data);
-      handleOnData(res);
+      handleOnData({ ...res, loginType: 'metamask' });
     },
   });
 
