@@ -6,6 +6,7 @@ import {
   createMember,
   getClientApp,
   login,
+  mintWeb3ID,
   validateEmail,
   validateWeb3Id,
 } from '../../../utils';
@@ -236,9 +237,12 @@ const CreateAccount = ({
               wallet === 'concordium' ? true : false
             );
             if (response) {
-              toast.success('Successfully.');
-              setIsExist(true);
-              setIsAccountExist({ status: true, type: 'concordium' });
+              const responseMintWeb3ID = await mintWeb3ID(jwt);
+              if (responseMintWeb3ID?.data?.success) {
+                toast.success('Successfully.');
+                setIsExist(true);
+                setIsAccountExist({ status: true, type: 'concordium' });
+              }
             }
           } catch (error) {
             console.log(error);

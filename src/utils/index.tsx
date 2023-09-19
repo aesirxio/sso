@@ -341,6 +341,25 @@ const autoRegisterWeb3id = async (
   }
 };
 
+const mintWeb3ID = async (jwt: any) => {
+  const { web3Endpoint } = getClientApp();
+  try {
+    return await axios.post(
+      `${web3Endpoint}/aesirx/account/mint`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + jwt,
+        },
+      }
+    );
+  } catch (error: any) {
+    console.log('mintWeb3ID', error);
+    throw error;
+  }
+};
+
 export {
   handleWalletResponse,
   handleRegularReponse,
@@ -355,4 +374,5 @@ export {
   createMember,
   login,
   autoRegisterWeb3id,
+  mintWeb3ID,
 };
