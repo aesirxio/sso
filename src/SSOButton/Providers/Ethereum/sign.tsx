@@ -15,7 +15,7 @@ const SignMessage = ({ setIsAccountExist }: any) => {
   const { address, connector } = useAccount();
   const { getWalletNonce, verifySignature } = useWallet(wallet, address);
   const [status, setStatus] = useState('');
-  const { handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, handleOnData } = useContext(SSOModalContext);
   const [isExist, setIsExist] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -35,8 +35,10 @@ const SignMessage = ({ setIsAccountExist }: any) => {
       setStatus('sign');
       signMessage({ message: `${nonce}` });
     } else {
-      setIsExist(false);
-      setIsAccountExist({ status: false, type: 'concordium' });
+      if (!noCreateAccount) {
+        setIsExist(false);
+        setIsAccountExist({ status: false, type: 'metamask' });
+      }
     }
     setStatus('');
   };
@@ -75,31 +77,33 @@ const SignMessage = ({ setIsAccountExist }: any) => {
           </>
         )}
       </button>
-      <Modal
-        show={show}
-        centered
-        onHide={() => {
-          setShow(!show);
-        }}
-        size={'lg'}
-        className="aesirxsso aesirxsso-register"
-      >
-        <CloseButton
-          onClick={() => {
+      {!noCreateAccount && (
+        <Modal
+          show={show}
+          centered
+          onHide={() => {
             setShow(!show);
           }}
-        />
-        <ModalBody className="p-4 pt-5 bg-white rounded-3">
-          <CreateAccount
-            setShow={setShow}
-            setIsExist={setIsExist}
-            setIsAccountExist={setIsAccountExist}
-            accountAddress={address}
-            connection={connector}
-            wallet={'metamask'}
+          size={'lg'}
+          className="aesirxsso aesirxsso-register"
+        >
+          <CloseButton
+            onClick={() => {
+              setShow(!show);
+            }}
           />
-        </ModalBody>
-      </Modal>
+          <ModalBody className="p-4 pt-5 bg-white rounded-3">
+            <CreateAccount
+              setShow={setShow}
+              setIsExist={setIsExist}
+              setIsAccountExist={setIsAccountExist}
+              accountAddress={address}
+              connection={connector}
+              wallet={'metamask'}
+            />
+          </ModalBody>
+        </Modal>
+      )}
     </>
   );
 };

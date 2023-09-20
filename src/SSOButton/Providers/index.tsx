@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useContext, useState } from 'react';
 import '../styles/index.scss';
 import privacy_icon from '../images/privacy_icon.png';
 import arrow_left from '../images/arrow_left.svg';

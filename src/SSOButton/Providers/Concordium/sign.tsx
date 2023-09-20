@@ -18,10 +18,10 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
   const [show, setShow] = useState(false);
 
   const wallet = 'concordium';
-  const { handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, handleOnData } = useContext(SSOModalContext);
 
   const { getWalletNonce, verifySignature } = useWallet(wallet, account);
-
+  console.log('noCreateAccountSignMessageConcordium', noCreateAccount);
   const handleConnect = async () => {
     setStatus('connect');
     const nonce = await getWalletNonce();
@@ -40,8 +40,10 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
         toast(error.message);
       }
     } else {
-      setIsExist(false);
-      setIsAccountExist({ status: false, type: 'concordium' });
+      if (!noCreateAccount) {
+        setIsExist(false);
+        setIsAccountExist({ status: false, type: 'concordium' });
+      }
     }
     setStatus('');
   };
@@ -67,7 +69,9 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
       const statement = await getStatement();
       const provider = await detectConcordiumProvider();
       const proof = await provider.requestIdProof(account ?? '', statement, challenge);
+      console.log('proof', proof);
       const re = await verifyProof(challenge, proof);
+      console.log('verifyProof', re);
 
       if (re) {
         setProof(true);
@@ -126,31 +130,33 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
           </>
         )}
       </button>
-      <Modal
-        show={show}
-        centered
-        onHide={() => {
-          setShow(!show);
-        }}
-        size={'lg'}
-        className="aesirxsso aesirxsso-register"
-      >
-        <CloseButton
-          onClick={() => {
+      {!noCreateAccount && (
+        <Modal
+          show={show}
+          centered
+          onHide={() => {
             setShow(!show);
           }}
-        />
-        <ModalBody className="p-4 pt-5 bg-white rounded-3">
-          <CreateAccount
-            setShow={setShow}
-            setIsExist={setIsExist}
-            setIsAccountExist={setIsAccountExist}
-            accountAddress={account}
-            connection={connection}
-            wallet={'concordium'}
+          size={'lg'}
+          className="aesirxsso aesirxsso-register"
+        >
+          <CloseButton
+            onClick={() => {
+              setShow(!show);
+            }}
           />
-        </ModalBody>
-      </Modal>
+          <ModalBody className="p-4 pt-5 bg-white rounded-3">
+            <CreateAccount
+              setShow={setShow}
+              setIsExist={setIsExist}
+              setIsAccountExist={setIsAccountExist}
+              accountAddress={account}
+              connection={connection}
+              wallet={'concordium'}
+            />
+          </ModalBody>
+        </Modal>
+      )}
     </>
   );
 };

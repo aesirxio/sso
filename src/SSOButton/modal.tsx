@@ -5,6 +5,7 @@ interface SSSOModalContextProps {
   handleOnData: (data: any) => void;
   demoUser?: string;
   demoPassword?: string;
+  noCreateAccount?: boolean;
 }
 
 interface SSSOModalProps {
@@ -13,6 +14,7 @@ interface SSSOModalProps {
   toggle: () => void;
   demoUser?: string;
   demoPassword?: string;
+  noCreateAccount?: boolean;
 }
 
 export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefined);
@@ -25,6 +27,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   toggle,
   demoUser,
   demoPassword,
+  noCreateAccount,
 }) => {
   const handleOnData = (data: any) => {
     onGetData(data);
@@ -38,7 +41,12 @@ const SSOModal: React.FC<SSSOModalProps> = ({
         <ModalBody className="p-0 bg-white rounded-3">
           <Suspense fallback={<>Loading...</>}>
             <SSOModalContext.Provider
-              value={{ handleOnData: handleOnData, demoUser: demoUser, demoPassword: demoPassword }}
+              value={{
+                handleOnData: handleOnData,
+                demoUser: demoUser,
+                demoPassword: demoPassword,
+                noCreateAccount: noCreateAccount,
+              }}
             >
               <SSOProviders />
             </SSOModalContext.Provider>
