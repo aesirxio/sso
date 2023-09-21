@@ -3,6 +3,18 @@ declare global {
   interface Window {
     sso_response: any;
     aesirxEndpoint: string;
+    web3Endpoint: string;
+    dappEndpoint: string;
+    partnerEndpoint: string;
+    registerUsername: string;
+    registerFirstname: string;
+    registerLastname: string;
+    registerProduct: string;
+    registerEmail: string;
+    registerOrganization: string;
+    registerMessage: string;
+    registerOrderid: string;
+    registerCode: string;
     aesirxClientID: string;
     aesirxAllowedLogins: any;
     demoUser: string;
@@ -10,6 +22,7 @@ declare global {
     aesirxSSOState: any;
     aesirxClientSecret: string;
     aesirxSSO: any;
+    msCrypto: any;
     handleSSO: (onGetData: any) => void;
   }
 }

@@ -127,11 +127,11 @@ const wagmiConfig = createConfig({
 
 const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
-const SSOEthereumProvider = () => {
+const SSOEthereumProvider = ({ setIsAccountExist }: any) => {
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
-        <SSOEthereumApp />
+        <SSOEthereumApp setIsAccountExist={setIsAccountExist} />
       </WagmiConfig>
 
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
@@ -139,10 +139,10 @@ const SSOEthereumProvider = () => {
   );
 };
 
-const SSOEthereumApp = () => {
+const SSOEthereumApp = ({ setIsAccountExist }: any) => {
   const { isConnected } = useAccount();
 
-  return isConnected ? <SignMessage /> : <ConnectMetamask />;
+  return isConnected ? <SignMessage setIsAccountExist={setIsAccountExist} /> : <ConnectMetamask />;
 };
 
 export default SSOEthereumProvider;

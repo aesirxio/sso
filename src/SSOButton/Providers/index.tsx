@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useContext, useState } from 'react';
 import '../styles/index.scss';
 import privacy_icon from '../images/privacy_icon.png';
 import arrow_left from '../images/arrow_left.svg';
@@ -76,10 +76,22 @@ const SSOProviders = () => {
               )}
               {expand === 'wallet' && (
                 <>
+                  {!isAccountExist?.status && (
+                    <div className="bg-danger text-white px-3 py-2 rounded-2 d-flex align-items-center mb-3">
+                      <img
+                        className="me-1"
+                        src={cancel}
+                        alt="cancel Icon"
+                        width="16px"
+                        height="16px"
+                      />
+                      Your account not exist
+                    </div>
+                  )}
                   {hasMetamask && (
                     <div className="mb-3">
                       <Suspense fallback={<>Loading...</>}>
-                        <SSOEthereumProvider />
+                        <SSOEthereumProvider setIsAccountExist={setIsAccountExist} />
                       </Suspense>
                     </div>
                   )}
@@ -87,7 +99,7 @@ const SSOProviders = () => {
                   {hasConcordium && (
                     <div>
                       <Suspense fallback={<>Loading...</>}>
-                        <SSOConcordiumProvider />
+                        <SSOConcordiumProvider setIsAccountExist={setIsAccountExist} />
                       </Suspense>
                     </div>
                   )}

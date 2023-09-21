@@ -7,6 +7,7 @@ interface SSOButtonProps {
   onGetData: (data: any) => void;
   demoUser?: string;
   demoPassword?: string;
+  noCreateAccount?: boolean;
 }
 
 const SSOButton: React.FC<SSOButtonProps> = ({
@@ -15,9 +16,10 @@ const SSOButton: React.FC<SSOButtonProps> = ({
   onGetData,
   demoUser = '',
   demoPassword = '',
+  noCreateAccount = false,
 }) => {
   const [show, setShow] = useState(false);
-
+  console.log('noCreateAccount', noCreateAccount);
   const toggle = () => setShow(!show);
 
   return (
@@ -28,6 +30,7 @@ const SSOButton: React.FC<SSOButtonProps> = ({
       <SSOModal
         demoUser={demoUser}
         demoPassword={demoPassword}
+        noCreateAccount={noCreateAccount}
         onGetData={onGetData}
         show={show}
         toggle={toggle}
