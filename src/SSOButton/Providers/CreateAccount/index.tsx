@@ -1,14 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import {
   autoRegisterWeb3id,
   createMember,
+  getChallenge,
   getClientApp,
+  getStatement,
   login,
   mintWeb3ID,
   validateEmail,
   validateWeb3Id,
+  verifyProof,
 } from '../../../utils';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -19,6 +22,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import CustomField from './CustomField';
 import FriendlyCaptcha from './FriendlyCaptcha';
 import { stringMessage } from '@concordium/react-components';
+import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 
 interface Fields {
   defaultValue: any;
@@ -37,6 +41,7 @@ const CreateAccount = ({
   accountAddress,
   connection,
   wallet,
+  noLogin,
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -105,19 +110,21 @@ const CreateAccount = ({
       if (item.required == '1' && item?.fieldId?.toString() !== registerForm.product?.toString()) {
         switch (item.fieldtype) {
           case 'email':
-            if (item?.fieldId?.toString() == registerForm.email?.toString()) {
-              validationSchema[`field${item.fieldId}_1_email`] = Yup.string()
-                .email(`Please enter valid email`)
-                .required(`Please enter your ${item.name}`)
-                .test(
-                  'unique',
-                  'This Email is already taken',
-                  async (value) => await debouncedCheckEmail(value)
-                );
-            } else {
-              validationSchema[`field${item.fieldId}_1_email`] = Yup.string()
-                .email(`Please enter valid email`)
-                .required(`Please enter your ${item.name}`);
+            if (!accountAddress) {
+              if (item?.fieldId?.toString() == registerForm.email?.toString()) {
+                validationSchema[`field${item.fieldId}_1_email`] = Yup.string()
+                  .email(`Please enter valid email`)
+                  .required(`Please enter your ${item.name}`)
+                  .test(
+                    'unique',
+                    'This Email is already taken',
+                    async (value) => await debouncedCheckEmail(value)
+                  );
+              } else {
+                validationSchema[`field${item.fieldId}_1_email`] = Yup.string()
+                  .email(`Please enter valid email`)
+                  .required(`Please enter your ${item.name}`);
+              }
             }
             break;
           case 'username':
@@ -148,14 +155,16 @@ const CreateAccount = ({
                 .required(`Please enter your ${item.name}`);
               break;
             }
-            validationSchema[`field${item.fieldId}_1`] = Yup.string()
-              .required(`Please enter your ${item.name}`)
-              .test('isUrl', 'URL is not allowed', (value) => {
+            validationSchema[`field${item.fieldId}_1`] = Yup.string().test(
+              'isUrl',
+              'URL is not allowed',
+              (value) => {
                 const urlRegex =
                   /^(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.))[^\s()<>]+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’])*$/gi;
                 const isUrl = urlRegex.test(value);
                 return !isUrl;
-              });
+              }
+            );
             break;
         }
       }
@@ -196,16 +205,18 @@ const CreateAccount = ({
         const apiData = {
           id: data[`field${registerForm.username}_1`],
           orderId: data[`field${registerForm.order_id}_1`] ?? '',
-          first_name: data[`field${registerForm.first_name}_1`],
-          sur_name: data[`field${registerForm.last_name}_1`],
           product: data[`field${registerForm.product}_1`],
           organization:
             data[`field${registerForm.organization}_1`] ??
             data[`field${registerForm.email}_1_email`],
-          email: data[`field${registerForm.email}_1_email`],
+          ...(data[`field${registerForm.email}_1_email`] && {
+            email: data[`field${registerForm.email}_1_email`],
+            organization: data[`field${registerForm.email}_1_email`],
+          }),
           message: data[`field${registerForm.message}_1`] ?? '',
           visitorId: result.visitorId,
         };
+        console.log('apiData', apiData);
 
         const crypto = window['crypto'] || window['msCrypto'];
         const array = new Uint32Array(1);
@@ -213,12 +224,10 @@ const CreateAccount = ({
         const passwordGenerate = array[0];
 
         const member = {
-          username: data[`field${registerForm.email}_1_email`],
+          username: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}`,
           password: passwordGenerate,
-          organisation: data[`field${registerForm.organization}_1`]
-            ? data[`field${registerForm.organization}_1`]
-            : data[`field${registerForm.email}_1_email`],
-          email: data[`field${registerForm.email}_1_email`],
+          email: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}@aesirx.io`,
+          organisation: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}`,
           block: 0,
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
@@ -227,7 +236,7 @@ const CreateAccount = ({
         };
         const createResponse = await createMember(member);
         if (createResponse?.result?.success) {
-          const { jwt } = await login(member?.username, member?.password);
+          const { jwt } = await login(member?.email, member?.password);
           setLoading('saving');
           try {
             const response = await autoRegisterWeb3id(
@@ -239,15 +248,21 @@ const CreateAccount = ({
             );
             if (response) {
               if (wallet === 'concordium') {
-                toast.success('Successfully.');
-                setIsExist(true);
-                setIsAccountExist({ status: true, type: 'metamask' });
+                toast.success('Create Successfully.');
+                setIsExist && setIsExist(true);
+                setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
               } else {
                 const responseMintWeb3ID = await mintWeb3ID(jwt);
                 if (responseMintWeb3ID?.data?.success) {
-                  toast.success('Successfully.');
-                  setIsExist(true);
-                  setIsAccountExist({ status: true, type: 'metamask' });
+                  if (wallet) {
+                    toast.success('Create Successfully.');
+                  } else {
+                    toast.success(
+                      'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
+                    );
+                  }
+                  setIsExist && setIsExist(true);
+                  setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
                 }
               }
             }
@@ -266,8 +281,53 @@ const CreateAccount = ({
       setSending(false);
     },
   });
+  const reorderArr = (i: any, arr: any) => {
+    return [...arr.slice(i), ...arr.slice(0, i)];
+  };
+
+  const reorderedArr = reorderArr(4, data);
+
+  const [proof, setProof] = useState(false);
+  const handleProof = async () => {
+    try {
+      const challenge = await getChallenge(accountAddress ?? '');
+      const statement = await getStatement();
+      const provider = await detectConcordiumProvider();
+      const proof = await provider.requestIdProof(accountAddress ?? '', statement, challenge);
+      const re = await verifyProof(challenge, proof);
+      if (re) {
+        setProof(true);
+      }
+      return true;
+    } catch (error) {
+      setProof(false);
+      return false;
+    }
+  };
+
   return (
     <>
+      {!accountAddress && (
+        <>
+          <div className="line text-center">
+            <span className="bg-white px-2 position-relative text-dark">or</span>
+          </div>
+        </>
+      )}
+      {noLogin && !proof && wallet === 'concordium' && (
+        <div className="d-flex mb-3">
+          <Button
+            variant="dark"
+            className="fw-medium py-2 px-4 fs-18 lh-sm text-white"
+            onClick={() => {
+              handleProof();
+            }}
+          >
+            Authorize
+          </Button>
+          <span className="text-danger">*</span>
+        </div>
+      )}
       {!fetch ? (
         data ? (
           <Form onSubmit={formik.handleSubmit}>
@@ -281,10 +341,14 @@ const CreateAccount = ({
               </div>
             )}
             <Row>
-              {data?.map((field: Fields, index: number) => {
+              {reorderedArr.map((field: Fields, index: number) => {
                 return (
                   <Col key={index} md={listCol[index]}>
-                    <CustomField field={field} formik={formik} />
+                    <CustomField
+                      field={field}
+                      formik={formik}
+                      isWallet={accountAddress ? true : false}
+                    />
                   </Col>
                 );
               })}
@@ -331,7 +395,12 @@ const CreateAccount = ({
                 </Button>
               ) : (
                 <Button
-                  disabled={sending || !captcha || !formik.isValid}
+                  disabled={
+                    sending ||
+                    !captcha ||
+                    !formik.isValid ||
+                    (noLogin && !proof && wallet === 'concordium')
+                  }
                   type="submit"
                   variant="success"
                   className="fw-semibold text-white px-4 py-13px lh-sm me-4"

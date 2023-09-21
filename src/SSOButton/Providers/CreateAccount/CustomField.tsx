@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { getClientApp } from '../../../utils';
-const CustomField = ({ formik, field }: any) => {
+const CustomField = ({ formik, field, isWallet }: any) => {
   const { registerForm } = getClientApp();
   const fieldName =
     field.fieldtype == 'email' ? `field${field.fieldId}_1_email` : `field${field.fieldId}_1`;
@@ -13,7 +13,13 @@ const CustomField = ({ formik, field }: any) => {
   if (field.name == 'Order ID' || field.name === 'Message') {
     return null;
   }
-  if (field.fieldId?.toString() === registerForm?.product?.toString()) {
+  if (
+    field.fieldId?.toString() === registerForm?.product?.toString() ||
+    field.fieldId?.toString() === registerForm?.first_name?.toString() ||
+    field.fieldId?.toString() === registerForm?.last_name?.toString() ||
+    field.fieldId?.toString() === registerForm?.organization?.toString() ||
+    (isWallet && field.fieldId?.toString() === registerForm?.email?.toString())
+  ) {
     return null;
   }
   return (

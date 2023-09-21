@@ -98,8 +98,8 @@ const assign = (a: any, b: any) => {
   return a;
 };
 
-const shortenString = (str: string) => {
-  return str.substring(0, 6) + '...' + str.substring(str.length - 4);
+const shortenString = (str: any, first: any = 6, last: any = 4) => {
+  return str?.substring(0, first) + '...' + str?.substring(str.length - last);
 };
 
 const getClientApp = () => {

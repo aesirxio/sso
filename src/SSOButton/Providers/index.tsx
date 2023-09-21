@@ -67,6 +67,7 @@ const SSOProviders = () => {
                     className="cursor-pointer fw-medium fs-14 d-inline-flex align-items-center back-button"
                     onClick={() => {
                       setExpand('');
+                      setIsAccountExist({ status: true, type: '' });
                     }}
                   >
                     <img src={arrow_left} alt="Back Icon" className="me-1" />

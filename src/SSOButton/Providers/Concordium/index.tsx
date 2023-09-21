@@ -14,16 +14,36 @@ import {
 import ConnectConcordium from './connect';
 import SignMessageConcordium from './sign';
 import secureLocalStorage from 'react-secure-storage';
-import { getClientApp } from '../../../utils';
+import { getClientApp, shortenString } from '../../../utils';
+import ComponentTags from '../../../components/ComponentTags';
 interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setIsAccountExist: any;
+  noLogin: any;
+  setAccountAddress: any;
+  setConnectionProvider: any;
+  setWalletType: any;
 }
-const SSOConcordiumProvider = ({ setIsAccountExist }: any) => {
+const SSOConcordiumProvider = ({
+  setIsAccountExist,
+  noLogin,
+  setAccountAddress,
+  setConnection,
+  setWalletType,
+}: any) => {
   const { network } = getClientApp();
 
   return (
     <WithWalletConnector network={network === 'testnet' ? TESTNET : MAINNET}>
-      {(props) => <ConcordiumApp {...props} setIsAccountExist={setIsAccountExist} />}
+      {(props) => (
+        <ConcordiumApp
+          {...props}
+          setIsAccountExist={setIsAccountExist}
+          noLogin={noLogin}
+          setAccountAddress={setAccountAddress}
+          setConnectionProvider={setConnection}
+          setWalletType={setWalletType}
+        />
+      )}
     </WithWalletConnector>
   );
 };
@@ -38,6 +58,10 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
     genesisHashes,
     setActiveConnectorType,
     setIsAccountExist,
+    noLogin,
+    setAccountAddress,
+    setConnectionProvider,
+    setWalletType,
   } = props;
 
   const { connection, setConnection, account, genesisHash } = useConnection(
@@ -94,6 +118,20 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
   }, [activeConnector]);
 
   useEffect(() => {
+    if (setAccountAddress) {
+      if (account && connection) {
+        setAccountAddress(account);
+        setConnectionProvider(connection);
+        setWalletType('concordium');
+      } else {
+        setAccountAddress('');
+        setConnectionProvider(null);
+        setWalletType('');
+      }
+    }
+  }, [account, connection]);
+
+  useEffect(() => {
     if (
       connectError &&
       connectError !==
@@ -116,15 +154,25 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
           activeConnectorError={activeConnectorError}
           activeConnectorType={activeConnectorType}
           activeConnector={activeConnector}
+          noLogin={noLogin}
         />
       ) : (
         <>
           {rpcGenesisHash ? (
-            <SignMessageConcordium
-              account={account}
-              connection={connection}
-              setIsAccountExist={setIsAccountExist}
-            />
+            noLogin ? (
+              <ComponentTags
+                className={'mb-12px'}
+                title="Account Connected:"
+                value={shortenString(account, 20, 5)}
+                contentCopy={account}
+              />
+            ) : (
+              <SignMessageConcordium
+                account={account}
+                connection={connection}
+                setIsAccountExist={setIsAccountExist}
+              />
+            )
           ) : (
             <button className="btn btn-dark">
               <span
