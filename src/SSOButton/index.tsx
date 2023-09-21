@@ -19,8 +19,12 @@ const SSOButton: React.FC<SSOButtonProps> = ({
   noCreateAccount = false,
 }) => {
   const [show, setShow] = useState(false);
-  console.log('noCreateAccount', noCreateAccount);
-  const toggle = () => setShow(!show);
+  const toggle = () => {
+    !show
+      ? document.body.classList.add('modal-sso-open')
+      : document.body.classList.remove('modal-sso-open');
+    setShow(!show);
+  };
 
   return (
     <>

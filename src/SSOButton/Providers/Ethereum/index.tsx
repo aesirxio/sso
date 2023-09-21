@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { configureChains, createConfig, WagmiConfig, useAccount } from 'wagmi';
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
@@ -112,6 +112,9 @@ import { Web3Modal } from '@web3modal/react';
 import SignMessage from './sign';
 import ConnectMetamask from './connect';
 import { CONCORDIUM_WALLET_CONNECT_PROJECT_ID } from '@concordium/react-components';
+import ComponentTags from '../../../components/ComponentTags';
+import { shortenString } from '../../../utils';
+import logo from '../../images/ethereum_logo.png';
 
 const projectId = CONCORDIUM_WALLET_CONNECT_PROJECT_ID;
 
@@ -127,11 +130,25 @@ const wagmiConfig = createConfig({
 
 const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
-const SSOEthereumProvider = ({ setIsAccountExist }: any) => {
+const SSOEthereumProvider = ({
+  setIsAccountExist,
+  noLogin,
+  accountAddress,
+  setAccountAddress,
+  setConnection,
+  setWalletType,
+}: any) => {
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
-        <SSOEthereumApp setIsAccountExist={setIsAccountExist} />
+        <SSOEthereumApp
+          setIsAccountExist={setIsAccountExist}
+          noLogin={noLogin}
+          accountAddress={accountAddress}
+          setAccountAddress={setAccountAddress}
+          setConnection={setConnection}
+          setWalletType={setWalletType}
+        />
       </WagmiConfig>
 
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
@@ -139,10 +156,60 @@ const SSOEthereumProvider = ({ setIsAccountExist }: any) => {
   );
 };
 
-const SSOEthereumApp = ({ setIsAccountExist }: any) => {
-  const { isConnected } = useAccount();
+const SSOEthereumApp = ({
+  setIsAccountExist,
+  noLogin,
+  accountAddress,
+  setAccountAddress,
+  setConnection,
+  setWalletType,
+}: any) => {
+  const { address, isConnected, connector } = useAccount();
 
-  return isConnected ? <SignMessage setIsAccountExist={setIsAccountExist} /> : <ConnectMetamask />;
+  useEffect(() => {
+    if (setAccountAddress) {
+      if (address && connector) {
+        setAccountAddress(address);
+        setConnection(connector);
+        setWalletType('metamask');
+      } else {
+        setAccountAddress('');
+        setConnection(null);
+        setWalletType('');
+      }
+    }
+  }, [address, connector]);
+
+  return isConnected ? (
+    noLogin ? (
+      <>
+        {accountAddress ? (
+          <ComponentTags
+            className={'mb-12px'}
+            title="Account Connected:"
+            value={shortenString(address, 20, 5)}
+            contentCopy={address}
+          />
+        ) : (
+          <button
+            onClick={() => {
+              setAccountAddress(address);
+              setConnection(connector);
+              setWalletType('metamask');
+            }}
+            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center justify-content-start"
+          >
+            <img className="me-3" src={logo} alt="Ethereum Logo" />
+            Ethereum wallets
+          </button>
+        )}
+      </>
+    ) : (
+      <SignMessage setIsAccountExist={setIsAccountExist} />
+    )
+  ) : (
+    <ConnectMetamask />
+  );
 };
 
 export default SSOEthereumProvider;

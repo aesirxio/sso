@@ -28,7 +28,6 @@ const useWallet = (wallet: any, publicAddress: string) => {
       }
       throw false;
     } catch (error) {
-      toast('Wrong authentication', { closeOnClick: false });
       return false;
     }
   };
