@@ -43,14 +43,14 @@
     "clean": true
   },
   "scripts": {
-    "dev": "NODE_ENV=development tsup --watch --onSuccess 'yalc push --no-scripts'",
+    "dev": "NODE_ENV=development tsup --watch",
     "build": "tsup",
     "lint": "eslint --fix \"src/**/\"",
     "lint:check": "eslint \"src/**/\"",
     "lint:nowarns": "eslint --quiet \"src/**/\"",
     "prepublishOnly": "yarn run build",
-    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
-    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
+    "format:check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "format:write": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [

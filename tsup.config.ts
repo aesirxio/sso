@@ -1,6 +1,7 @@
 import { defineConfig } from 'tsup';
 import { sassPlugin } from 'esbuild-sass-plugin';
 import inlineImage from 'esbuild-plugin-inline-image';
+const env = process.env.NODE_ENV;
 
 const tsupConfig = defineConfig([
   {
@@ -21,7 +22,7 @@ const tsupConfig = defineConfig([
     },
     esbuildPlugins: [inlineImage({ limit: -1 }), sassPlugin({ type: 'style' })],
     esbuildOptions(options) {
-      options.drop = ['console'];
+      env === 'production' ? (options.drop = ['console']) : '';
     },
   },
   {
@@ -44,7 +45,7 @@ const tsupConfig = defineConfig([
     },
     esbuildPlugins: [inlineImage({ limit: -1 }), sassPlugin({ type: 'style' })],
     esbuildOptions(options) {
-      options.drop = ['console'];
+      env === 'production' ? (options.drop = ['console']) : '';
     },
   },
 ]);
