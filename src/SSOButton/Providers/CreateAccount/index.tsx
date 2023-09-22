@@ -108,8 +108,6 @@ const CreateAccount = ({
     sellix_id: packagesData?.sellix_id,
     product_name: productName,
   };
-  console.log('defaultProduct', defaultProduct);
-  console.log('license', license);
 
   const generateInitialValue = (data: any) => {
     const initialValue: { [key: string]: string } = {};
@@ -124,7 +122,6 @@ const CreateAccount = ({
         initialValue[`field${item.fieldId}_1`] = '';
       }
     });
-    console.log('initialValue', initialValue);
     return initialValue;
   };
   const generateValidationSchema = (data: any) => {
