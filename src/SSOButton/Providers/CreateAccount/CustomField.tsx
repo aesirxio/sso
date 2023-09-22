@@ -3,7 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { getClientApp } from '../../../utils';
-const CustomField = ({ formik, field, isWallet, isProduct = false, defaultProduct }: any) => {
+const CustomField = ({
+  formik,
+  field,
+  isWallet,
+  isProduct = false,
+  defaultProduct,
+  productOptions,
+}: any) => {
   const { registerForm } = getClientApp();
   const fieldName =
     field.fieldtype == 'email' ? `field${field.fieldId}_1_email` : `field${field.fieldId}_1`;
@@ -13,6 +20,7 @@ const CustomField = ({ formik, field, isWallet, isProduct = false, defaultProduc
   if (field.name == 'Order ID' || field.name === 'Message') {
     return null;
   }
+  console.log('isProduct', isProduct);
   if (
     (field.fieldId?.toString() === registerForm?.product?.toString() && !isProduct) ||
     field.fieldId?.toString() === registerForm?.first_name?.toString() ||
@@ -21,6 +29,13 @@ const CustomField = ({ formik, field, isWallet, isProduct = false, defaultProduc
     (isWallet && field.fieldId?.toString() === registerForm?.email?.toString())
   ) {
     return null;
+  }
+
+  let listOptions = field?.fieldOptions;
+  if (productOptions?.length !== 0 && field.fieldtype === 'select') {
+    listOptions = field?.fieldOptions.filter((product: any) =>
+      productOptions.includes(product.value)
+    );
   }
   return (
     <Form.Group className="mb-4 w-100">
@@ -62,7 +77,7 @@ const CustomField = ({ formik, field, isWallet, isProduct = false, defaultProduc
             <option disabled={true} value="default">
               --Choose your product--
             </option>
-            {field?.fieldOptions.map((item: any) => {
+            {listOptions?.map((item: any) => {
               return (
                 <option id={item.id} key={item?.id} value={item?.value}>
                   {item?.label}{' '}
