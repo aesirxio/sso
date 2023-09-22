@@ -383,13 +383,16 @@ const CreateAccount = ({
               <Form.Check.Input type="checkbox" />
               <Form.Check.Label>Sign up for our newsletter</Form.Check.Label>
             </Form.Check>
-            <div className="d-flex align-items-start">
+            <div className="d-flex align-items-start flex-wrap">
+              <div className="me-4">
+                <FriendlyCaptcha setCaptcha={setCaptcha} />
+              </div>
               {!captcha || !formik.isValid ? (
                 <Button
                   disabled={sending || !captcha || !formik.isValid}
                   type="submit"
                   variant="success"
-                  className="fw-semibold text-white px-4 py-13px lh-sm me-4"
+                  className="fw-semibold text-white px-4 py-13px lh-sm"
                 >
                   {sending ? 'Sending' : 'Send inquiry'}
                 </Button>
@@ -403,12 +406,11 @@ const CreateAccount = ({
                   }
                   type="submit"
                   variant="success"
-                  className="fw-semibold text-white px-4 py-13px lh-sm me-4"
+                  className="fw-semibold text-white px-4 py-13px lh-sm"
                 >
                   {sending ? 'Sending' : 'Send inquiry'}
                 </Button>
               )}
-              <FriendlyCaptcha setCaptcha={setCaptcha} />
             </div>
           </Form>
         ) : (

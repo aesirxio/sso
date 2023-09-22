@@ -44,7 +44,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
           }}
         />
         <ModalBody className="p-4 pt-5 bg-white rounded-3">
-          <>
+          <div>
             <Row className="my-3">
               <Col lg={`${accountAddress ? '12' : '6'}`}>
                 {walletType !== 'concordium' && (
@@ -74,15 +74,15 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
                 )}
               </Col>
             </Row>
-          </>
-          <CreateAccount
-            setShow={setShow}
-            setIsExist={setIsExist}
-            accountAddress={accountAddress}
-            connection={connection}
-            wallet={walletType}
-            noLogin={true}
-          />
+            <CreateAccount
+              setShow={setShow}
+              setIsExist={setIsExist}
+              accountAddress={accountAddress}
+              connection={connection}
+              wallet={walletType}
+              noLogin={true}
+            />
+          </div>
         </ModalBody>
       </Modal>
     </>

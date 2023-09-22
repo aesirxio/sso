@@ -21,7 +21,7 @@ const ConnectConcordium = ({
               <button
                 disabled={isConnecting}
                 className={`btn btn-dark btn-concordium fw-medium text-nowrap py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-start w-100 ${
-                  noLogin ? '' : 'mb-3'
+                  noLogin ? 'mb-3 mb-lg-0' : 'mb-3'
                 }`}
                 onClick={() => handleOnConnect(BROWSER_WALLET, 'browser')}
               >
