@@ -121,6 +121,11 @@ $btn-close-color: #fff;
         }
       }
     }
+    &.aesirxsso-register {
+      .btn-close {
+        filter: none;
+      }
+    }
     .btn-close {
       filter: invert(1);
     }
