@@ -103,6 +103,7 @@ const shortenString = (str: any, first: any = 6, last: any = 4) => {
 };
 
 const getClientApp = () => {
+  console.log('process.env', process.env);
   const endpoint = window['aesirxEndpoint']
     ? window['aesirxEndpoint']
     : process.env.REACT_APP_ENDPOINT_URL ||

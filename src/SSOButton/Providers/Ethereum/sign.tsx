@@ -92,7 +92,7 @@ const SignMessage = ({ setIsAccountExist }: any) => {
               setShow(!show);
             }}
           />
-          <ModalBody className="p-4 pt-5 bg-white rounded-3">
+          <ModalBody className="p-4 pt-5 bg-white rounded-3 text-primary">
             <CreateAccount
               setShow={setShow}
               setIsExist={setIsExist}

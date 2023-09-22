@@ -20,9 +20,11 @@ const SSOButton: React.FC<SSOButtonProps> = ({
 }) => {
   const [show, setShow] = useState(false);
   const toggle = () => {
-    !show
-      ? document.body.classList.add('modal-sso-open')
-      : document.body.classList.remove('modal-sso-open');
+    if (typeof window !== 'undefined') {
+      !show
+        ? document.body.classList.add('modal-sso-open')
+        : document.body.classList.remove('modal-sso-open');
+    }
     setShow(!show);
   };
 

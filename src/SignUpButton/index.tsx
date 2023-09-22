@@ -14,7 +14,6 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
   const [accountAddress, setAccountAddress] = useState('');
   const [connection, setConnection] = useState();
   const [walletType, setWalletType] = useState('');
-  const [isExist, setIsExist] = useState(true);
 
   const toggle = () => {
     setAccountAddress('');
@@ -22,8 +21,6 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
     setWalletType('');
     setShow(!show);
   };
-  console.log('walletType', walletType);
-  console.log('accountAddress', accountAddress);
   return (
     <>
       <button type="button" className={`btn ${className}`} onClick={toggle}>
@@ -44,7 +41,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
           }}
         />
         <ModalBody className="p-4 pt-5 bg-white rounded-3">
-          <div>
+          <div className="text-primary">
             <Row className="my-3">
               <Col lg={`${accountAddress ? '12' : '6'}`}>
                 {walletType !== 'concordium' && (
@@ -76,7 +73,6 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
             </Row>
             <CreateAccount
               setShow={setShow}
-              setIsExist={setIsExist}
               accountAddress={accountAddress}
               connection={connection}
               wallet={walletType}
