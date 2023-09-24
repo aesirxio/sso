@@ -44,6 +44,7 @@ const CreateAccount = ({
   noLogin,
   isNoWallet = false,
   packagesData = {},
+  productOptions = [],
   productName,
 }: any) => {
   const [sending, setSending] = useState(false);
@@ -115,9 +116,8 @@ const CreateAccount = ({
       if (item.fieldtype == 'email') {
         initialValue[`field${item.fieldId}_1_email`] = '';
       } else if (item.fieldtype == 'select') {
-        initialValue[`field${item.fieldId}_1`] = Object.keys(packagesData).length
-          ? defaultProduct
-          : '';
+        initialValue[`field${item.fieldId}_1`] =
+          Object.keys(packagesData).length || productOptions.length ? defaultProduct : '';
       } else {
         initialValue[`field${item.fieldId}_1`] = '';
       }
@@ -155,7 +155,7 @@ const CreateAccount = ({
             break;
 
           case 'select':
-            if (Object.keys(packagesData).length) {
+            if (Object.keys(packagesData).length || productOptions.length) {
               validationSchema[`field${item.fieldId}_1`] = Yup.string().required(
                 `Please select ${item.name}`
               );
@@ -391,8 +391,11 @@ const CreateAccount = ({
                       field={field}
                       formik={formik}
                       defaultProduct={defaultProduct}
+                      productOptions={productOptions}
                       isWallet={accountAddress ? true : false}
-                      isProduct={Object.keys(packagesData).length ? true : false}
+                      isProduct={
+                        Object.keys(packagesData).length || productOptions?.length ? true : false
+                      }
                     />
                   </Col>
                 );
