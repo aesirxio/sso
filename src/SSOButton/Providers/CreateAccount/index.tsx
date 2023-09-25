@@ -279,24 +279,6 @@ const CreateAccount = ({
               wallet === 'concordium' ? true : false
             );
             if (response) {
-              if (wallet === 'concordium') {
-                toast.success('Create Successfully.');
-                setIsExist && setIsExist(true);
-                setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
-              } else {
-                const responseMintWeb3ID = await mintWeb3ID(jwt);
-                if (responseMintWeb3ID?.data?.success) {
-                  if (wallet) {
-                    toast.success('Create Successfully.');
-                  } else {
-                    toast.success(
-                      'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
-                    );
-                  }
-                  setIsExist && setIsExist(true);
-                  setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
-                }
-              }
               const redFormData = {
                 form_id: formID,
                 [`field${registerForm.username}_1`]: data[`field${registerForm.username}_1`],
@@ -315,11 +297,28 @@ const CreateAccount = ({
               for (const key in redFormData) {
                 formData.append(key, redFormData[key] ?? '');
               }
-
               await axios.post(
                 `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
                 formData
               );
+              if (wallet === 'concordium') {
+                toast.success('Create Successfully.');
+                setIsExist && setIsExist(true);
+                setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
+              } else {
+                const responseMintWeb3ID = await mintWeb3ID(jwt);
+                if (responseMintWeb3ID?.data?.success) {
+                  if (wallet) {
+                    toast.success('Create Successfully.');
+                  } else {
+                    toast.success(
+                      'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
+                    );
+                  }
+                  setIsExist && setIsExist(true);
+                  setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
+                }
+              }
             }
           } catch (error) {
             console.log(error);
