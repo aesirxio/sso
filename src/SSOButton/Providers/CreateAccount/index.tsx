@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import {
   autoRegisterWeb3id,
   createMember,
+  formatRedForm,
   getChallenge,
   getClientApp,
   getStatement,
@@ -232,9 +233,9 @@ const CreateAccount = ({
           id: data[`field${registerForm.username}_1`],
           orderId: data[`field${registerForm.order_id}_1`] ?? '',
           product: data[`field${registerForm.product}_1`],
-          organization:
-            data[`field${registerForm.organization}_1`] ??
-            data[`field${registerForm.email}_1_email`],
+          organization: data[`field${registerForm.organization}_1`]
+            ? data[`field${registerForm.organization}_1`]
+            : data[`field${registerForm.email}_1_email`],
           ...(data[`field${registerForm.email}_1_email`] && {
             email: data[`field${registerForm.email}_1_email`],
             organization: data[`field${registerForm.email}_1_email`],
@@ -250,10 +251,16 @@ const CreateAccount = ({
         const passwordGenerate = array[0];
 
         const member = {
-          username: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}`,
+          username: data[`field${registerForm.email}_1_email`]
+            ? data[`field${registerForm.email}_1_email`]
+            : `${accountAddress}`,
           password: passwordGenerate,
-          email: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}@aesirx.io`,
-          organisation: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}`,
+          email: data[`field${registerForm.email}_1_email`]
+            ? data[`field${registerForm.email}_1_email`]
+            : `${accountAddress}@aesirx.io`,
+          organisation: data[`field${registerForm.email}_1_email`]
+            ? data[`field${registerForm.email}_1_email`]
+            : `${accountAddress}`,
           block: 0,
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
@@ -291,6 +298,29 @@ const CreateAccount = ({
                   setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
                 }
               }
+              const redFormData = {
+                form_id: formID,
+                [`field${registerForm.username}_1`]: data[`field${registerForm.username}_1`],
+                [`field${registerForm.first_name}_1`]: data[`field${registerForm.first_name}_1`],
+                [`field${registerForm.last_name}_1`]: data[`field${registerForm.last_name}_1`],
+                [`field${registerForm.product}_1`]: data[`field${registerForm.product}_1`],
+                [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
+                  ? data[`field${registerForm.email}_1_email`]
+                  : `${accountAddress}@aesirx.io`,
+                [`field${registerForm.organization}_1`]:
+                  data[`field${registerForm.organization}_1`],
+                [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
+                [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
+              };
+              const formData = new FormData();
+              for (const key in redFormData) {
+                formData.append(key, redFormData[key] ?? '');
+              }
+
+              await axios.post(
+                `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
+                formData
+              );
             }
           } catch (error) {
             console.log(error);

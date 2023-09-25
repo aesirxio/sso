@@ -360,7 +360,22 @@ const mintWeb3ID = async (jwt: any) => {
     throw error;
   }
 };
-
+const formatRedForm = (data: any) => {
+  const formData = new FormData();
+  const redFormData = data;
+  let newKeyMail = '';
+  for (const [key] of Object.entries(redFormData)) {
+    if (key.includes('email')) {
+      newKeyMail = key.replace('_email', '[email]');
+      redFormData[newKeyMail] = redFormData[key];
+      delete redFormData[key];
+    }
+  }
+  for (const key in redFormData) {
+    formData.append(key, redFormData[key]);
+  }
+  return formData;
+};
 export {
   handleWalletResponse,
   handleRegularReponse,
@@ -376,4 +391,5 @@ export {
   login,
   autoRegisterWeb3id,
   mintWeb3ID,
+  formatRedForm,
 };
