@@ -1,10 +1,9 @@
-import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import {
   autoRegisterWeb3id,
   createMember,
-  formatRedForm,
   getChallenge,
   getClientApp,
   getStatement,
