@@ -302,14 +302,22 @@ const CreateAccount = ({
                 formData
               );
               if (wallet === 'concordium') {
-                toast.success('Create Successfully.');
+                toast.success(
+                  `Thank you for signing up, ${
+                    data[`field${registerForm.username}_1`]
+                  }! You can now log in to access all of our features and benefits.`
+                );
                 setIsExist && setIsExist(true);
                 setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
               } else {
                 const responseMintWeb3ID = await mintWeb3ID(jwt);
                 if (responseMintWeb3ID?.data?.success) {
                   if (wallet) {
-                    toast.success('Create Successfully.');
+                    toast.success(
+                      `Thank you for signing up, ${
+                        data[`field${registerForm.username}_1`]
+                      }! You can now log in to access all of our features and benefits.`
+                    );
                   } else {
                     toast.success(
                       'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
