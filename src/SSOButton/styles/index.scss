@@ -98,6 +98,9 @@ $btn-close-color: #fff;
   .custom-loading {
     background: rgba($white, 0.25);
   }
+  .text-inherit {
+    color: inherit !important;
+  }
 }
 .aesirxsso-register {
   .modal-dialog {

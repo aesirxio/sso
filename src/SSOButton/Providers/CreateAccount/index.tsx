@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import {
@@ -32,7 +32,7 @@ interface Fields {
   name: string;
   required: string;
 }
-const listCol = [12, 6, 6, 12, 12, 12];
+const listCol = [12, 12, 12, 12, 12, 12, 12, 12, 12];
 const CreateAccount = ({
   formID = 10,
   setShow,
@@ -42,6 +42,10 @@ const CreateAccount = ({
   connection,
   wallet,
   noLogin,
+  isNoWallet = false,
+  packagesData = {},
+  productOptions = [],
+  productName,
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -91,13 +95,29 @@ const CreateAccount = ({
     })();
   }, []);
 
+  const [isSellix, setIsSellix] = useState(false);
+  const [product, setProduct] = useState<any>();
+  const [shareLink, setShareLink] = useState();
+
+  const defaultProduct = packagesData?.default_web3_product
+    ? packagesData?.default_web3_product?.toLowerCase()
+    : '';
+
+  // License of AESIRX
+  const license = {
+    product: packagesData?.license_package ? packagesData?.license_package?.toLowerCase() : '',
+    sellix_id: packagesData?.sellix_id,
+    product_name: productName,
+  };
+
   const generateInitialValue = (data: any) => {
     const initialValue: { [key: string]: string } = {};
     data?.forEach((item: Fields) => {
       if (item.fieldtype == 'email') {
         initialValue[`field${item.fieldId}_1_email`] = '';
       } else if (item.fieldtype == 'select') {
-        initialValue[`field${item.fieldId}_1`] = '';
+        initialValue[`field${item.fieldId}_1`] =
+          Object.keys(packagesData).length || productOptions.length ? defaultProduct : '';
       } else {
         initialValue[`field${item.fieldId}_1`] = '';
       }
@@ -135,6 +155,11 @@ const CreateAccount = ({
             break;
 
           case 'select':
+            if (Object.keys(packagesData).length || productOptions.length) {
+              validationSchema[`field${item.fieldId}_1`] = Yup.string().required(
+                `Please select ${item.name}`
+              );
+            }
             break;
 
           default:
@@ -173,6 +198,7 @@ const CreateAccount = ({
   };
   const formik = useFormik({
     initialValues: generateInitialValue(data),
+    enableReinitialize: true,
     validationSchema: Yup.object(generateValidationSchema(data)),
     onSubmit: async (values) => {
       let isSuccess = true;
@@ -206,9 +232,9 @@ const CreateAccount = ({
           id: data[`field${registerForm.username}_1`],
           orderId: data[`field${registerForm.order_id}_1`] ?? '',
           product: data[`field${registerForm.product}_1`],
-          organization:
-            data[`field${registerForm.organization}_1`] ??
-            data[`field${registerForm.email}_1_email`],
+          organization: data[`field${registerForm.organization}_1`]
+            ? data[`field${registerForm.organization}_1`]
+            : data[`field${registerForm.email}_1_email`],
           ...(data[`field${registerForm.email}_1_email`] && {
             email: data[`field${registerForm.email}_1_email`],
             organization: data[`field${registerForm.email}_1_email`],
@@ -224,10 +250,16 @@ const CreateAccount = ({
         const passwordGenerate = array[0];
 
         const member = {
-          username: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}`,
+          username: data[`field${registerForm.email}_1_email`]
+            ? data[`field${registerForm.email}_1_email`]
+            : `${accountAddress}`,
           password: passwordGenerate,
-          email: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}@aesirx.io`,
-          organisation: data[`field${registerForm.email}_1_email`] ?? `${accountAddress}`,
+          email: data[`field${registerForm.email}_1_email`]
+            ? data[`field${registerForm.email}_1_email`]
+            : `${accountAddress}@aesirx.io`,
+          organisation: data[`field${registerForm.email}_1_email`]
+            ? data[`field${registerForm.email}_1_email`]
+            : `${accountAddress}`,
           block: 0,
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
@@ -247,15 +279,45 @@ const CreateAccount = ({
               wallet === 'concordium' ? true : false
             );
             if (response) {
+              const redFormData = {
+                form_id: formID,
+                [`field${registerForm.username}_1`]: data[`field${registerForm.username}_1`],
+                [`field${registerForm.first_name}_1`]: data[`field${registerForm.first_name}_1`],
+                [`field${registerForm.last_name}_1`]: data[`field${registerForm.last_name}_1`],
+                [`field${registerForm.product}_1`]: data[`field${registerForm.product}_1`],
+                [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
+                  ? data[`field${registerForm.email}_1_email`]
+                  : `${accountAddress}@aesirx.io`,
+                [`field${registerForm.organization}_1`]:
+                  data[`field${registerForm.organization}_1`],
+                [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
+                [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
+              };
+              const formData = new FormData();
+              for (const key in redFormData) {
+                formData.append(key, redFormData[key] ?? '');
+              }
+              await axios.post(
+                `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
+                formData
+              );
               if (wallet === 'concordium') {
-                toast.success('Create Successfully.');
+                toast.success(
+                  `Thank you for signing up, ${
+                    data[`field${registerForm.username}_1`]
+                  }! You can now log in to access all of our features and benefits.`
+                );
                 setIsExist && setIsExist(true);
                 setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
               } else {
                 const responseMintWeb3ID = await mintWeb3ID(jwt);
                 if (responseMintWeb3ID?.data?.success) {
                   if (wallet) {
-                    toast.success('Create Successfully.');
+                    toast.success(
+                      `Thank you for signing up, ${
+                        data[`field${registerForm.username}_1`]
+                      }! You can now log in to access all of our features and benefits.`
+                    );
                   } else {
                     toast.success(
                       'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
@@ -277,7 +339,7 @@ const CreateAccount = ({
         toast.error(error?.response?.data?.error || error?._messages[0]?.message || error?.message);
       }
       setLoading('');
-      setShow(!isSuccess);
+      setShow && setShow(!isSuccess);
       setSending(false);
     },
   });
@@ -305,9 +367,26 @@ const CreateAccount = ({
     }
   };
 
+  useEffect(() => {
+    if (
+      formik.values[`field${registerForm.product}_1`] &&
+      formik.values[`field${registerForm.product}_1`] !== 'community'
+    ) {
+      setIsSellix(true);
+      setProduct(
+        data
+          .filter((item: any) => item.fieldtype === 'select')?.[0]
+          .fieldOptions?.find(
+            (product: any) => product.value == formik.values[`field${registerForm.product}_1`]
+          )
+      );
+    } else {
+      setIsSellix(false);
+    }
+  }, [formik.values]);
   return (
     <>
-      {!accountAddress && (
+      {!accountAddress && !isNoWallet && (
         <>
           <div className="line text-center">
             <span className="bg-white px-2 position-relative text-dark">or</span>
@@ -347,21 +426,24 @@ const CreateAccount = ({
                     <CustomField
                       field={field}
                       formik={formik}
+                      defaultProduct={defaultProduct}
+                      productOptions={productOptions}
                       isWallet={accountAddress ? true : false}
+                      isProduct={
+                        Object.keys(packagesData).length || productOptions?.length ? true : false
+                      }
                     />
                   </Col>
                 );
               })}
             </Row>
-            <p className="fst-italic mb-3 fs-7 text-primary">
-              Disclaimer : The ID @Username is public
-            </p>
-            <Form.Check className="mb-10px fs-7 text-primary" type="checkbox" id="check-subsribe">
+            <p className="fst-italic mb-3 fs-7">Disclaimer : The ID @Username is public</p>
+            <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
                 Accept our{' '}
                 <a
-                  className="fw-semibold"
+                  className="fw-semibold text-inherit"
                   target={'_blank'}
                   href="https://aesirx.io/terms-conditions"
                   rel="noreferrer"
@@ -370,7 +452,7 @@ const CreateAccount = ({
                 </a>{' '}
                 and{' '}
                 <a
-                  className="fw-semibold"
+                  className="fw-semibold text-inherit"
                   target={'_blank'}
                   href="https://aesirx.io/privacy-policy"
                   rel="noreferrer"
@@ -379,7 +461,7 @@ const CreateAccount = ({
                 </a>{' '}
               </Form.Check.Label>
             </Form.Check>
-            <Form.Check type="checkbox" className="mb-4 fs-7 text-primary" id="check-newletter">
+            <Form.Check type="checkbox" className="mb-4 fs-7" id="check-newletter">
               <Form.Check.Input type="checkbox" />
               <Form.Check.Label>Sign up for our newsletter</Form.Check.Label>
             </Form.Check>
@@ -387,16 +469,7 @@ const CreateAccount = ({
               <div className="me-4">
                 <FriendlyCaptcha setCaptcha={setCaptcha} />
               </div>
-              {!captcha || !formik.isValid ? (
-                <Button
-                  disabled={sending || !captcha || !formik.isValid}
-                  type="submit"
-                  variant="success"
-                  className="fw-semibold text-white px-4 py-13px lh-sm"
-                >
-                  {sending ? 'Sending' : 'Send inquiry'}
-                </Button>
-              ) : (
+              {!isSellix && !license?.sellix_id ? (
                 <Button
                   disabled={
                     sending ||
@@ -406,10 +479,55 @@ const CreateAccount = ({
                   }
                   type="submit"
                   variant="success"
-                  className="fw-semibold text-white px-4 py-13px lh-sm"
+                  className="fw-semibold text-white px-4 py-13px lh-sm me-4"
                 >
                   {sending ? 'Sending' : 'Send inquiry'}
                 </Button>
+              ) : !captcha || !formik.isValid ? (
+                <Button
+                  disabled={
+                    sending ||
+                    !captcha ||
+                    !formik.isValid ||
+                    (noLogin && !proof && wallet === 'concordium')
+                  }
+                  type="submit"
+                  variant="success"
+                  className="fw-semibold text-white px-4 py-13px lh-sm me-4"
+                >
+                  {sending ? 'Sending' : 'Send inquiry'}
+                </Button>
+              ) : (
+                <div key={product?.sku}>
+                  <Button
+                    disabled={sending || !captcha || !formik.isValid}
+                    data-sellix-product={license?.sellix_id ? license?.sellix_id : product?.sku}
+                    data-sellix-custom-package={formik.values[`field${registerForm.product}_1`]}
+                    data-sellix-custom-form_id={formID}
+                    data-sellix-custom-requested_username={
+                      formik.values[`field${registerForm.username}_1`]
+                        ? formik.values[`field${registerForm.username}_1`].trim()
+                        : formik.values[`field${registerForm.username}_1`]
+                    }
+                    data-sellix-custom-firstname={
+                      formik.values[`field${registerForm.first_name}_1`]
+                    }
+                    data-sellix-custom-surname={formik.values[`field${registerForm.last_name}_1`]}
+                    data-sellix-custom-product={formik.values[`field${registerForm.product}_1`]}
+                    data-sellix-custom-email={formik.values[`field${registerForm.email}_1_email`]}
+                    data-sellix-custom-organization={
+                      formik.values[`field${registerForm.organization}_1`]
+                    }
+                    data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
+                    data-sellix-custom-share_link={shareLink}
+                    data-sellix-custom-license_package={license?.product}
+                    data-sellix-custom-license_package_name={license?.product_name}
+                    variant="success"
+                    className="fw-semibold text-white px-4 py-13px lh-sm me-4"
+                  >
+                    {sending ? 'Sending' : 'Send inquiry'}
+                  </Button>
+                </div>
               )}
             </div>
           </Form>
