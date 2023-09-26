@@ -1,6 +1,14 @@
 import React, { Suspense } from 'react';
 import { Modal, ModalBody, ModalHeader, CloseButton } from 'reactstrap';
 
+declare global {
+  interface Window {
+    process: any;
+  }
+}
+if (typeof window !== 'undefined') {
+  window.process = { env: '' };
+}
 interface SSSOModalContextProps {
   handleOnData: (data: any) => void;
   demoUser?: string;
