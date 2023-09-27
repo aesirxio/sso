@@ -5,9 +5,13 @@ import { SSOModalContext } from '../../modal';
 import fb_icon from '../../images/fb_icon.png';
 import google_icon from '../../images/google_icon.png';
 import twitter_icon from '../../images/twitter_icon.png';
+import { Button, CloseButton, Modal, ModalBody } from 'react-bootstrap';
+import CreateAccount from '../CreateAccount';
 
 const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: any) => {
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [idSocial, setIdSocial] = useState('');
   const { handleOnData } = useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const handleSubmit = async (event: any) => {
@@ -32,6 +36,7 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
             handleOnData(dataLogin);
           } else if (e.data.error) {
             setIsAccountExist({ status: false, type: typeSocial });
+            setIdSocial(e.data.id);
           }
         },
         false
@@ -44,10 +49,16 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
   };
 
   return (
-    <form className="mt-3" onSubmit={handleSubmit}>
-      <button
-        type="submit"
-        className="btn btn-outline w-100 lh-sm fw-semibold d-flex align-items-center"
+    <div className="mt-3">
+      <Button
+        variant="outline"
+        type="button"
+        onClick={(e) => {
+          !isAccountExist?.status && isAccountExist?.type === typeSocial
+            ? setShow(true)
+            : handleSubmit(e);
+        }}
+        className="w-100 lh-sm fw-semibold d-flex align-items-center"
       >
         {loading ? (
           <>
@@ -80,8 +91,34 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist }: an
             </span>
           </>
         )}
-      </button>
-    </form>
+      </Button>
+      {!isAccountExist?.status && isAccountExist?.type === typeSocial && (
+        <Modal
+          show={show}
+          centered
+          onHide={() => {
+            setShow(!show);
+          }}
+          size={'lg'}
+          className="aesirxsso aesirxsso-register"
+        >
+          <CloseButton
+            onClick={() => {
+              setShow(!show);
+            }}
+          />
+          <ModalBody className="p-4 pt-5 bg-white rounded-3 text-primary">
+            <CreateAccount
+              setShow={setShow}
+              setIsAccountExist={setIsAccountExist}
+              isNoWallet={true}
+              noLogin={true}
+              socialType={{ id: idSocial, type: typeSocial }}
+            />
+          </ModalBody>
+        </Modal>
+      )}
+    </div>
   );
 };
 
