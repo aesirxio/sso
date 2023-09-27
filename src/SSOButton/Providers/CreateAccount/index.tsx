@@ -178,7 +178,7 @@ const CreateAccount = ({
                   'This ID is already taken',
                   async (value) => await debouncedCheckWeb3Id(`@${value}`)
                 )
-                .required(`Please enter your ${item.name}`);
+                .required(`Please enter your username`);
               break;
             }
             validationSchema[`field${item.fieldId}_1`] = Yup.string().test(
@@ -478,7 +478,7 @@ const CreateAccount = ({
               <Form.Check.Label>Sign up for our newsletter</Form.Check.Label>
             </Form.Check>
             <div className="d-flex align-items-start flex-wrap">
-              <div className="me-4">
+              <div className="me-4 mb-2">
                 <FriendlyCaptcha setCaptcha={setCaptcha} />
               </div>
               {!isSellix && !license?.sellix_id ? (
@@ -493,7 +493,7 @@ const CreateAccount = ({
                   variant="success"
                   className="fw-semibold text-white px-4 py-13px lh-sm me-4"
                 >
-                  {sending ? 'Sending' : 'Send inquiry'}
+                  {sending ? 'Creating' : 'Create account'}
                 </Button>
               ) : !captcha || !formik.isValid ? (
                 <Button

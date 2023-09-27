@@ -37,7 +37,7 @@ const CustomField = ({
     );
   }
   return (
-    <Form.Group className="mb-4 w-100">
+    <Form.Group className="mb-3 w-100">
       <Form.Label className="mb-2">
         {field.name}
         {field.required == '1' && <span className="text-danger">*</span>}

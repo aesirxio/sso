@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Modal, ModalBody, ModalHeader, CloseButton } from 'reactstrap';
+import { CloseButton, Modal, ModalBody } from 'react-bootstrap';
 
 declare global {
   interface Window {
@@ -14,6 +14,7 @@ interface SSSOModalContextProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isSignUpForm?: boolean;
 }
 
 interface SSSOModalProps {
@@ -23,6 +24,7 @@ interface SSSOModalProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isSignUpForm?: boolean;
 }
 
 export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefined);
@@ -36,6 +38,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   demoUser,
   demoPassword,
   noCreateAccount,
+  isSignUpForm = false,
 }) => {
   const handleOnData = (data: any) => {
     onGetData(data);
@@ -44,7 +47,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
 
   return (
     <div className="aesirxsso">
-      <Modal centered fade={false} toggle={toggle} isOpen={show} container=".aesirxsso">
+      <Modal centered fade={false} toggle={toggle} isOpen={show} size={'xl'}>
         <CloseButton onClick={toggle} />
         <ModalBody className="p-0 bg-white rounded-3">
           <Suspense fallback={<>Loading...</>}>
@@ -54,6 +57,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
                 demoUser: demoUser,
                 demoPassword: demoPassword,
                 noCreateAccount: noCreateAccount,
+                isSignUpForm: isSignUpForm,
               }}
             >
               <SSOProviders />

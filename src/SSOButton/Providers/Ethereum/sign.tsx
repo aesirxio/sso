@@ -15,7 +15,7 @@ const SignMessage = ({ setIsAccountExist }: any) => {
   const { address, connector } = useAccount();
   const { getWalletNonce, verifySignature } = useWallet(wallet, address);
   const [status, setStatus] = useState('');
-  const { noCreateAccount, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData } = useContext(SSOModalContext);
   const [isExist, setIsExist] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -49,7 +49,7 @@ const SignMessage = ({ setIsAccountExist }: any) => {
         disabled={isLoading}
         className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center text-start"
         onClick={() => {
-          isExist ? handleSignMessage() : setShow(true);
+          !isExist || isSignUpForm ? setShow(true) : handleSignMessage();
         }}
       >
         {status ? (
@@ -65,7 +65,7 @@ const SignMessage = ({ setIsAccountExist }: any) => {
                 : `Please wait to connect... via ${connector?.name}`}
             </span>
           </div>
-        ) : !isExist ? (
+        ) : !isExist || isSignUpForm ? (
           <>
             <img className="me-3" src={logo} alt="Ethereum Logo" />
             Create account via {connector?.name} ({address && shortenString(address)})

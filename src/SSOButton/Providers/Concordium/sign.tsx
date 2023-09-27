@@ -18,10 +18,9 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
   const [show, setShow] = useState(false);
 
   const wallet = 'concordium';
-  const { noCreateAccount, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData } = useContext(SSOModalContext);
 
   const { getWalletNonce, verifySignature } = useWallet(wallet, account);
-  console.log('noCreateAccountSignMessageConcordium', noCreateAccount);
   const handleConnect = async () => {
     setStatus('connect');
     const nonce = await getWalletNonce();
@@ -91,7 +90,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
         disabled={status !== '' || loading}
         className="btn btn-dark btn-concordium w-100 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center text-start"
         onClick={() => {
-          isExist ? handleConnect() : handleCreate();
+          !isExist || isSignUpForm ? handleCreate() : handleConnect();
         }}
       >
         {status ? (
@@ -107,7 +106,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
                 : `Please wait to connect...`}
             </span>
           </div>
-        ) : !isExist ? (
+        ) : !isExist || isSignUpForm ? (
           <>
             <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium logo" />
             {loading ? (
