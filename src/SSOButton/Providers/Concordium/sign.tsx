@@ -70,9 +70,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
       const statement = await getStatement();
       const provider = await detectConcordiumProvider();
       const proof = await provider.requestIdProof(account ?? '', statement, challenge);
-      console.log('proof', proof);
       const re = await verifyProof(challenge, proof);
-      console.log('verifyProof', re);
 
       if (re) {
         setProof(true);

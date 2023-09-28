@@ -152,6 +152,7 @@ const CreateAccount = ({
             validationSchema[`field${item.fieldId}_1`] = Yup.string()
               .min(3, `Your ${item.name} is too short`)
               .max(30, `Your ${item.name} is too long`)
+              .matches(/^[a-zA-Z0-9_]{3,20}$/, 'Your username is not in the correct format')
               .required(`Please enter your ${item.name}`);
             break;
 
@@ -178,6 +179,7 @@ const CreateAccount = ({
                   'This ID is already taken',
                   async (value) => await debouncedCheckWeb3Id(`@${value}`)
                 )
+                .matches(/^[a-zA-Z0-9_]{3,20}$/, 'Your username is not in the correct format')
                 .required(`Please enter your username`);
               break;
             }
