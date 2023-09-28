@@ -47,7 +47,16 @@ const SSOModal: React.FC<SSSOModalProps> = ({
 
   return (
     <div className="aesirxsso">
-      <Modal centered fade={false} toggle={toggle} isOpen={show} size={'xl'}>
+      <Modal
+        centered
+        fade={false}
+        show={show}
+        onHide={() => {
+          toggle();
+        }}
+        size={'xl'}
+        className="aesirxsso"
+      >
         <CloseButton onClick={toggle} />
         <ModalBody className="p-0 bg-white rounded-3">
           <Suspense fallback={<>Loading...</>}>
