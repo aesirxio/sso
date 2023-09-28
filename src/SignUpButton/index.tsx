@@ -55,6 +55,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
           <SSOModalContext.Provider
             value={{
               handleOnData: null,
+              toggle: toggle,
               demoUser: null,
               demoPassword: null,
               noCreateAccount: false,
@@ -138,7 +139,9 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
                           )}
                       </>
                     )}
-                    {expand === 'email' && <CreateAccount noLogin={true} isNoWallet={true} />}
+                    {expand === 'email' && (
+                      <CreateAccount noLogin={true} isNoWallet={true} setShow={toggle} />
+                    )}
                     {expand?.includes('social') && (
                       <div>
                         {(expand === 'social' || expand === 'social-google') && (

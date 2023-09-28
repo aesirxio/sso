@@ -15,7 +15,7 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
   const { address, connector } = useAccount();
   const { getWalletNonce, verifySignature } = useWallet(wallet, address);
   const [status, setStatus] = useState('');
-  const { noCreateAccount, isSignUpForm, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
   const [isExist, setIsExist] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -40,7 +40,11 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
     }
     setStatus('');
   };
-
+  const handleSuccess = async () => {
+    setShow(false);
+    setExpand('wallet');
+    setIsAccountExist({ status: true, type: '' });
+  };
   return (
     <>
       {show ? (
@@ -60,7 +64,7 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
           </div>
           <div className="text-primary">
             <CreateAccount
-              setShow={setShow}
+              setShow={isSignUpForm ? toggle : handleSuccess}
               setIsExist={setIsExist}
               setIsAccountExist={setIsAccountExist}
               accountAddress={address}

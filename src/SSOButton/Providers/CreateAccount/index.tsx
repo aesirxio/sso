@@ -408,6 +408,7 @@ const CreateAccount = ({
       setIsSellix(false);
     }
   }, [formik.values]);
+
   return (
     <>
       {!accountAddress && !isNoWallet && (
@@ -505,7 +506,7 @@ const CreateAccount = ({
                   variant="success"
                   className="fw-semibold text-white px-4 py-13px lh-sm me-4"
                 >
-                  {sending ? 'Creating' : 'Create account'}
+                  {sending ? 'Creating...' : 'Create account'}
                 </Button>
               ) : !captcha || !formik.isValid ? (
                 <Button

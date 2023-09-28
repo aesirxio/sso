@@ -11,6 +11,7 @@ if (typeof window !== 'undefined') {
 }
 interface SSSOModalContextProps {
   handleOnData: (data: any) => void;
+  toggle: () => void;
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
@@ -63,6 +64,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
             <SSOModalContext.Provider
               value={{
                 handleOnData: handleOnData,
+                toggle: toggle,
                 demoUser: demoUser,
                 demoPassword: demoPassword,
                 noCreateAccount: noCreateAccount,

@@ -18,7 +18,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
   const [show, setShow] = useState(false);
 
   const wallet = 'concordium';
-  const { noCreateAccount, isSignUpForm, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
 
   const { getWalletNonce, verifySignature } = useWallet(wallet, account);
   const handleConnect = async () => {
@@ -85,7 +85,11 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
       return false;
     }
   };
-
+  const handleSuccess = async () => {
+    setShow(false);
+    setExpand('wallet');
+    setIsAccountExist({ status: true, type: '' });
+  };
   return (
     <>
       {show ? (
@@ -105,7 +109,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
           </div>
           <div className="text-primary">
             <CreateAccount
-              setShow={setShow}
+              setShow={isSignUpForm ? toggle : handleSuccess}
               setIsExist={setIsExist}
               setIsAccountExist={setIsAccountExist}
               accountAddress={account}

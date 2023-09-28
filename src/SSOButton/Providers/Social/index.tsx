@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setExpand }: any) => {
   const [loading, setLoading] = useState(false);
   const [idSocial, setIdSocial] = useState('');
-  const { noCreateAccount, isSignUpForm, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const [showCreate, setShowCreate] = useState('');
   const [showCreatedMessage, setShowCreatedMessage] = useState(false);
@@ -61,7 +61,12 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
   useEffect(() => {
     showCreatedMessage && toast.error("You've already created an account with this social media");
   }, [showCreatedMessage]);
-
+  const handleSuccess = async () => {
+    setShowCreate('');
+    setExpand('social');
+    setIdSocial('');
+    setIsAccountExist({ status: true, type: '' });
+  };
   return (
     <>
       {showCreate === typeSocial ? (
@@ -82,6 +87,7 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
           </div>
           <div className="text-primary">
             <CreateAccount
+              setShow={isSignUpForm ? toggle : handleSuccess}
               setIsAccountExist={setIsAccountExist}
               isNoWallet={true}
               noLogin={true}
