@@ -1,7 +1,6 @@
 import React, { Suspense, useState } from 'react';
 import { CloseButton, Modal, ModalBody } from 'react-bootstrap';
 import '../SSOButton/styles/index.scss';
-import privacy_icon from '../SSOButton/images/privacy_icon.png';
 import arrow_left from '../SSOButton/images/arrow_left.svg';
 import login_bg from '../SSOButton/images/login_bg.png';
 import { SSOModalContext } from '../SSOButton/modal';
@@ -97,10 +96,10 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
                           Sign up with email
                         </button>
                       </>
-                    ) : (
+                    ) : expand === 'social' || expand === 'wallet' || expand === 'email' ? (
                       <div className="text-start">
                         <div
-                          className="cursor-pointer fw-medium fs-14 d-inline-flex align-items-center back-button"
+                          className="cursor-pointer fw-medium fs-14 d-inline-flex align-items-center back-button text-primary"
                           onClick={() => {
                             setExpand('');
                             setIsAccountExist({ status: true, type: '' });
@@ -110,56 +109,74 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
                           Back
                         </div>
                       </div>
+                    ) : (
+                      <></>
                     )}
-                    {expand === 'wallet' && (
+                    {expand?.includes('wallet') && (
                       <>
-                        {hasMetamask && (
+                        {(expand === 'wallet' || expand === 'wallet-metamask') && hasMetamask && (
                           <div className="mb-3">
                             <Suspense fallback={<>Loading...</>}>
-                              <SSOEthereumProvider setIsAccountExist={setIsAccountExist} />
+                              <SSOEthereumProvider
+                                setIsAccountExist={setIsAccountExist}
+                                setExpand={setExpand}
+                              />
                             </Suspense>
                           </div>
                         )}
 
-                        {hasConcordium && (
-                          <div>
-                            <Suspense fallback={<>Loading...</>}>
-                              <SSOConcordiumProvider setIsAccountExist={setIsAccountExist} />
-                            </Suspense>
-                          </div>
-                        )}
+                        {(expand === 'wallet' || expand === 'wallet-concordium') &&
+                          hasConcordium && (
+                            <div>
+                              <Suspense fallback={<>Loading...</>}>
+                                <SSOConcordiumProvider
+                                  setIsAccountExist={setIsAccountExist}
+                                  setExpand={setExpand}
+                                />
+                              </Suspense>
+                            </div>
+                          )}
                       </>
                     )}
                     {expand === 'email' && <CreateAccount noLogin={true} isNoWallet={true} />}
-                    {expand === 'social' && (
+                    {expand?.includes('social') && (
                       <div>
-                        <div className="mb-1">
-                          <Suspense fallback={<>Loading...</>}>
-                            <SSOSocialProvider
-                              typeSocial="google"
-                              isAccountExist={{ status: false, type: 'google' }}
-                              setIsAccountExist={setIsAccountExist}
-                            />
-                          </Suspense>
-                        </div>
-                        <div className="mb-1">
-                          <Suspense fallback={<>Loading...</>}>
-                            <SSOSocialProvider
-                              typeSocial="twitter"
-                              isAccountExist={{ status: false, type: 'twitter' }}
-                              setIsAccountExist={setIsAccountExist}
-                            />
-                          </Suspense>
-                        </div>
-                        <div>
-                          <Suspense fallback={<>Loading...</>}>
-                            <SSOSocialProvider
-                              typeSocial="facebook"
-                              isAccountExist={{ status: false, type: 'facebook' }}
-                              setIsAccountExist={setIsAccountExist}
-                            />
-                          </Suspense>
-                        </div>
+                        {(expand === 'social' || expand === 'social-google') && (
+                          <div className="mb-1">
+                            <Suspense fallback={<>Loading...</>}>
+                              <SSOSocialProvider
+                                typeSocial="google"
+                                isAccountExist={{ status: false, type: 'google' }}
+                                setIsAccountExist={setIsAccountExist}
+                                setExpand={setExpand}
+                              />
+                            </Suspense>
+                          </div>
+                        )}
+                        {(expand === 'social' || expand === 'social-twitter') && (
+                          <div className="mb-1">
+                            <Suspense fallback={<>Loading...</>}>
+                              <SSOSocialProvider
+                                typeSocial="twitter"
+                                isAccountExist={{ status: false, type: 'twitter' }}
+                                setIsAccountExist={setIsAccountExist}
+                                setExpand={setExpand}
+                              />
+                            </Suspense>
+                          </div>
+                        )}
+                        {(expand === 'social' || expand === 'social-facebook') && (
+                          <div>
+                            <Suspense fallback={<>Loading...</>}>
+                              <SSOSocialProvider
+                                typeSocial="facebook"
+                                isAccountExist={{ status: false, type: 'facebook' }}
+                                setIsAccountExist={setIsAccountExist}
+                                setExpand={setExpand}
+                              />
+                            </Suspense>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

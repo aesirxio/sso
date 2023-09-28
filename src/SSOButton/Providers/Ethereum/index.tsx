@@ -132,6 +132,7 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 const SSOEthereumProvider = ({
   setIsAccountExist,
+  setExpand,
   noLogin,
   accountAddress,
   setAccountAddress,
@@ -143,6 +144,7 @@ const SSOEthereumProvider = ({
       <WagmiConfig config={wagmiConfig}>
         <SSOEthereumApp
           setIsAccountExist={setIsAccountExist}
+          setExpand={setExpand}
           noLogin={noLogin}
           accountAddress={accountAddress}
           setAccountAddress={setAccountAddress}
@@ -158,6 +160,7 @@ const SSOEthereumProvider = ({
 
 const SSOEthereumApp = ({
   setIsAccountExist,
+  setExpand,
   noLogin,
   accountAddress,
   setAccountAddress,
@@ -205,7 +208,7 @@ const SSOEthereumApp = ({
         )}
       </>
     ) : (
-      <SignMessage setIsAccountExist={setIsAccountExist} />
+      <SignMessage setIsAccountExist={setIsAccountExist} setExpand={setExpand} />
     )
   ) : (
     <ConnectMetamask />

@@ -18,6 +18,7 @@ import { getClientApp, shortenString } from '../../../utils';
 import ComponentTags from '../../../components/ComponentTags';
 interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setIsAccountExist: any;
+  setExpand: any;
   noLogin: any;
   setAccountAddress: any;
   setConnectionProvider: any;
@@ -25,6 +26,7 @@ interface WalletConnectionPropsExtends extends WalletConnectionProps {
 }
 const SSOConcordiumProvider = ({
   setIsAccountExist,
+  setExpand,
   noLogin,
   setAccountAddress,
   setConnection,
@@ -38,6 +40,7 @@ const SSOConcordiumProvider = ({
         <ConcordiumApp
           {...props}
           setIsAccountExist={setIsAccountExist}
+          setExpand={setExpand}
           noLogin={noLogin}
           setAccountAddress={setAccountAddress}
           setConnectionProvider={setConnection}
@@ -58,6 +61,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
     genesisHashes,
     setActiveConnectorType,
     setIsAccountExist,
+    setExpand,
     noLogin,
     setAccountAddress,
     setConnectionProvider,
@@ -171,6 +175,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
                 account={account}
                 connection={connection}
                 setIsAccountExist={setIsAccountExist}
+                setExpand={setExpand}
               />
             )
           ) : (
