@@ -46,6 +46,7 @@ const CreateAccount = ({
   packagesData = {},
   productOptions = [],
   productName,
+  socialType = {},
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -130,7 +131,7 @@ const CreateAccount = ({
       if (item.required == '1' && item?.fieldId?.toString() !== registerForm.product?.toString()) {
         switch (item.fieldtype) {
           case 'email':
-            if (!accountAddress) {
+            if (!accountAddress && !Object.keys(socialType).length) {
               if (item?.fieldId?.toString() == registerForm.email?.toString()) {
                 validationSchema[`field${item.fieldId}_1_email`] = Yup.string()
                   .email(`Please enter valid email`)
@@ -151,6 +152,7 @@ const CreateAccount = ({
             validationSchema[`field${item.fieldId}_1`] = Yup.string()
               .min(3, `Your ${item.name} is too short`)
               .max(30, `Your ${item.name} is too long`)
+              .matches(/^[a-zA-Z0-9_]{3,20}$/, 'Your username is not in the correct format')
               .required(`Please enter your ${item.name}`);
             break;
 
@@ -177,7 +179,8 @@ const CreateAccount = ({
                   'This ID is already taken',
                   async (value) => await debouncedCheckWeb3Id(`@${value}`)
                 )
-                .required(`Please enter your ${item.name}`);
+                .matches(/^[a-zA-Z0-9_]{3,20}$/, 'Your username is not in the correct format')
+                .required(`Please enter your username`);
               break;
             }
             validationSchema[`field${item.fieldId}_1`] = Yup.string().test(
@@ -264,18 +267,27 @@ const CreateAccount = ({
         const member = {
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
+            : Object.keys(socialType)?.length
+            ? `${socialType?.id}`
             : `${accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
+            : Object.keys(socialType)?.length
+            ? `${socialType?.id}@aesirx.io`
             : `${accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
+            : Object.keys(socialType)?.length
+            ? `${socialType?.id}`
             : `${accountAddress}`,
           block: 0,
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
             : { wallet_metamask: accountAddress }),
+          ...(Object.keys(socialType)?.length
+            ? { [`social_${socialType?.type}`]: socialType?.id }
+            : {}),
           web3id: data[`field${registerForm.username}_1`],
         };
         const createResponse = await createMember(member);
@@ -299,6 +311,8 @@ const CreateAccount = ({
                 [`field${registerForm.product}_1`]: data[`field${registerForm.product}_1`],
                 [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                   ? data[`field${registerForm.email}_1_email`]
+                  : Object.keys(socialType).length
+                  ? `${socialType?.id}@aesirx.io`
                   : `${accountAddress}@aesirx.io`,
                 [`field${registerForm.organization}_1`]:
                   data[`field${registerForm.organization}_1`],
@@ -324,7 +338,7 @@ const CreateAccount = ({
               } else {
                 const responseMintWeb3ID = await mintWeb3ID(jwt);
                 if (responseMintWeb3ID?.data?.success) {
-                  if (wallet) {
+                  if (wallet || Object.keys(socialType).length) {
                     toast.success(
                       `Thank you for signing up, ${
                         data[`field${registerForm.username}_1`]
@@ -396,6 +410,7 @@ const CreateAccount = ({
       setIsSellix(false);
     }
   }, [formik.values]);
+
   return (
     <>
       {!accountAddress && !isNoWallet && (
@@ -440,7 +455,7 @@ const CreateAccount = ({
                       formik={formik}
                       defaultProduct={defaultProduct}
                       productOptions={productOptions}
-                      isWallet={accountAddress ? true : false}
+                      isShowEmail={accountAddress || Object.keys(socialType).length ? false : true}
                       isProduct={
                         Object.keys(packagesData).length || productOptions?.length ? true : false
                       }
@@ -478,7 +493,7 @@ const CreateAccount = ({
               <Form.Check.Label>Sign up for our newsletter</Form.Check.Label>
             </Form.Check>
             <div className="d-flex align-items-start flex-wrap">
-              <div className="me-4">
+              <div className="me-4 mb-2">
                 <FriendlyCaptcha setCaptcha={setCaptcha} />
               </div>
               {!isSellix && !license?.sellix_id ? (
@@ -493,7 +508,7 @@ const CreateAccount = ({
                   variant="success"
                   className="fw-semibold text-white px-4 py-13px lh-sm me-4"
                 >
-                  {sending ? 'Sending' : 'Send inquiry'}
+                  {sending ? 'Creating...' : 'Create account'}
                 </Button>
               ) : !captcha || !formik.isValid ? (
                 <Button

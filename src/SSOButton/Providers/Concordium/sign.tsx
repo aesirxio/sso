@@ -6,11 +6,11 @@ import { getChallenge, getStatement, shortenString, verifyProof } from '../../..
 import { SSOModalContext } from '../../modal';
 import concordium_logo from '../../images/concordium_logo.png';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
-import { CloseButton, Modal, ModalBody } from 'react-bootstrap';
 import CreateAccount from '../CreateAccount';
 import { stringMessage } from '@concordium/react-components';
+import arrow_left from '../../images/arrow_left.svg';
 
-const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) => {
+const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpand }: any) => {
   const [status, setStatus] = useState('');
   const [isExist, setIsExist] = useState(true);
   const [proof, setProof] = useState(false);
@@ -18,10 +18,9 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
   const [show, setShow] = useState(false);
 
   const wallet = 'concordium';
-  const { noCreateAccount, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
 
   const { getWalletNonce, verifySignature } = useWallet(wallet, account);
-  console.log('noCreateAccountSignMessageConcordium', noCreateAccount);
   const handleConnect = async () => {
     setStatus('connect');
     const nonce = await getWalletNonce();
@@ -40,10 +39,8 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
         toast(error.message);
       }
     } else {
-      if (!noCreateAccount) {
-        setIsExist(false);
-        setIsAccountExist({ status: false, type: 'concordium' });
-      }
+      !noCreateAccount && setIsExist(false);
+      setIsAccountExist({ status: false, type: 'concordium' });
     }
     setStatus('');
   };
@@ -52,9 +49,13 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
     try {
       if (!proof) {
         const responseProof = await handleProof();
-        responseProof && setShow(true);
+        if (responseProof) {
+          setShow(true);
+          setExpand('wallet-concordium');
+        }
       } else {
         setShow(true);
+        setExpand('wallet-concordium');
       }
     } catch (error) {
       console.log(error);
@@ -69,9 +70,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
       const statement = await getStatement();
       const provider = await detectConcordiumProvider();
       const proof = await provider.requestIdProof(account ?? '', statement, challenge);
-      console.log('proof', proof);
       const re = await verifyProof(challenge, proof);
-      console.log('verifyProof', re);
 
       if (re) {
         setProof(true);
@@ -84,78 +83,93 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist }: any) 
       return false;
     }
   };
-
+  const handleSuccess = async () => {
+    setShow(false);
+    setExpand('wallet');
+    setIsAccountExist({ status: true, type: '' });
+  };
   return (
     <>
-      <button
-        disabled={status !== '' || loading}
-        className="btn btn-dark btn-concordium w-100 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center text-start"
-        onClick={() => {
-          isExist ? handleConnect() : handleCreate();
-        }}
-      >
-        {status ? (
-          <div className="d-flex align-items-center">
-            <span
-              className="spinner-border spinner-border-sm me-1"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            <span className="ms-1">
-              {status === 'sign'
-                ? 'Please sign message on the wallet'
-                : `Please wait to connect...`}
-            </span>
+      {show ? (
+        <>
+          <div className="text-start">
+            <div
+              className="cursor-pointer fw-medium fs-14 d-inline-flex align-items-center back-button text-primary"
+              onClick={() => {
+                setShow(false);
+                setExpand('wallet');
+                setIsAccountExist({ status: true, type: '' });
+              }}
+            >
+              <img src={arrow_left} alt="Back Icon" className="me-1" />
+              Back
+            </div>
           </div>
-        ) : !isExist ? (
-          <>
-            <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium logo" />
-            {loading ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm me-1"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span className="ms-1">{!proof ? 'Authorizing' : 'Loading...'}</span>
-              </>
-            ) : (
-              <>Create account via Concordium ({account && shortenString(account)})</>
-            )}
-          </>
-        ) : (
-          <>
-            <img src={concordium_logo} className="me-3 align-text-bottom" alt="Concordium logo" />
-            Sign in via Concordium ({account && shortenString(account)})
-          </>
-        )}
-      </button>
-      {!noCreateAccount && (
-        <Modal
-          show={show}
-          centered
-          onHide={() => {
-            setShow(!show);
-          }}
-          size={'lg'}
-          className="aesirxsso aesirxsso-register"
-        >
-          <CloseButton
-            onClick={() => {
-              setShow(!show);
-            }}
-          />
-          <ModalBody className="p-4 pt-5 bg-white rounded-3 text-primary">
+          <div className="text-primary">
             <CreateAccount
-              setShow={setShow}
+              setShow={isSignUpForm ? toggle : handleSuccess}
               setIsExist={setIsExist}
               setIsAccountExist={setIsAccountExist}
               accountAddress={account}
               connection={connection}
               wallet={'concordium'}
             />
-          </ModalBody>
-        </Modal>
+          </div>
+        </>
+      ) : (
+        <>
+          <button
+            disabled={status !== '' || loading}
+            className="btn btn-dark btn-concordium w-100 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center text-start"
+            onClick={() => {
+              !isExist || isSignUpForm ? handleCreate() : handleConnect();
+            }}
+          >
+            {status ? (
+              <div className="d-flex align-items-center">
+                <span
+                  className="spinner-border spinner-border-sm me-1"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span className="ms-1">
+                  {status === 'sign'
+                    ? 'Please sign message on the wallet'
+                    : `Please wait to connect...`}
+                </span>
+              </div>
+            ) : !isExist || isSignUpForm ? (
+              <>
+                <img
+                  src={concordium_logo}
+                  className="me-3 align-text-bottom"
+                  alt="Concordium logo"
+                />
+                {loading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-1"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="ms-1">{!proof ? 'Authorizing' : 'Loading...'}</span>
+                  </>
+                ) : (
+                  <>Create account via Concordium ({account && shortenString(account)})</>
+                )}
+              </>
+            ) : (
+              <>
+                <img
+                  src={concordium_logo}
+                  className="me-3 align-text-bottom"
+                  alt="Concordium logo"
+                />
+                Sign in via Concordium ({account && shortenString(account)})
+              </>
+            )}
+          </button>
+        </>
       )}
     </>
   );

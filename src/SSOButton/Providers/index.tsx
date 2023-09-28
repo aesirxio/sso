@@ -61,10 +61,10 @@ const SSOProviders = () => {
                     Log in with email & password
                   </button>
                 </>
-              ) : (
+              ) : expand === 'social' || expand === 'wallet' || expand === 'email' ? (
                 <div className="text-start">
                   <div
-                    className="cursor-pointer fw-medium fs-14 d-inline-flex align-items-center back-button"
+                    className="cursor-pointer fw-medium fs-14 d-inline-flex align-items-center back-button text-primary"
                     onClick={() => {
                       setExpand('');
                       setIsAccountExist({ status: true, type: '' });
@@ -74,33 +74,42 @@ const SSOProviders = () => {
                     Back
                   </div>
                 </div>
+              ) : (
+                <></>
               )}
-              {expand === 'wallet' && (
+              {expand?.includes('wallet') && (
                 <>
-                  {!isAccountExist?.status && (
-                    <div className="bg-danger text-white px-3 py-2 rounded-2 d-flex align-items-center mb-3">
-                      <img
-                        className="me-1"
-                        src={cancel}
-                        alt="cancel Icon"
-                        width="16px"
-                        height="16px"
-                      />
-                      Your account not exist
-                    </div>
-                  )}
-                  {hasMetamask && (
+                  {!isAccountExist?.status &&
+                    (expand === 'social' || expand === 'wallet' || expand === 'email') && (
+                      <div className="bg-danger text-white px-3 py-2 rounded-2 d-flex align-items-center mb-3">
+                        <img
+                          className="me-1"
+                          src={cancel}
+                          alt="cancel Icon"
+                          width="16px"
+                          height="16px"
+                        />
+                        Your account not exist
+                      </div>
+                    )}
+                  {(expand === 'wallet' || expand === 'wallet-metamask') && hasMetamask && (
                     <div className="mb-3">
                       <Suspense fallback={<>Loading...</>}>
-                        <SSOEthereumProvider setIsAccountExist={setIsAccountExist} />
+                        <SSOEthereumProvider
+                          setIsAccountExist={setIsAccountExist}
+                          setExpand={setExpand}
+                        />
                       </Suspense>
                     </div>
                   )}
 
-                  {hasConcordium && (
+                  {(expand === 'wallet' || expand === 'wallet-concordium') && hasConcordium && (
                     <div>
                       <Suspense fallback={<>Loading...</>}>
-                        <SSOConcordiumProvider setIsAccountExist={setIsAccountExist} />
+                        <SSOConcordiumProvider
+                          setIsAccountExist={setIsAccountExist}
+                          setExpand={setExpand}
+                        />
                       </Suspense>
                     </div>
                   )}
@@ -113,47 +122,57 @@ const SSOProviders = () => {
                   </Suspense>
                 </div>
               )}
-              {expand === 'social' && (
+              {expand?.includes('social') && (
                 <div>
-                  {!isAccountExist?.status && (
-                    <div className="bg-danger text-white px-3 py-2 rounded-2 d-flex align-items-center">
-                      <img
-                        className="me-1"
-                        src={cancel}
-                        alt="cancel Icon"
-                        width="16px"
-                        height="16px"
-                      />
-                      Your account not link to {isAccountExist?.type} yet
+                  {!isAccountExist?.status &&
+                    (expand === 'social' || expand === 'wallet' || expand === 'email') && (
+                      <div className="bg-danger text-white px-3 py-2 rounded-2 d-flex align-items-center">
+                        <img
+                          className="me-1"
+                          src={cancel}
+                          alt="cancel Icon"
+                          width="16px"
+                          height="16px"
+                        />
+                        Your account not link to {isAccountExist?.type} yet
+                      </div>
+                    )}
+                  {(expand === 'social' || expand === 'social-google') && (
+                    <div className="mb-1">
+                      <Suspense fallback={<>Loading...</>}>
+                        <SSOSocialProvider
+                          typeSocial="google"
+                          isAccountExist={isAccountExist}
+                          setIsAccountExist={setIsAccountExist}
+                          setExpand={setExpand}
+                        />
+                      </Suspense>
                     </div>
                   )}
-                  <div className="mb-1">
-                    <Suspense fallback={<>Loading...</>}>
-                      <SSOSocialProvider
-                        typeSocial="google"
-                        isAccountExist={isAccountExist}
-                        setIsAccountExist={setIsAccountExist}
-                      />
-                    </Suspense>
-                  </div>
-                  <div className="mb-1">
-                    <Suspense fallback={<>Loading...</>}>
-                      <SSOSocialProvider
-                        typeSocial="twitter"
-                        isAccountExist={isAccountExist}
-                        setIsAccountExist={setIsAccountExist}
-                      />
-                    </Suspense>
-                  </div>
-                  <div>
-                    <Suspense fallback={<>Loading...</>}>
-                      <SSOSocialProvider
-                        typeSocial="facebook"
-                        isAccountExist={isAccountExist}
-                        setIsAccountExist={setIsAccountExist}
-                      />
-                    </Suspense>
-                  </div>
+                  {(expand === 'social' || expand === 'social-twitter') && (
+                    <div className="mb-1">
+                      <Suspense fallback={<>Loading...</>}>
+                        <SSOSocialProvider
+                          typeSocial="twitter"
+                          isAccountExist={isAccountExist}
+                          setIsAccountExist={setIsAccountExist}
+                          setExpand={setExpand}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
+                  {(expand === 'social' || expand === 'social-facebook') && (
+                    <div>
+                      <Suspense fallback={<>Loading...</>}>
+                        <SSOSocialProvider
+                          typeSocial="facebook"
+                          isAccountExist={isAccountExist}
+                          setIsAccountExist={setIsAccountExist}
+                          setExpand={setExpand}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

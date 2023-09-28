@@ -6,7 +6,7 @@ import { getClientApp } from '../../../utils';
 const CustomField = ({
   formik,
   field,
-  isWallet,
+  isShowEmail,
   isProduct = false,
   defaultProduct,
   productOptions,
@@ -20,13 +20,12 @@ const CustomField = ({
   if (field.name == 'Order ID' || field.name === 'Message') {
     return null;
   }
-  console.log('isProduct', isProduct);
   if (
     (field.fieldId?.toString() === registerForm?.product?.toString() && !isProduct) ||
     field.fieldId?.toString() === registerForm?.first_name?.toString() ||
     field.fieldId?.toString() === registerForm?.last_name?.toString() ||
     field.fieldId?.toString() === registerForm?.organization?.toString() ||
-    (isWallet && field.fieldId?.toString() === registerForm?.email?.toString())
+    (!isShowEmail && field.fieldId?.toString() === registerForm?.email?.toString())
   ) {
     return null;
   }
@@ -38,7 +37,7 @@ const CustomField = ({
     );
   }
   return (
-    <Form.Group className="mb-4 w-100">
+    <Form.Group className="mb-3 w-100">
       <Form.Label className="mb-2">
         {field.name}
         {field.required == '1' && <span className="text-danger">*</span>}
