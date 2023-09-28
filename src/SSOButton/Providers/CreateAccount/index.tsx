@@ -229,6 +229,12 @@ const CreateAccount = ({
         const fp = await fpPromise;
         const result = await fp.get();
         data.visitorId = result.visitorId;
+
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        const refShare2EarnUrl = params.get('ref');
+        const refAffiliate2EarnUrl = params.get('refaffiliate');
+
         const apiData = {
           id: data[`field${registerForm.username}_1`],
           orderId: data[`field${registerForm.order_id}_1`] ?? '',
@@ -242,6 +248,12 @@ const CreateAccount = ({
           }),
           message: data[`field${registerForm.message}_1`] ?? '',
           visitorId: result.visitorId,
+          ...(refShare2EarnUrl && {
+            refShare2Earn: refShare2EarnUrl,
+          }),
+          ...(refAffiliate2EarnUrl && {
+            refAffiliate2Earn: refAffiliate2EarnUrl,
+          }),
         };
         console.log('apiData', apiData);
 
