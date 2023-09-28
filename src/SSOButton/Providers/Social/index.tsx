@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setExpand }: any) => {
   const [loading, setLoading] = useState(false);
   const [idSocial, setIdSocial] = useState('');
-  const { noCreateAccount, handleOnData } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData } = useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const [showCreate, setShowCreate] = useState('');
   const [showCreatedMessage, setShowCreatedMessage] = useState(false);
@@ -95,7 +95,11 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
             variant="outline"
             type="button"
             onClick={(e) => {
-              if (!isAccountExist?.status && isAccountExist?.type === typeSocial && !isExist) {
+              if (
+                !isAccountExist?.status &&
+                isAccountExist?.type === typeSocial &&
+                (!isExist || isSignUpForm)
+              ) {
                 if (idSocial) {
                   setExpand(`social-${typeSocial}`);
                   setShowCreate(typeSocial);
@@ -130,7 +134,9 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
                   alt="Back Icon"
                   className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
                 />
-                {!isAccountExist?.status && isAccountExist?.type === typeSocial && !isExist
+                {!isAccountExist?.status &&
+                isAccountExist?.type === typeSocial &&
+                (!isExist || isSignUpForm)
                   ? 'Create account'
                   : 'Log in'}{' '}
                 with
