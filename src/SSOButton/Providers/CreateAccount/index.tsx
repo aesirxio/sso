@@ -7,6 +7,7 @@ import {
   getChallenge,
   getClientApp,
   getStatement,
+  linkAesirXAccount,
   login,
   mintWeb3ID,
   validateEmail,
@@ -290,74 +291,73 @@ const CreateAccount = ({
             : {}),
           web3id: data[`field${registerForm.username}_1`],
         };
-        const createResponse = await createMember(member);
-        if (createResponse?.result?.success) {
-          const { jwt } = await login(member?.email, member?.password);
+
+        try {
           setLoading('saving');
-          try {
-            const response = await autoRegisterWeb3id(
-              apiData,
-              jwt,
-              signedNonce,
-              accountAddress,
-              wallet === 'concordium' ? true : false
+          const response = await autoRegisterWeb3id(
+            apiData,
+            '',
+            signedNonce,
+            accountAddress,
+            wallet === 'concordium' ? true : false
+          );
+          if (response) {
+            await createMember(member);
+            const { jwt } = await login(member?.email, member?.password);
+            await linkAesirXAccount(apiData.id, jwt);
+            const redFormData = {
+              form_id: formID,
+              [`field${registerForm.username}_1`]: data[`field${registerForm.username}_1`],
+              [`field${registerForm.first_name}_1`]: data[`field${registerForm.first_name}_1`],
+              [`field${registerForm.last_name}_1`]: data[`field${registerForm.last_name}_1`],
+              [`field${registerForm.product}_1`]: data[`field${registerForm.product}_1`],
+              [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
+                ? data[`field${registerForm.email}_1_email`]
+                : Object.keys(socialType).length
+                ? `${socialType?.id}@aesirx.io`
+                : `${accountAddress}@aesirx.io`,
+              [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
+              [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
+              [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
+            };
+            const formData = new FormData();
+            for (const key in redFormData) {
+              formData.append(key, redFormData[key] ?? '');
+            }
+            await axios.post(
+              `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
+              formData
             );
-            if (response) {
-              const redFormData = {
-                form_id: formID,
-                [`field${registerForm.username}_1`]: data[`field${registerForm.username}_1`],
-                [`field${registerForm.first_name}_1`]: data[`field${registerForm.first_name}_1`],
-                [`field${registerForm.last_name}_1`]: data[`field${registerForm.last_name}_1`],
-                [`field${registerForm.product}_1`]: data[`field${registerForm.product}_1`],
-                [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
-                  ? data[`field${registerForm.email}_1_email`]
-                  : Object.keys(socialType).length
-                  ? `${socialType?.id}@aesirx.io`
-                  : `${accountAddress}@aesirx.io`,
-                [`field${registerForm.organization}_1`]:
-                  data[`field${registerForm.organization}_1`],
-                [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
-                [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
-              };
-              const formData = new FormData();
-              for (const key in redFormData) {
-                formData.append(key, redFormData[key] ?? '');
-              }
-              await axios.post(
-                `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
-                formData
+            if (wallet === 'concordium') {
+              toast.success(
+                `Thank you for signing up, ${
+                  data[`field${registerForm.username}_1`]
+                }! You can now log in to access all of our features and benefits.`
               );
-              if (wallet === 'concordium') {
-                toast.success(
-                  `Thank you for signing up, ${
-                    data[`field${registerForm.username}_1`]
-                  }! You can now log in to access all of our features and benefits.`
-                );
+              setIsExist && setIsExist(true);
+              setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
+            } else {
+              const responseMintWeb3ID = await mintWeb3ID(jwt);
+              if (responseMintWeb3ID?.data?.success) {
+                if (wallet || Object.keys(socialType).length) {
+                  toast.success(
+                    `Thank you for signing up, ${
+                      data[`field${registerForm.username}_1`]
+                    }! You can now log in to access all of our features and benefits.`
+                  );
+                } else {
+                  toast.success(
+                    'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
+                  );
+                }
                 setIsExist && setIsExist(true);
                 setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
-              } else {
-                const responseMintWeb3ID = await mintWeb3ID(jwt);
-                if (responseMintWeb3ID?.data?.success) {
-                  if (wallet || Object.keys(socialType).length) {
-                    toast.success(
-                      `Thank you for signing up, ${
-                        data[`field${registerForm.username}_1`]
-                      }! You can now log in to access all of our features and benefits.`
-                    );
-                  } else {
-                    toast.success(
-                      'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
-                    );
-                  }
-                  setIsExist && setIsExist(true);
-                  setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
-                }
               }
             }
-          } catch (error) {
-            console.log(error);
-            toast.error(error?.response?.data?.error || error?.message);
           }
+        } catch (error) {
+          console.log(error);
+          toast.error(error?.response?.data?.error || error?.message);
         }
       } catch (error: any) {
         isSuccess = false;
