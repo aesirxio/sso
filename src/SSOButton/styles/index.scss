@@ -30,6 +30,7 @@ $btn-close-color: #fff;
   @import 'bootstrap/scss/transitions';
   @import 'bootstrap/scss/helpers';
   @import 'bootstrap/scss/utilities/api';
+  @import 'bootstrap/scss/_grid';
 
   .fs-18 {
     font-size: 18px;
@@ -120,6 +121,28 @@ $btn-close-color: #fff;
   .modal-dialog-centered {
     min-height: 100%;
   }
+  &.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1055;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+  }
+}
+.modal-backdrop {
+  --#{$prefix}backdrop-zindex: #{$zindex-modal-backdrop};
+  --#{$prefix}backdrop-bg: #{$modal-backdrop-bg};
+  --#{$prefix}backdrop-opacity: #{$modal-backdrop-opacity};
+  @include overlay-backdrop(
+    var(--#{$prefix}backdrop-zindex),
+    var(--#{$prefix}backdrop-bg),
+    var(--#{$prefix}backdrop-opacity)
+  );
 }
 .aesirxsso-register {
   .modal-dialog {
