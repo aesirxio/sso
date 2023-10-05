@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from '../../components/Image';
+import { Image } from '../../components/Image';
 import mail_logo from '../../SSOButton/images/mail_logo.png';
 import { useUserContext } from '../../SSOButton/Providers/user';
 import { Button, Form } from 'react-bootstrap';

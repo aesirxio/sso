@@ -455,82 +455,82 @@ const resetPassword = async (data: any) => {
     console.log(error);
     throw error;
   }
-  };
-  const updateMember = async (bodyData: any, accessToken: any) => {
-    try {
-      const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_AESIRX_API_ENDPOINT}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal`,
-        bodyData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      return response?.data;
-    } catch (error) {
-      throw error;
-    }
-  };
-  const connectWallet = async (
-    address: string,
-    walletType: string,
-    accessToken: string,
-    userName: string
-  ) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=setWallet&api=hal`,
-        {
-          wallet: walletType,
-          publicAddress: address,
-          username: userName,
+};
+const updateMember = async (bodyData: any, accessToken: any) => {
+  try {
+    const response = await axios.put(
+      `${process.env.NEXT_PUBLIC_AESIRX_API_ENDPOINT}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal`,
+      bodyData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + accessToken,
-          },
-        }
-      );
-      return response?.data;
-    } catch (error: any) {
-      // eslint-disable-next-line no-console
-      console.log('connectWalletError', error);
-      throw error;
-    }
-  };
-  
-  const removeWallet = async (
-    address: string,
-    walletType: string,
-    accessToken: string,
-    userName: string
-  ) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=deleteWallet&api=hal`,
-        {
-          wallet: walletType,
-          publicAddress: address,
-          username: userName,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const connectWallet = async (
+  address: string,
+  walletType: string,
+  accessToken: string,
+  userName: string
+) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=setWallet&api=hal`,
+      {
+        wallet: walletType,
+        publicAddress: address,
+        username: userName,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + accessToken,
-          },
-        }
-      );
-      return response?.data;
-    } catch (error: any) {
-      // eslint-disable-next-line no-console
-      console.log('removeWalletError', error);
-      throw error;
-    }
-  };
-  const checkNetwork = (hash: string) => {
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    // eslint-disable-next-line no-console
+    console.log('connectWalletError', error);
+    throw error;
+  }
+};
+
+const removeWallet = async (
+  address: string,
+  walletType: string,
+  accessToken: string,
+  userName: string
+) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=deleteWallet&api=hal`,
+      {
+        wallet: walletType,
+        publicAddress: address,
+        username: userName,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    // eslint-disable-next-line no-console
+    console.log('removeWalletError', error);
+    throw error;
+  }
+};
+const checkNetwork = (hash: string) => {
   switch (process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK) {
     case 'testnet':
       return hash === TESTNET.genesisHash;

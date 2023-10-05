@@ -1,6 +1,13 @@
 import Toast from '../../components/Toast';
 import { getPreregistration } from '../../utils/index';
-import React,{ createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { toast } from 'react-toastify';
 import { useGlobalContext } from './global';
 import { getMember } from '../../utils/index';
@@ -31,7 +38,6 @@ const UserContextProvider: React.FC<Props> = ({ children, isGetInterest = false 
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     if (jwt && accessToken) {
       try {
@@ -56,7 +62,7 @@ const UserContextProvider: React.FC<Props> = ({ children, isGetInterest = false 
         aesirxData = { ...member };
 
         const preregistrationData = (await getPreregistration(jwt)).data?.objForm;
-      
+
         if (preregistrationData?.aesirXAccount) {
           const response = await axios.post('/api/member/checkadmin', {
             username: preregistrationData?.aesirXAccount,

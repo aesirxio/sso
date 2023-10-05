@@ -1,4 +1,4 @@
-import {Image} from '../components/Image';
+import { Image } from '../components/Image';
 import React from 'react';
 import success_img from '../SSOButton/images/toast_success.png';
 import danger_img from '../SSOButton/images/toast_danger.png';

@@ -5,7 +5,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import {Image} from '../../components/Image';
+import { Image } from '../../components/Image';
 import { updateMember } from '../../utils/index';
 import { useUserContext } from '../../SSOButton/Providers/user';
 import { useGlobalContext } from '../../SSOButton/Providers/global';

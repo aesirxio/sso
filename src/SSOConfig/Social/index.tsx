@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from '../../components/Image';
+import { Image } from '../../components/Image';
 import { useUserContext } from '../../SSOButton/Providers/user';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import ButtonCopy from '../../components/ButtonCopy';

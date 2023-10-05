@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import Concordium from './Concordium';
-import { useUserContext ,UserContextProvider } from '../SSOButton/Providers/user';
+import { useUserContext, UserContextProvider } from '../SSOButton/Providers/user';
 import MetaMask from './MetaMask';
 import { toast } from 'react-toastify';
 import Toast from '../components/Toast';
-import { useGlobalContext ,  GlobalContextProvider } from '../SSOButton/Providers/global';
+import { useGlobalContext, GlobalContextProvider } from '../SSOButton/Providers/global';
 import { connectWallet, removeWallet } from '../utils/index';
 import DeleteModal from './DeleteModal';
 import { useState } from 'react';
@@ -17,12 +17,12 @@ import Web3ContextProvider from '../SSOButton/Providers/web3';
 const SSO = () => {
   return (
     <GlobalContextProvider>
-    <UserContextProvider>
-      <Web3ContextProvider autoLoad={true}>
-        <SSOApp />
-      </Web3ContextProvider>
-    </UserContextProvider>
-  </GlobalContextProvider>
+      <UserContextProvider>
+        <Web3ContextProvider autoLoad={true}>
+          <SSOApp />
+        </Web3ContextProvider>
+      </UserContextProvider>
+    </GlobalContextProvider>
   );
 };
 interface DeleteModal {
@@ -99,7 +99,7 @@ const SSOApp = () => {
     }
   };
 
-  return  (
+  return (
     <>
       {modal?.show && (
         <DeleteModal
