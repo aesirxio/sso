@@ -4,7 +4,6 @@ import ButtonCopy from '../../components/ButtonCopy';
 import { useFormik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { AUTHORIZATION_KEY, Storage, AesirxMemberApiService } from 'aesirx-lib';
 import { Image } from '../../components/Image';
 import mail_logo from '../../SSOButton/images/mail_logo.png';
 import * as Yup from 'yup';
@@ -14,13 +13,12 @@ import { debounce } from 'lodash';
 import { validateEmail } from '../../utils/index';
 import Toast from '../../components/Toast';
 import { toast } from 'react-toastify';
+import { updateMember } from '../../utils/index';
 
 const Email = () => {
   const [updating, setUpdating] = useState(false);
   const { aesirxData, getData } = useUserContext();
-  const { jwt } = useGlobalContext();
-  const accessToken = Storage.getItem(AUTHORIZATION_KEY.ACCESS_TOKEN);
-  const member = new AesirxMemberApiService();
+  const { jwt, accessToken } = useGlobalContext();
   // eslint-disable-next-line
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
   console.log(aesirxData, 'aesirxData');
@@ -45,7 +43,7 @@ const Email = () => {
       let updateSuccess = true;
       setUpdating(true);
       try {
-        const response: any = await member.updateEmailMember(
+        const response: any = await updateMember(
           { id: aesirxData?.member_id, ...values },
           accessToken
         );

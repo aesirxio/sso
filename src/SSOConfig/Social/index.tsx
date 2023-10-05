@@ -12,10 +12,8 @@ import logo_facebook from '../../SSOButton/images/logo_facebook.svg';
 import { useUserContext } from '../../SSOButton/Providers/user';
 import { useGlobalContext } from '../../SSOButton/Providers/global';
 import { updateMember } from '../../utils/index';
-import { MEMBER_GET_FIELD_KEY, AesirxMemberApiService } from 'aesirx-lib';
 const Social = ({ typeSocial, keySocial }: any) => {
   const [loading, setLoading] = useState(false);
-  const member = new AesirxMemberApiService();
   const { aesirxData, getData } = useUserContext();
   const { accessToken, jwt } = useGlobalContext();
 
@@ -66,7 +64,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
     setLoading(true);
     try {
       const response: any = await updateMember(
-        { id: aesirxData[MEMBER_GET_FIELD_KEY.ID], [keySocial]: '' },
+        { id: aesirxData?.member_id, [keySocial]: '' },
         accessToken
       );
 
