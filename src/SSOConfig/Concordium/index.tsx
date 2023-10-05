@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import concordium_logo from '../../SSOButton/images/concordium.png';
+import concordium_logo from '../../SSOButton/images/concordium_bg_black.png';
 import { useWeb3Context } from '../../SSOButton/Providers/web3';
 import { Image } from '../../components/Image';
 import { useUserContext } from '../../SSOButton/Providers/user';

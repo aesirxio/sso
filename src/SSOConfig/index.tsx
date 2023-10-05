@@ -36,9 +36,8 @@ interface DeleteModal {
 const SSOApp = () => {
   const [modal, setModal] = useState<DeleteModal>({ show: false });
   const [modalPassword, setModalPassword] = useState(false);
-  const { userLoading, aesirxData, getData } = useUserContext();
-
-  const { accessToken, jwt } = useGlobalContext();
+  const { aesirxData, getData } = useUserContext();
+  const { jwt, accessToken } = useGlobalContext();
 
   const connectWeb3Wallet = async (address: string, walletType: string) => {
     let connectSuccess = true;

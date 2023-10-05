@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { TESTNET, MAINNET } from '@concordium/react-components';
 const handleWalletResponse = (
   _endPoint: string,
   clientID: string,
@@ -361,7 +360,8 @@ const mintWeb3ID = async (jwt: any) => {
   }
 };
 const getPreregistration = async (jwt: any) => {
-  return await axios.get(`${process.env.REACT_APP_WEB3_API_ENDPOINT}/preregistration/aesirx`, {
+  const { web3Endpoint } = getClientApp();
+  return await axios.get(`${web3Endpoint}/preregistration/aesirx`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + jwt,
@@ -369,6 +369,7 @@ const getPreregistration = async (jwt: any) => {
   });
 };
 const savePreregistration = async (jwt: any, data: any) => {
+  const { web3Endpoint } = getClientApp();
   try {
     const formData = new FormData();
     formData.append('id', data.id);
@@ -377,7 +378,7 @@ const savePreregistration = async (jwt: any, data: any) => {
     formData.append('organization', data.organization);
     formData.append('avatar', data.avatar);
 
-    return await axios.put(`${process.env.REACT_APP_WEB3_API_ENDPOINT}/preregistration`, data, {
+    return await axios.put(`${web3Endpoint}/preregistration`, data, {
       headers: {
         'Content-type': 'multipart/form-data',
         Authorization: 'Bearer ' + jwt,
@@ -390,9 +391,10 @@ const savePreregistration = async (jwt: any, data: any) => {
   }
 };
 const getMember = async (accessToken: string) => {
+  const { endpoint } = getClientApp();
   try {
     const member = await axios.get(
-      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=persona&api=hal&task=getTokenByUser`,
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=persona&api=hal&task=getTokenByUser`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -403,7 +405,7 @@ const getMember = async (accessToken: string) => {
 
     if (member?.data?.result?.member_id) {
       const data = await axios.get(
-        `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal&id=${member?.data?.result?.member_id}`,
+        `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal&id=${member?.data?.result?.member_id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -420,9 +422,10 @@ const getMember = async (accessToken: string) => {
   }
 };
 const forgotPassword = async (data: any) => {
+  const { endpoint } = getClientApp();
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=processResetRequest&api=hal`,
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=processResetRequest&api=hal`,
       { data: data },
       {
         headers: {
@@ -439,9 +442,10 @@ const forgotPassword = async (data: any) => {
 };
 
 const resetPassword = async (data: any) => {
+  const { endpoint } = getClientApp();
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=processResetComplete&api=hal`,
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=processResetComplete&api=hal`,
       { data: data },
       {
         headers: {
@@ -457,9 +461,10 @@ const resetPassword = async (data: any) => {
   }
 };
 const updateMember = async (bodyData: any, accessToken: any) => {
+  const { endpoint } = getClientApp();
   try {
     const response = await axios.put(
-      `${process.env.NEXT_PUBLIC_AESIRX_API_ENDPOINT}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal`,
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal`,
       bodyData,
       {
         headers: {
@@ -481,8 +486,9 @@ const connectWallet = async (
   userName: string
 ) => {
   try {
+    const { endpoint } = getClientApp();
     const response = await axios.post(
-      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=setWallet&api=hal`,
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=setWallet&api=hal`,
       {
         wallet: walletType,
         publicAddress: address,
@@ -510,8 +516,9 @@ const removeWallet = async (
   userName: string
 ) => {
   try {
+    const { endpoint } = getClientApp();
     const response = await axios.post(
-      `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=deleteWallet&api=hal`,
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=deleteWallet&api=hal`,
       {
         wallet: walletType,
         publicAddress: address,
@@ -531,15 +538,7 @@ const removeWallet = async (
     throw error;
   }
 };
-const checkNetwork = (hash: string) => {
-  switch (process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK) {
-    case 'testnet':
-      return hash === TESTNET.genesisHash;
 
-    default:
-      return hash === MAINNET.genesisHash;
-  }
-};
 export {
   handleWalletResponse,
   handleRegularReponse,
@@ -563,5 +562,4 @@ export {
   updateMember,
   connectWallet,
   removeWallet,
-  checkNetwork,
 };

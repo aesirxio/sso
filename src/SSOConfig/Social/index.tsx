@@ -1,27 +1,29 @@
 import React from 'react';
 import { Image } from '../../components/Image';
-import { useUserContext } from '../../SSOButton/Providers/user';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import ButtonCopy from '../../components/ButtonCopy';
 import { useState } from 'react';
-import { updateMember } from '../../utils/index';
-import { useGlobalContext } from '../../SSOButton/Providers/global';
+import axios from 'axios';
 import Toast from '../../components/Toast';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import logo_google from '../../SSOButton/images/logo_google.svg';
 import logo_twitter from '../../SSOButton/images/logo_twitter.svg';
 import logo_facebook from '../../SSOButton/images/logo_facebook.svg';
+import { useUserContext } from '../../SSOButton/Providers/user';
+import { useGlobalContext } from '../../SSOButton/Providers/global';
+import { updateMember } from '../../utils/index';
+import { MEMBER_GET_FIELD_KEY, AesirxMemberApiService } from 'aesirx-lib';
 const Social = ({ typeSocial, keySocial }: any) => {
-  const { aesirxData, getData } = useUserContext();
   const [loading, setLoading] = useState(false);
+  const member = new AesirxMemberApiService();
+  const { aesirxData, getData } = useUserContext();
   const { accessToken, jwt } = useGlobalContext();
-  // eslint-disable-next-line
+
   const connectSocial = async () => {
     try {
       setLoading(true);
       const response: any = await axios.get(
-        `${process.env.NEXT_PUBLIC_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=getSocialConnectUrl&api=hal&socialType=${typeSocial}`,
+        `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=getSocialConnectUrl&api=hal&socialType=${typeSocial}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
       window.addEventListener(
         'message',
         (e: any) => {
-          if (e.origin !== process.env.NEXT_PUBLIC_ENDPOINT_URL) return;
+          if (e.origin !== process.env.REACT_APP_ENDPOINT_URL) return;
           if (e.data && e.data.socialType) {
             setLoading(false);
             getData(jwt, accessToken);
@@ -54,6 +56,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
         false
       );
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   };
@@ -63,9 +66,10 @@ const Social = ({ typeSocial, keySocial }: any) => {
     setLoading(true);
     try {
       const response: any = await updateMember(
-        { id: aesirxData?.member_id, [keySocial]: '' },
+        { id: aesirxData[MEMBER_GET_FIELD_KEY.ID], [keySocial]: '' },
         accessToken
       );
+
       if (response?.result?.success) {
         toast.success(<Toast status={true} message={'Disconnect sucessfully!'} />);
       } else {
@@ -78,6 +82,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
         );
       }
     } catch (error: any) {
+      // eslint-disable-next-line no-console
       console.log('Error', error);
       updateSuccess = false;
       toast.error(
@@ -89,7 +94,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
     }
     setLoading(false);
     if (updateSuccess) {
-      await getData(jwt, accessToken);
+      getData(jwt, accessToken);
     }
   };
 
@@ -102,33 +107,45 @@ const Social = ({ typeSocial, keySocial }: any) => {
       logoSocial = logo_twitter;
       break;
   }
+  let value = '';
+  switch (typeSocial) {
+    case 'facebook':
+      value = aesirxData?.social_facebook;
+      break;
+    case 'twitter':
+      value = aesirxData?.social_twitter;
+      break;
+    case 'google':
+      value = aesirxData?.social_google;
+      break;
+  }
+  console.log(value, 'value');
   return (
-    <div className="py-2rem px-4 border rounded">
-      <h3 className="fw-semibold fs-18 mb-12px text-capitalize">
+    <div className="py-4 px-4 border rounded">
+      <div className="d-flex justify-content-start align-items-center mb-3">
         <Image
           quality={100}
-          className="me-14px"
+          className="me-2"
           src={logoSocial}
           width={40}
           height={40}
           alt="logo social"
         />
-        {typeSocial}
-      </h3>
-      {aesirxData[keySocial] && (
+        <p className="fw-semibold fs-18  text-capitalize ms-2 mb-0">{typeSocial}</p>
+      </div>
+      {value && (
         <Form.Group>
-          <Form.Label className="fw-medium mb-12px">ID</Form.Label>
-          <div className="position-relative fs-7 mb-12px">
+          <Form.Label className="fw-medium mb-1">ID</Form.Label>
+          <div className="position-relative fs-7 mb-1">
             <Form.Control
               type="email"
               name="email"
-              value={aesirxData[keySocial]}
+              value={value}
               className={`py-13px fs-7`}
               readOnly={true}
             />
             <ButtonCopy
-              content={aesirxData[keySocial]}
-              isBlack={true}
+              content={value}
               className="border-0 top-0 bottom-0 p-0 px-2 m-1 bg-gray-100 position-absolute end-0"
             />
           </div>
@@ -136,10 +153,10 @@ const Social = ({ typeSocial, keySocial }: any) => {
       )}
       <Button
         type="button"
-        variant={`${aesirxData[keySocial] ? 'danger' : 'success'}`}
-        className={`fw-semibold py-12px py-12px w-100 ${aesirxData[keySocial] ? '' : 'mt-3'}`}
+        variant={`${value ? 'danger' : 'success'}`}
+        className={`fw-semibold py-12px py-12px w-100 ${value ? '' : 'mt-3'}`}
         onClick={() => {
-          if (aesirxData[keySocial]) {
+          if (value) {
             disconnectSocial();
           } else {
             connectSocial();
@@ -148,7 +165,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
         disabled={loading}
       >
         {loading && <Spinner size={'sm'} className="me-1" />}
-        {aesirxData[keySocial] ? (
+        {value ? (
           'Disconnect'
         ) : (
           <>

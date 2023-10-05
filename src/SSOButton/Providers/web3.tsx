@@ -4,7 +4,6 @@ import { BROWSER_WALLET } from '../Providers/Concordium/config';
 
 import { toast } from 'react-toastify';
 import Toast from '../../components/Toast';
-import { checkNetwork } from '../../utils/index';
 import { useUserContext } from './user';
 import secureLocalStorage from 'react-secure-storage';
 import {
@@ -58,6 +57,15 @@ const Web3Context = createContext<Web3ContextType>({
     parseInt(process.env.NEXT_PUBLIC_GRPC2_PORT ?? '0')
   ),
 });
+const checkNetwork = (hash: string) => {
+  switch (process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK) {
+    case 'testnet':
+      return hash === TESTNET.genesisHash;
+
+    default:
+      return hash === MAINNET.genesisHash;
+  }
+};
 
 const Web3ContextProvider: React.FC<Props> = ({ children, autoLoad }) => {
   return (

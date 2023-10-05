@@ -13,6 +13,7 @@ import { useGlobalContext } from './global';
 import { getMember } from '../../utils/index';
 import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
+import { AUTHORIZATION_KEY, Storage } from 'aesirx-lib';
 interface UserContextType {
   preregistration?: any;
   userLoading: any;
@@ -32,7 +33,8 @@ const userContext = createContext<UserContextType>({
 });
 
 const UserContextProvider: React.FC<Props> = ({ children, isGetInterest = false }) => {
-  const { jwt, onLogout, accessToken } = useGlobalContext();
+  const { jwt, onLogout } = useGlobalContext();
+  const accessToken = Storage.getItem(AUTHORIZATION_KEY.ACCESS_TOKEN);
   const [preregistration, setPreregistration] = useState<any>(null);
   const [aesirxData, setAesirxData] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -60,6 +62,7 @@ const UserContextProvider: React.FC<Props> = ({ children, isGetInterest = false 
       try {
         const member = await getMember(accessToken);
         aesirxData = { ...member };
+        console.log(aesirxData, '222');
 
         const preregistrationData = (await getPreregistration(jwt)).data?.objForm;
 
