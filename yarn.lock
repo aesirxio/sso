@@ -25,14 +25,14 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@babel/cli@^7.22.10":
-  version "7.22.10"
-  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.22.10.tgz#25e4bbd8d0a0d8b4b389e1b5e2d7a238bd4c1b75"
-  integrity sha512-rM9ZMmaII630zGvtMtQ3P4GyHs28CHLYE9apLG7L8TgaSqcfoIGrlLSLsh4Q8kDTdZQQEXZm1M0nQtOvU/2heg==
+"@babel/cli@^7.23.0":
+  version "7.23.0"
+  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.23.0.tgz#1d7f37c44d4117c67df46749e0c86e11a58cc64b"
+  integrity sha512-17E1oSkGk2IwNILM4jtfAvgjt+ohmpfBky8aLerUfYZhiPNg7ca+CRCxZn8QDxwNhV/upsc2VHBCqGFIR+iBfA==
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.17"
     commander "^4.0.1"
-    convert-source-map "^1.1.0"
+    convert-source-map "^2.0.0"
     fs-readdir-recursive "^1.1.0"
     glob "^7.2.0"
     make-dir "^2.1.0"
@@ -75,9 +75,9 @@
     semver "^6.3.1"
 
 "@babel/eslint-parser@^7.22":
-  version "7.22.11"
-  resolved "https://registry.yarnpkg.com/@babel/eslint-parser/-/eslint-parser-7.22.11.tgz#cceb8c7989c241a16dd14e12a6cd725618f3f58b"
-  integrity sha512-YjOYZ3j7TjV8OhLW6NCtyg8G04uStATEUe5eiLuCZaXz2VSDQ3dsAtm2D+TuQyAqNMUK2WacGo0/uma9Pein1w==
+  version "7.22.15"
+  resolved "https://registry.yarnpkg.com/@babel/eslint-parser/-/eslint-parser-7.22.15.tgz#263f059c476e29ca4972481a17b8b660cb025a34"
+  integrity sha512-yc8OOBIQk1EcRrpizuARSQS0TWAcOMpEJ1aafhNznaeYkeL+OhqnDObGFylB8ka8VFF/sZc+S4RzHyO+3LjQxg==
   dependencies:
     "@nicolo-ribaudo/eslint-scope-5-internals" "5.1.1-v1"
     eslint-visitor-keys "^2.1.0"
@@ -1976,10 +1976,10 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
-"@types/node@*", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
-  version "20.4.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.4.tgz#c79c7cc22c9d0e97a7944954c9e663bcbd92b0cb"
-  integrity sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==
+"@types/node@*", "@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@^20.8.0":
+  version "20.8.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.8.0.tgz#10ddf0119cf20028781c06d7115562934e53f745"
+  integrity sha512-LzcWltT83s1bthcvjBmiBvGJiiUe84NWRHkw+ZV6Fr41z2FbIzvc815dk2nQ3RAKMuN2fkenM/z3Xv2QzEpYxQ==
 
 "@types/node@18.15.13":
   version "18.15.13"
@@ -1990,11 +1990,6 @@
   version "12.20.55"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
   integrity sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==
-
-"@types/node@^20.1.4":
-  version "20.4.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.2.tgz#129cc9ae69f93824f92fac653eebfb4812ab4af9"
-  integrity sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==
 
 "@types/prop-types@*":
   version "15.7.5"
@@ -3237,10 +3232,15 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-convert-source-map@^1.1.0, convert-source-map@^1.7.0:
+convert-source-map@^1.7.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.9.0.tgz#7faae62353fb4213366d0ca98358d22e8368b05f"
   integrity sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==
+
+convert-source-map@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-2.0.0.tgz#4b560f649fc4e918dd0ab75cf4961e8bc882d82a"
+  integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
 copy-to-clipboard@^3.3.1, copy-to-clipboard@^3.3.3:
   version "3.3.3"
