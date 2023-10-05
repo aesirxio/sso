@@ -16,8 +16,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
   const { aesirxData, getData } = useUserContext();
   const [loading, setLoading] = useState(false);
   const { accessToken, jwt } = useGlobalContext();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-
+  // eslint-disable-next-line
   const connectSocial = async () => {
     try {
       setLoading(true);
@@ -34,7 +33,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
       const popupSocial =
         response?.data.result[0] &&
         window.open(response?.data.result[0], 'SSO', 'status=1,height=750,width=650');
-      let timer = setInterval(function () {
+      const timer = setInterval(function () {
         if (popupSocial?.closed) {
           clearInterval(timer);
           setLoading(false);

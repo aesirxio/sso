@@ -6,11 +6,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { AUTHORIZATION_KEY, Storage } from 'aesirx-lib';
 import secureLocalStorage from 'react-secure-storage';
 
 interface GlobalContextType {
-  jwt: any;
+  jwt: string;
   accessToken: any;
   globalLoading: any;
   onLogin: any;
@@ -39,11 +38,10 @@ const GlobalContextApp: React.FC<Props> = ({ children }) => {
 
   const onSSOData = useCallback(async (response: any) => {
     if (response.error) {
-      // eslint-disable-next-line no-console
       console.log('ee', response);
     } else {
       secureLocalStorage.setItem('jwt', response?.jwt);
-      Storage.getItem('accessToken', AUTHORIZATION_KEY.ACCESS_TOKEN);
+      secureLocalStorage.setItem('accessToken', response?.access_token);
 
       setJwt(response?.jwt);
       setAccessToken(response?.access_token);
@@ -52,7 +50,7 @@ const GlobalContextApp: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const jwt: any = secureLocalStorage.getItem('jwt');
-    const accessToken: any = Storage.getItem(AUTHORIZATION_KEY.ACCESS_TOKEN);
+    const accessToken: any = secureLocalStorage.getItem('accessToken');
 
     if (jwt) {
       setJwt(jwt);
@@ -71,6 +69,8 @@ const GlobalContextApp: React.FC<Props> = ({ children }) => {
     setJwt('');
     setAccessToken('');
   };
+
+  console.log('GlobalContextApp');
 
   return (
     <globalContext.Provider

@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import React from 'react';
+/* eslint-disable  */
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { BROWSER_WALLET } from '../Providers/Concordium/config';
 
 import { toast } from 'react-toastify';
@@ -121,7 +120,7 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
     } else if (connection === 'walletconnect') {
       // setActiveConnectorType(WALLET_CONNECT);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

@@ -22,7 +22,7 @@ const Email = () => {
   const { aesirxData, getData } = useUserContext();
   const { accessToken, jwt } = useGlobalContext();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
 
   const formik = useFormik({
