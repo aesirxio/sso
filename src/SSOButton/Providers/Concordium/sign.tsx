@@ -4,7 +4,7 @@ import useWallet from '../../../Hooks/useWallet';
 import { toast } from 'react-toastify';
 import { getChallenge, getStatement, shortenString, verifyProof } from '../../../utils';
 import { SSOModalContext } from '../../modal';
-import concordium_logo from '../../images/concordium_logo.png';
+import concordium_logo from '../../images/concordium.png';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import CreateAccount from '../CreateAccount';
 import { stringMessage } from '@concordium/react-components';
