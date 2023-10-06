@@ -408,7 +408,7 @@ const CreateAccount = ({
   }, [formik.values]);
 
   useEffect(() => {
-    if(window){
+    if (window) {
       const search = window.location.search;
       const params = new URLSearchParams(search);
       const refShare2EarnUrl = params.get('ref') || sessionStorage.getItem('share2earnRef');
