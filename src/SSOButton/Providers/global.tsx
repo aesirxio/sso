@@ -49,7 +49,6 @@ const GlobalContextApp: React.FC<Props> = ({ children }) => {
       setAccessToken(response?.access_token);
     }
   }, []);
-  console.log(jwt, '111');
 
   useEffect(() => {
     const jwt: any = secureLocalStorage.getItem('jwt');

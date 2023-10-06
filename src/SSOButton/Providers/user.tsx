@@ -62,7 +62,6 @@ const UserContextProvider: React.FC<Props> = ({ children, isGetInterest = false 
       try {
         const member = await getMember(accessToken);
         aesirxData = { ...member };
-        console.log(aesirxData, '222');
 
         const preregistrationData = (await getPreregistration(jwt)).data?.objForm;
 

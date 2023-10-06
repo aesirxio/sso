@@ -105,19 +105,19 @@ const Social = ({ typeSocial, keySocial }: any) => {
       logoSocial = logo_twitter;
       break;
   }
-  let value = '';
+  let valueSocial = '';
   switch (typeSocial) {
     case 'facebook':
-      value = aesirxData?.social_facebook;
+      valueSocial = aesirxData?.social_facebook;
       break;
     case 'twitter':
-      value = aesirxData?.social_twitter;
+      valueSocial = aesirxData?.social_twitter;
       break;
     case 'google':
-      value = aesirxData?.social_google;
+      valueSocial = aesirxData?.social_google;
       break;
   }
-  console.log(value, 'value');
+
   return (
     <div className="py-4 px-4 border rounded">
       <div className="d-flex justify-content-start align-items-center mb-3">
@@ -131,19 +131,19 @@ const Social = ({ typeSocial, keySocial }: any) => {
         />
         <p className="fw-semibold fs-18  text-capitalize ms-2 mb-0">{typeSocial}</p>
       </div>
-      {value && (
+      {valueSocial && (
         <Form.Group>
           <Form.Label className="fw-medium mb-1">ID</Form.Label>
           <div className="position-relative fs-7 mb-1">
             <Form.Control
               type="email"
               name="email"
-              value={value}
+              value={valueSocial}
               className={`py-13px fs-7`}
               readOnly={true}
             />
             <ButtonCopy
-              content={value}
+              content={valueSocial}
               className="border-0 top-0 bottom-0 p-0 px-2 m-1 bg-gray-100 position-absolute end-0"
             />
           </div>
@@ -151,10 +151,10 @@ const Social = ({ typeSocial, keySocial }: any) => {
       )}
       <Button
         type="button"
-        variant={`${value ? 'danger' : 'success'}`}
-        className={`fw-semibold py-12px py-12px w-100 ${value ? '' : 'mt-3'}`}
+        variant={`${valueSocial ? 'danger' : 'success'}`}
+        className={`fw-semibold py-12px py-12px w-100 ${valueSocial ? '' : 'mt-3'}`}
         onClick={() => {
-          if (value) {
+          if (valueSocial) {
             disconnectSocial();
           } else {
             connectSocial();
@@ -163,7 +163,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
         disabled={loading}
       >
         {loading && <Spinner size={'sm'} className="me-1" />}
-        {value ? (
+        {valueSocial ? (
           'Disconnect'
         ) : (
           <>
