@@ -98,7 +98,8 @@ const CreateAccount = ({
 
   const [isSellix, setIsSellix] = useState(false);
   const [product, setProduct] = useState<any>();
-  const [shareLink, setShareLink] = useState();
+  const [shareLink, setShareLink] = useState('');
+  const [affiliateLink, setAffiliateLink] = useState('');
 
   const defaultProduct = packagesData?.default_web3_product
     ? packagesData?.default_web3_product?.toLowerCase()
@@ -232,11 +233,6 @@ const CreateAccount = ({
         const result = await fp.get();
         data.visitorId = result.visitorId;
 
-        const search = window.location.search;
-        const params = new URLSearchParams(search);
-        const refShare2EarnUrl = params.get('ref');
-        const refAffiliate2EarnUrl = params.get('refaffiliate');
-
         const apiData = {
           id: data[`field${registerForm.username}_1`],
           orderId: data[`field${registerForm.order_id}_1`] ?? '',
@@ -250,11 +246,11 @@ const CreateAccount = ({
           }),
           message: data[`field${registerForm.message}_1`] ?? '',
           visitorId: result.visitorId,
-          ...(refShare2EarnUrl && {
-            refShare2Earn: refShare2EarnUrl,
+          ...(shareLink && {
+            refShare2Earn: shareLink,
           }),
-          ...(refAffiliate2EarnUrl && {
-            refAffiliate2Earn: refAffiliate2EarnUrl,
+          ...(affiliateLink && {
+            refAffiliate2Earn: affiliateLink,
           }),
         };
         console.log('apiData', apiData);
@@ -411,6 +407,17 @@ const CreateAccount = ({
     }
   }, [formik.values]);
 
+  useEffect(() => {
+    if(window){
+      const search = window.location.search;
+      const params = new URLSearchParams(search);
+      const refShare2EarnUrl = params.get('ref') || sessionStorage.getItem('share2earnRef');
+      const refAffiliate2EarnUrl =
+        params.get('refaffiliate') || sessionStorage.getItem('affiliateRef');
+      setShareLink(refShare2EarnUrl);
+      setAffiliateLink(refAffiliate2EarnUrl);
+    }
+  }, []);
   return (
     <>
       {!accountAddress && !isNoWallet && (
@@ -547,6 +554,7 @@ const CreateAccount = ({
                     }
                     data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
                     data-sellix-custom-share_link={shareLink}
+                    data-sellix-custom-affiliate_link={affiliateLink}
                     data-sellix-custom-license_package={license?.product}
                     data-sellix-custom-license_package_name={license?.product_name}
                     variant="success"
