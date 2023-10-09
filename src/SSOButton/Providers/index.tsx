@@ -173,7 +173,7 @@ const SSOProviders = () => {
                       </Suspense>
                     </div>
                   )}
-                   {(expand === 'social' || expand === 'social-reddit') && (
+                  {(expand === 'social' || expand === 'social-reddit') && (
                     <div>
                       <Suspense fallback={<>Loading...</>}>
                         <SSOSocialProvider
