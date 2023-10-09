@@ -36,11 +36,16 @@ const useWallet = (wallet: any, publicAddress: string) => {
     try {
       // Get return
       const returnParams = new URLSearchParams(window.location.search)?.get('return');
+      const channelTypeParams = new URLSearchParams(window.location.search)?.get('channel_type');
+      const organisationParams = new URLSearchParams(window.location.search)?.get('organisationId');
 
       const reqAuthFormData = {
         wallet: wallet,
         publicAddress: publicAddress,
         signature: signature,
+        ...(channelTypeParams && { channel_type: channelTypeParams }),
+        ...(returnParams && { return: returnParams }),
+        ...(organisationParams && { organisationId: organisationParams }),
       };
 
       const config = {
