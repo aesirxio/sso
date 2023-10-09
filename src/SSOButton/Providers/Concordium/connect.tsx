@@ -40,6 +40,7 @@ const ConnectConcordium = ({
                       src={concordium_logo}
                       className="me-3 align-text-bottom"
                       alt="Concordium"
+                      width={24}
                     />
                     Concordium Browser Wallet
                   </>
