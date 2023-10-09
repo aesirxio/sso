@@ -180,6 +180,18 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
                             </Suspense>
                           </div>
                         )}
+                         {(expand === 'social' || expand === 'social-reddit') && (
+                          <div>
+                            <Suspense fallback={<>Loading...</>}>
+                              <SSOSocialProvider
+                                typeSocial="reddit"
+                                isAccountExist={{ status: false, type: 'reddit' }}
+                                setIsAccountExist={setIsAccountExist}
+                                setExpand={setExpand}
+                              />
+                            </Suspense>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

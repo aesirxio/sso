@@ -173,6 +173,18 @@ const SSOProviders = () => {
                       </Suspense>
                     </div>
                   )}
+                   {(expand === 'social' || expand === 'social-reddit') && (
+                    <div>
+                      <Suspense fallback={<>Loading...</>}>
+                        <SSOSocialProvider
+                          typeSocial="reddit"
+                          isAccountExist={isAccountExist}
+                          setIsAccountExist={setIsAccountExist}
+                          setExpand={setExpand}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
