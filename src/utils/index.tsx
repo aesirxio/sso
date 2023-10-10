@@ -375,10 +375,12 @@ const linkAesirXAccount = async (web3id: any, jwt: any) => {
   );
 };
 
-const checkWalletAccount = async (account: any) => {
+const checkWalletAccount = async (account: any, wallet: any) => {
   const { web3Endpoint } = getClientApp();
   try {
-    return await axios.get(`${web3Endpoint}/preregistration/checkaccount/${account}`);
+    return await axios.get(
+      `${web3Endpoint}/preregistration/checkaccount/${account}?wallet=${wallet}`
+    );
   } catch (error: any) {
     console.log('checkWalletAccount', error);
     throw error;

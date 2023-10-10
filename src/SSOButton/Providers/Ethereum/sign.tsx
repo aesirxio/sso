@@ -83,7 +83,8 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
               if (!isExist || isSignUpForm) {
                 setStatus('loading');
                 try {
-                  const checkAccount = await checkWalletAccount(address);
+                  const checkAccount = await checkWalletAccount(address, wallet);
+                  console.log('checkAccount', checkAccount);
                   if (!checkAccount?.data?.result) {
                     setShow(true);
                     setExpand('wallet-metamask');
