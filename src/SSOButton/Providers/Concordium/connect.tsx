@@ -1,6 +1,6 @@
 import { BROWSER_WALLET, WALLET_CONNECT } from './config';
 import React from 'react';
-import concordium_logo from '../../images/concordium_logo.png';
+import concordium_logo from '../../images/concordium.png';
 import { isMobile, isDesktop, osName, OsTypes } from 'react-device-detect';
 import { Col, Row } from 'react-bootstrap';
 
@@ -40,6 +40,7 @@ const ConnectConcordium = ({
                       src={concordium_logo}
                       className="me-3 align-text-bottom"
                       alt="Concordium"
+                      width={24}
                     />
                     Concordium Browser Wallet
                   </>

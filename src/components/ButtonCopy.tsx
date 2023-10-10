@@ -15,7 +15,7 @@ function ButtonCopy({ content, className, text, isBlack = false, isReplaceClass,
   };
   const customClass = isReplaceClass
     ? className
-    : `rounded-4 fs-8 lh-base font-opensans fw-bold btn btn-success text-body cursor-copy ${className}`;
+    : `fs-8 lh-base font-opensans fw-bold btn btn-success text-body cursor-copy ${className}`;
   return (
     <button onClick={() => handleCopy(content)} disabled={copy} className={customClass}>
       {!copy ? (
@@ -31,7 +31,7 @@ function ButtonCopy({ content, className, text, isBlack = false, isReplaceClass,
               />
             </div>
           ) : (
-            <FontAwesomeIcon icon={faCopy} width={16} height={16} />
+            <FontAwesomeIcon icon={faCopy} width={16} height={16} className="text-body" />
           )}
         </>
       ) : (
