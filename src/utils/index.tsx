@@ -360,6 +360,30 @@ const mintWeb3ID = async (jwt: any) => {
     throw error;
   }
 };
+
+const linkAesirXAccount = async (web3id: any, jwt: any) => {
+  const { web3Endpoint } = getClientApp();
+  await axios.put(
+    `${web3Endpoint}/preregistration/aesirx/${web3id}`,
+    {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + jwt,
+      },
+    }
+  );
+};
+
+const checkWalletAccount = async (account: any) => {
+  const { web3Endpoint } = getClientApp();
+  try {
+    return await axios.get(`${web3Endpoint}/preregistration/checkaccount/${account}`);
+  } catch (error: any) {
+    console.log('checkWalletAccount', error);
+    throw error;
+  }
+};
 export {
   handleWalletResponse,
   handleRegularReponse,
@@ -375,4 +399,6 @@ export {
   login,
   autoRegisterWeb3id,
   mintWeb3ID,
+  linkAesirXAccount,
+  checkWalletAccount,
 };
