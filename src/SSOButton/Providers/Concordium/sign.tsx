@@ -2,7 +2,13 @@ import React, { useContext, useState } from 'react';
 import useWallet from '../../../Hooks/useWallet';
 
 import { toast } from 'react-toastify';
-import { getChallenge, getStatement, shortenString, verifyProof } from '../../../utils';
+import {
+  checkWalletAccount,
+  getChallenge,
+  getStatement,
+  shortenString,
+  verifyProof,
+} from '../../../utils';
 import { SSOModalContext } from '../../modal';
 import concordium_logo from '../../images/concordium.png';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
@@ -46,20 +52,28 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
   };
 
   const handleCreate = async () => {
+    setStatus('loading');
     try {
-      if (!proof) {
-        const responseProof = await handleProof();
-        if (responseProof) {
+      const checkAccount = await checkWalletAccount(account, wallet);
+      if (!checkAccount?.data?.result) {
+        if (!proof) {
+          const responseProof = await handleProof();
+          if (responseProof) {
+            setShow(true);
+            setExpand('wallet-concordium');
+          }
+        } else {
           setShow(true);
           setExpand('wallet-concordium');
         }
       } else {
-        setShow(true);
-        setExpand('wallet-concordium');
+        toast.error("You've already created an account with this wallet.");
       }
+      setStatus('');
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      setStatus('');
+      toast.error(error?.response?.data?.error || error?.message);
     }
   };
 
@@ -135,6 +149,8 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
                 <span className="ms-1">
                   {status === 'sign'
                     ? 'Please sign message on the wallet'
+                    : status === 'loading'
+                    ? 'Connecting...'
                     : `Please wait to connect...`}
                 </span>
               </div>

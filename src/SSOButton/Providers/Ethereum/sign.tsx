@@ -4,11 +4,12 @@ import { verifyMessage } from 'ethers';
 
 import { useAccount } from 'wagmi';
 import useWallet from '../../../Hooks/useWallet';
-import { shortenString } from '../../../utils';
+import { checkWalletAccount, shortenString } from '../../../utils';
 import { SSOModalContext } from '../../modal';
 import logo from '../../images/ethereum_logo.png';
 import CreateAccount from '../CreateAccount';
 import arrow_left from '../../images/arrow_left.svg';
+import { toast } from 'react-toastify';
 
 const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
   const wallet = 'metamask';
@@ -78,10 +79,23 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
           <button
             disabled={isLoading}
             className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center text-start"
-            onClick={() => {
+            onClick={async () => {
               if (!isExist || isSignUpForm) {
-                setShow(true);
-                setExpand('wallet-metamask');
+                setStatus('loading');
+                try {
+                  const checkAccount = await checkWalletAccount(address, wallet);
+                  if (!checkAccount?.data?.result) {
+                    setShow(true);
+                    setExpand('wallet-metamask');
+                  } else {
+                    toast.error("You've already created an account with this wallet.");
+                  }
+                  setStatus('');
+                } catch (error) {
+                  setStatus('');
+                  console.log(error);
+                  toast.error(error?.response?.data?.error || error?.message);
+                }
               } else {
                 handleSignMessage();
               }
@@ -97,6 +111,8 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
                 <span className="ms-1">
                   {status === 'sign'
                     ? `Please sign message via ${connector?.name}`
+                    : status === 'loading'
+                    ? 'Connecting...'
                     : `Please wait to connect... via ${connector?.name}`}
                 </span>
               </div>
