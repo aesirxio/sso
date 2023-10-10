@@ -55,7 +55,6 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
     setStatus('loading');
     try {
       const checkAccount = await checkWalletAccount(account, wallet);
-      console.log('checkAccount', checkAccount);
       if (!checkAccount?.data?.result) {
         if (!proof) {
           const responseProof = await handleProof();
