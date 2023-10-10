@@ -1,57 +1,71 @@
 {
-    
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "tsx": true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "tsx": true
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/display-name": "off",
+    "react/prop-types": "off",
+    "react/jsx-key": "warn",
+    "no-unsafe-optional-chaining": "off",
+    "react/no-deprecated": "warn",
+    "react/no-children-prop": "warn",
+    "no-case-declarations": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "prefer-spread": "off",
+    "@typescript-eslint/ban-types": ["error",
+    {
+        "types": {
+            "String": false,
+            "Boolean": false,
+            "Number": false,
+            "Symbol": false,
+            "{}": false,
+            "Object": false,
+            "object": false,
+            "Function": false,
         },
-        "ecmaVersion": 2022,
-        "sourceType": "module"
-    },
-    "plugins": ["react", "@typescript-eslint"],
-    "rules": {
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "react/display-name": "off",
-        "react/prop-types": "off",
-        "react/jsx-key": "warn",
-        "no-unsafe-optional-chaining": "off",
-        "react/no-deprecated": "warn",
-        "react/no-children-prop": "warn",
-        "no-case-declarations": "warn",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-empty-function": "off",
-        "prefer-spread": "off"
-    },
-    "settings": {
-        "react": {
-            "version": "17.0.2"
-        }
-    },
-    "parser": "@typescript-eslint/parser",
-    "ignorePatterns": [
-        "*.json",
-        "*.scss",
-        "*.svg",
-        "*.woff",
-        "*.woff2",
-        "*.ttf",
-        "*.otf",
-        "*.eot",
-        "*.png",
-        "*.d.ts"
-    ]
+        "extendDefaults": true
+    }
+]
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.2"
+    }
+  },
+  "parser": "@typescript-eslint/parser",
+  "ignorePatterns": [
+    "*.json",
+    "*.scss",
+    "*.svg",
+    "*.woff",
+    "*.woff2",
+    "*.ttf",
+    "*.otf",
+    "*.eot",
+    "*.png",
+    "*.d.ts"
+  ]
 }

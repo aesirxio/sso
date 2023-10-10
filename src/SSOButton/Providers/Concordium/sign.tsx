@@ -4,7 +4,7 @@ import useWallet from '../../../Hooks/useWallet';
 import { toast } from 'react-toastify';
 import { getChallenge, getStatement, shortenString, verifyProof } from '../../../utils';
 import { SSOModalContext } from '../../modal';
-import concordium_logo from '../../images/concordium_logo.png';
+import concordium_logo from '../../images/concordium.png';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import CreateAccount from '../CreateAccount';
 import { stringMessage } from '@concordium/react-components';
@@ -144,6 +144,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
                   src={concordium_logo}
                   className="me-3 align-text-bottom"
                   alt="Concordium logo"
+                  width={24}
                 />
                 {loading ? (
                   <>
@@ -164,6 +165,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
                   src={concordium_logo}
                   className="me-3 align-text-bottom"
                   alt="Concordium logo"
+                  width={24}
                 />
                 Sign in via Concordium ({account && shortenString(account)})
               </>
