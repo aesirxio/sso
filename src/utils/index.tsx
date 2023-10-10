@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const handleWalletResponse = (
   _endPoint: string,
   clientID: string,
@@ -386,6 +385,186 @@ const checkWalletAccount = async (account: any, wallet: any) => {
     throw error;
   }
 };
+const getPreregistration = async (jwt: any) => {
+  const { web3Endpoint } = getClientApp();
+  return await axios.get(`${web3Endpoint}/preregistration/aesirx`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + jwt,
+    },
+  });
+};
+const savePreregistration = async (jwt: any, data: any) => {
+  const { web3Endpoint } = getClientApp();
+  try {
+    const formData = new FormData();
+    formData.append('id', data.id);
+    formData.append('first_name', data.first_name);
+    formData.append('sur_name', data.sur_name);
+    formData.append('organization', data.organization);
+    formData.append('avatar', data.avatar);
+
+    return await axios.put(`${web3Endpoint}/preregistration`, data, {
+      headers: {
+        'Content-type': 'multipart/form-data',
+        Authorization: 'Bearer ' + jwt,
+      },
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+    throw error;
+  }
+};
+const getMember = async (accessToken: string) => {
+  const { endpoint } = getClientApp();
+  try {
+    const member = await axios.get(
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=persona&api=hal&task=getTokenByUser`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
+        },
+      }
+    );
+
+    if (member?.data?.result?.member_id) {
+      const data = await axios.get(
+        `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal&id=${member?.data?.result?.member_id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken,
+          },
+        }
+      );
+      return data?.data;
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('getMember', error);
+    throw error;
+  }
+};
+const forgotPassword = async (data: any) => {
+  const { endpoint } = getClientApp();
+  try {
+    const response = await axios.post(
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=processResetRequest&api=hal`,
+      { data: data },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response?.data?.result;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+    throw error;
+  }
+};
+
+const resetPassword = async (data: any) => {
+  const { endpoint } = getClientApp();
+  try {
+    const response = await axios.post(
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=processResetComplete&api=hal`,
+      { data: data },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response?.data?.result;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+    throw error;
+  }
+};
+const updateMember = async (bodyData: any, accessToken: any) => {
+  const { endpoint } = getClientApp();
+  try {
+    const response = await axios.put(
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&api=hal`,
+      bodyData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+const connectWallet = async (
+  address: string,
+  walletType: string,
+  accessToken: string,
+  userName: string
+) => {
+  try {
+    const { endpoint } = getClientApp();
+    const response = await axios.post(
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=setWallet&api=hal`,
+      {
+        wallet: walletType,
+        publicAddress: address,
+        username: userName,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    // eslint-disable-next-line no-console
+    console.log('connectWalletError', error);
+    throw error;
+  }
+};
+
+const removeWallet = async (
+  address: string,
+  walletType: string,
+  accessToken: string,
+  userName: string
+) => {
+  try {
+    const { endpoint } = getClientApp();
+    const response = await axios.post(
+      `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=deleteWallet&api=hal`,
+      {
+        wallet: walletType,
+        publicAddress: address,
+        username: userName,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
+        },
+      }
+    );
+    return response?.data;
+  } catch (error: any) {
+    // eslint-disable-next-line no-console
+    console.log('removeWalletError', error);
+    throw error;
+  }
+};
+
 export {
   handleWalletResponse,
   handleRegularReponse,
@@ -403,4 +582,12 @@ export {
   mintWeb3ID,
   linkAesirXAccount,
   checkWalletAccount,
+  getPreregistration,
+  getMember,
+  resetPassword,
+  forgotPassword,
+  savePreregistration,
+  updateMember,
+  connectWallet,
+  removeWallet,
 };
