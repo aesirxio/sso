@@ -24,7 +24,9 @@ import CustomField from './CustomField';
 import FriendlyCaptcha from './FriendlyCaptcha';
 import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
+import io from 'socket.io-client';
 
+let socket: any;
 interface Fields {
   defaultValue: any;
   fieldId: number;
@@ -93,6 +95,30 @@ const CreateAccount = ({
           console.log('GetForm Error', error);
           setFetch(false);
         }
+        const createSocketServer = async () => {
+          await axios.get(`${partnerEndpoint}/api/socket`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            },
+          });
+        };
+
+        createSocketServer();
+
+        if (!socket && partnerEndpoint) {
+          socket = io(partnerEndpoint, {
+            reconnection: true,
+            secure: true,
+            rejectUnauthorized: false,
+            transports: ['polling'],
+          });
+        }
+        console.log('InitSocket');
+        socket.on('connect', () => {
+          socket.on('web3id-update', async (msg: any) => {
+            console.log('msgmsgmsgmsg', msg);
+          });
+        });
       }
     })();
   }, []);
