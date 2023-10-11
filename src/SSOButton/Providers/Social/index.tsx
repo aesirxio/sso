@@ -5,6 +5,7 @@ import { SSOModalContext } from '../../modal';
 import fb_icon from '../../images/logo_facebook.svg';
 import google_icon from '../../images/logo_google.svg';
 import twitter_icon from '../../images/logo_twitter.svg';
+import reddit_icon from '../../images/reddit_icon.png';
 import { Button } from 'react-bootstrap';
 import CreateAccount from '../CreateAccount';
 import arrow_left from '../../images/arrow_left.svg';
@@ -135,12 +136,14 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
                       ? google_icon
                       : typeSocial === 'facebook'
                       ? fb_icon
-                      : twitter_icon
+                      : typeSocial === 'twitter'
+                      ? twitter_icon
+                      : reddit_icon
                   }
-                  alt="Back Icon"
-                  className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
                   width={24}
                   height={24}
+                  alt="Back Icon"
+                  className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
                 />
                 {!isAccountExist?.status &&
                 isAccountExist?.type === typeSocial &&

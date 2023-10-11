@@ -359,6 +359,32 @@ const mintWeb3ID = async (jwt: any) => {
     throw error;
   }
 };
+
+const linkAesirXAccount = async (web3id: any, jwt: any) => {
+  const { web3Endpoint } = getClientApp();
+  await axios.put(
+    `${web3Endpoint}/preregistration/aesirx/${web3id}`,
+    {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + jwt,
+      },
+    }
+  );
+};
+
+const checkWalletAccount = async (account: any, wallet: any) => {
+  const { web3Endpoint } = getClientApp();
+  try {
+    return await axios.get(
+      `${web3Endpoint}/preregistration/checkaccount/${account}?wallet=${wallet}`
+    );
+  } catch (error: any) {
+    console.log('checkWalletAccount', error);
+    throw error;
+  }
+};
 const getPreregistration = async (jwt: any) => {
   const { web3Endpoint } = getClientApp();
   return await axios.get(`${web3Endpoint}/preregistration/aesirx`, {
@@ -554,6 +580,8 @@ export {
   login,
   autoRegisterWeb3id,
   mintWeb3ID,
+  linkAesirXAccount,
+  checkWalletAccount,
   getPreregistration,
   getMember,
   resetPassword,
