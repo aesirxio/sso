@@ -9,8 +9,7 @@ import { Image } from '../../components/Image';
 import { updateMember } from '../../utils/index';
 import { useUserContext } from '../../SSOButton/Providers/user';
 import { useGlobalContext } from '../../SSOButton/Providers/global';
-import { toast } from 'react-toastify';
-import Toast from '../../components/Toast';
+import { notify } from '../../components/Toast';
 import { ReactNode } from 'react';
 import icon from '../../SSOButton/images/register_success_icon.png';
 import ComponentAlert from '../../components/ComponentAlert';
@@ -70,7 +69,7 @@ const Password = ({ show, setShow }: any) => {
         }
       } catch (error: any) {
         console.log('Error', error);
-        toast.error(<Toast status={false} message={'Something when wrong!'} />);
+        notify('Something when wrong!', 'error');
       }
       setSending(false);
       setAlert(alertObject);

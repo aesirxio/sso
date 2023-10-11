@@ -2,8 +2,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { BROWSER_WALLET } from '../Providers/Concordium/config';
 
-import { toast } from 'react-toastify';
-import Toast from '../../components/Toast';
+import { notify } from '../../components/Toast';
 import { useUserContext } from './user';
 import secureLocalStorage from 'react-secure-storage';
 import {
@@ -18,6 +17,7 @@ import {
   TESTNET,
   BrowserWalletConnector,
 } from '@concordium/react-components';
+import { getClientApp } from '../../utils';
 
 import { ConcordiumGRPCClient, createConcordiumClient } from '@concordium/web-sdk';
 interface Web3ContextType {
@@ -49,7 +49,7 @@ declare global {
     concordium: any;
   }
 }
-
+const { network } = getClientApp();
 const Web3Context = createContext<Web3ContextType>({
   account: '',
   gRPCClient: createConcordiumClient(
@@ -58,7 +58,7 @@ const Web3Context = createContext<Web3ContextType>({
   ),
 });
 const checkNetwork = (hash: string) => {
-  switch (process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK) {
+  switch (network) {
     case 'testnet':
       return hash === TESTNET.genesisHash;
 
@@ -69,9 +69,7 @@ const checkNetwork = (hash: string) => {
 
 const Web3ContextProvider: React.FC<Props> = ({ children, autoLoad }) => {
   return (
-    <WithWalletConnector
-      network={process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK === 'mainnet' ? MAINNET : TESTNET}
-    >
+    <WithWalletConnector network={network === 'mainnet' ? MAINNET : TESTNET}>
       {(props) => (
         <Web3ContextApp {...props} autoLoad={autoLoad}>
           {children}
@@ -111,13 +109,13 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
 
   useEffect(() => {
     if (connectError) {
-      toast.error(<Toast status={false} message={connectError} />);
+      notify(`${connectError}`, 'error');
     }
   }, [connectError]);
 
   useEffect(() => {
     if (activeConnectorError) {
-      toast.error(<Toast status={false} message={activeConnectorError} />);
+      notify(`${activeConnectorError}`, 'error');
     }
   }, [activeConnectorError]);
 
@@ -141,9 +139,7 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
       })
         .then(async (hash) => {
           if (!checkNetwork(hash)) {
-            throw new Error(
-              `Please change the network to ${process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK} in Wallet`
-            );
+            throw new Error(`Please change the network to ${network} in Wallet`);
           }
 
           setRpcGenesisHash(hash);
@@ -154,7 +150,7 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
         })
         .catch((err) => {
           if (err) {
-            toast.error(<Toast status={false} message={err.message} />);
+            notify(`${err.message}`, 'error');
           }
 
           connection.disconnect();

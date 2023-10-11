@@ -1,4 +1,4 @@
-import Toast from '../../components/Toast';
+import { notify } from '../../components/Toast';
 import { getPreregistration } from '../../utils/index';
 import React, {
   createContext,
@@ -47,7 +47,7 @@ const UserContextProvider: React.FC<Props> = ({ children, isGetInterest = false 
           await getData(jwt, accessToken);
         })();
       } catch (error: any) {
-        toast.error(<Toast status={false} message={error.message} />);
+        notify(`${error.message}`, 'error');
       }
     }
     // eslint-disable-next-line

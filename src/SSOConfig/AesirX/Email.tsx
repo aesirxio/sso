@@ -11,8 +11,7 @@ import { useUserContext } from '../../SSOButton/Providers/user';
 import { useGlobalContext } from '../../SSOButton/Providers/global';
 import { debounce } from 'lodash';
 import { validateEmail } from '../../utils/index';
-import Toast from '../../components/Toast';
-import { toast } from 'react-toastify';
+import { notify } from '../../components/Toast';
 import { updateMember } from '../../utils/index';
 
 const Email = () => {
@@ -48,26 +47,16 @@ const Email = () => {
           accessToken
         );
         if (response?.result?.success) {
-          toast.success(<Toast status={true} message={'Update email sucessfully!'} />);
+          notify('Update email sucessfully!', 'success');
         } else {
           updateSuccess = false;
-          toast.error(
-            <Toast
-              status={false}
-              message={response?._messages?.[0]?.message || 'Something when wrong!'}
-            />
-          );
+          notify(`${response?._messages?.[0]?.message || 'Something when wrong!'}`, 'error');
         }
       } catch (error: any) {
         // eslint-disable-next-line no-console
         console.log('Error', error);
         updateSuccess = false;
-        toast.error(
-          <Toast
-            status={false}
-            message={error?.response?.data?._messages?.[0]?.message || error?.message}
-          />
-        );
+        notify(`${error?.response?.data?._messages?.[0]?.message || error?.message}`, 'error');
       }
       setUpdating(false);
       if (updateSuccess) {

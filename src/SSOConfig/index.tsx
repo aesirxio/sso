@@ -3,8 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import Concordium from './Concordium';
 import { useUserContext, UserContextProvider } from '../SSOButton/Providers/user';
 import MetaMask from './MetaMask';
-import { toast } from 'react-toastify';
-import Toast from '../components/Toast';
+import 'react-toastify/dist/ReactToastify.css';
 import { useGlobalContext, GlobalContextProvider } from '../SSOButton/Providers/global';
 import { connectWallet, removeWallet } from '../utils/index';
 import DeleteModal from './DeleteModal';
@@ -14,6 +13,7 @@ import Password from './AesirX/Password';
 import Social from './Social';
 import Web3ContextProvider from '../SSOButton/Providers/web3';
 import { Spinner } from '../components/Spinner';
+import { notify } from '../components/Toast';
 
 const SSO = () => {
   return (
@@ -58,18 +58,13 @@ const SSOApp = () => {
           aesirxData?.username
         );
         if (response?.result) {
-          toast.success(<Toast status={true} message={'Connect wallet sucessfully!'} />);
+          notify('Connect wallet sucessfully!', 'success');
         } else {
-          toast.error(<Toast status={false} message={response?._messages?.[0]?.message} />);
+          notify(`${response?._messages?.[0]?.message}`, 'error');
         }
       } catch (error: any) {
         connectSuccess = false;
-        toast.error(
-          <Toast
-            status={false}
-            message={error?.response?.data?._messages?.[0]?.message || error?.message}
-          />
-        );
+        notify(`${error?.response?.data?._messages?.[0]?.message || error?.message}`, 'error');
       }
     }
     if (connectSuccess) {
@@ -87,18 +82,13 @@ const SSOApp = () => {
           aesirxData?.username
         );
         if (response?.result) {
-          toast.success(<Toast status={true} message={'Remove wallet sucessfully!'} />);
+          notify('Remove wallet sucessfully!', 'success');
         } else {
-          toast.error(<Toast status={false} message={response?._messages?.[0]?.message} />);
+          notify(`${response?._messages?.[0]?.message}`, 'error');
         }
       } catch (error: any) {
         removeSuccess = false;
-        toast.error(
-          <Toast
-            status={false}
-            message={error?.response?.data?._messages?.[0]?.message || error?.message}
-          />
-        );
+        notify(`${error?.response?.data?._messages?.[0]?.message || error?.message}`, 'error');
       }
     }
     if (removeSuccess) {
