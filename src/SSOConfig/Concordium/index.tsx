@@ -78,7 +78,7 @@ const Concordium = ({ connectWallet, setShow }: Props) => {
             })
           }
           variant="danger"
-          className="fw-semibold  w-100"
+          className="fw-semibold py-12px py-12px w-100"
         >
           Disconnect
         </Button>

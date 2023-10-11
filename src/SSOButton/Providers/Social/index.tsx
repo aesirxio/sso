@@ -139,6 +139,8 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
                   }
                   alt="Back Icon"
                   className={`me-2 ${typeSocial === 'twitter' ? 'twitter-icon' : ''}`}
+                  width={24}
+                  height={24}
                 />
                 {!isAccountExist?.status &&
                 isAccountExist?.type === typeSocial &&

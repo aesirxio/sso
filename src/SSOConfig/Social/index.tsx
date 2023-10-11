@@ -11,16 +11,18 @@ import logo_facebook from '../../SSOButton/images/logo_facebook.svg';
 import { useUserContext } from '../../SSOButton/Providers/user';
 import { useGlobalContext } from '../../SSOButton/Providers/global';
 import { updateMember } from '../../utils/index';
+import { getClientApp } from '../../utils';
 const Social = ({ typeSocial, keySocial }: any) => {
   const [loading, setLoading] = useState(false);
   const { aesirxData, getData } = useUserContext();
   const { accessToken, jwt } = useGlobalContext();
+  const { endpoint } = getClientApp();
 
   const connectSocial = async () => {
     try {
       setLoading(true);
       const response: any = await axios.get(
-        `${process.env.REACT_APP_ENDPOINT_URL}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=getSocialConnectUrl&api=hal&socialType=${typeSocial}`,
+        `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=member&task=getSocialConnectUrl&api=hal&socialType=${typeSocial}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
       window.addEventListener(
         'message',
         (e: any) => {
-          if (e.origin !== process.env.REACT_APP_ENDPOINT_URL) return;
+          if (e.origin !== endpoint) return;
           if (e.data && e.data.socialType) {
             setLoading(false);
             getData(jwt, accessToken);

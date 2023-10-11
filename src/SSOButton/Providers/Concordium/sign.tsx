@@ -144,6 +144,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
                   src={concordium_logo}
                   className="me-3 align-text-bottom"
                   alt="Concordium logo"
+                  width={24}
                 />
                 {loading ? (
                   <>
@@ -164,6 +165,7 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
                   src={concordium_logo}
                   className="me-3 align-text-bottom"
                   alt="Concordium logo"
+                  width={24}
                 />
                 Sign in via Concordium ({account && shortenString(account)})
               </>
