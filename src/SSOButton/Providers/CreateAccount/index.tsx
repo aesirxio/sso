@@ -453,7 +453,7 @@ const CreateAccount = ({
             toast.success(
               'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
             );
-            setShow(false);
+            setShow && setShow(false);
           }
         });
       });
