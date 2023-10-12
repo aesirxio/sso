@@ -24,7 +24,9 @@ import CustomField from './CustomField';
 import FriendlyCaptcha from './FriendlyCaptcha';
 import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
+import io from 'socket.io-client';
 
+let socket: any;
 interface Fields {
   defaultValue: any;
   fieldId: number;
@@ -418,6 +420,48 @@ const CreateAccount = ({
       setAffiliateLink(refAffiliate2EarnUrl);
     }
   }, []);
+
+  useEffect(() => {
+    if (
+      formik.values[`field${registerForm.username}_1`] &&
+      formik.values[`field${registerForm.email}_1_email`]
+    ) {
+      const createSocketServer = async () => {
+        await axios.get(`${partnerEndpoint}/api/socket`);
+      };
+
+      createSocketServer();
+
+      if (!socket && partnerEndpoint) {
+        socket = io(partnerEndpoint, {
+          reconnection: true,
+          secure: true,
+          rejectUnauthorized: false,
+          transports: ['polling'],
+        });
+      }
+
+      socket.on('connect', () => {
+        socket.on('web3id-update', async (msg: any) => {
+          const web3id = formik.values[`field${registerForm.username}_1`]
+            ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
+            : `@${formik.values[`field${registerForm.username}_1`]}`;
+
+          if (msg === web3id) {
+            const list: any = document.getElementById('sellix-container');
+            list && list?.removeChild(list.lastChild);
+            toast.success(
+              'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
+            );
+            setShow && setShow(false);
+          }
+        });
+      });
+    }
+  }, [
+    formik.values[`field${registerForm.username}_1`],
+    formik.values[`field${registerForm.email}_1_email`],
+  ]);
   return (
     <>
       {!accountAddress && !isNoWallet && (
@@ -540,8 +584,8 @@ const CreateAccount = ({
                     data-sellix-custom-form_id={formID}
                     data-sellix-custom-requested_username={
                       formik.values[`field${registerForm.username}_1`]
-                        ? formik.values[`field${registerForm.username}_1`].trim()
-                        : formik.values[`field${registerForm.username}_1`]
+                        ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
+                        : `@${formik.values[`field${registerForm.username}_1`]}`
                     }
                     data-sellix-custom-firstname={
                       formik.values[`field${registerForm.first_name}_1`]
