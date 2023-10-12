@@ -4,8 +4,7 @@ import { Button, Form, Spinner } from 'react-bootstrap';
 import ButtonCopy from '../../components/ButtonCopy';
 import { useState } from 'react';
 import axios from 'axios';
-import Toast from '../../components/Toast';
-import { toast } from 'react-toastify';
+import { notify } from '../../components/Toast';
 import logo_google from '../../SSOButton/images/logo_google.svg';
 import logo_twitter from '../../SSOButton/images/logo_twitter.svg';
 import logo_facebook from '../../SSOButton/images/logo_facebook.svg';
@@ -50,7 +49,7 @@ const Social = ({ typeSocial, keySocial }: any) => {
             setLoading(false);
             getData(jwt, accessToken);
           } else if (e.data.error) {
-            toast.error(<Toast status={false} message={e.data.error} />);
+            notify(`${e.data.error}`, 'error');
           }
         },
         false
@@ -71,26 +70,16 @@ const Social = ({ typeSocial, keySocial }: any) => {
       );
 
       if (response?.result?.success) {
-        toast.success(<Toast status={true} message={'Disconnect sucessfully!'} />);
+        notify('Disconnect sucessfully!', 'success');
       } else {
         updateSuccess = false;
-        toast.error(
-          <Toast
-            status={false}
-            message={response?._messages?.[0]?.message || 'Something when wrong!'}
-          />
-        );
+        notify(`${response?._messages?.[0]?.message || 'Something when wrong!'}`, 'error');
       }
     } catch (error: any) {
       // eslint-disable-next-line no-console
       console.log('Error', error);
       updateSuccess = false;
-      toast.error(
-        <Toast
-          status={false}
-          message={error?.response?.data?._messages?.[0]?.message || error?.message}
-        />
-      );
+      notify(`${error?.response?.data?._messages?.[0]?.message || error?.message}`, 'error');
     }
     setLoading(false);
     if (updateSuccess) {
