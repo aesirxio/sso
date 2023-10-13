@@ -12,9 +12,14 @@ const SSOSocialProvider = React.lazy(() => import('../SSOButton/Providers/Social
 interface SignUpButtonProps {
   className: string;
   text: string;
+  productOptions: Array<any>;
 }
 
-const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }) => {
+const SignUpButton: React.FC<SignUpButtonProps> = ({
+  className,
+  text = 'Login',
+  productOptions = [],
+}) => {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState('');
   const [isAccountExist, setIsAccountExist] = useState({ status: true, type: '' });
@@ -140,7 +145,12 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({ className, text = 'Login' }
                       </>
                     )}
                     {expand === 'email' && (
-                      <CreateAccount noLogin={true} isNoWallet={true} setShow={toggle} />
+                      <CreateAccount
+                        noLogin={true}
+                        isNoWallet={true}
+                        setShow={toggle}
+                        productOptions={productOptions}
+                      />
                     )}
                     {expand?.includes('social') && (
                       <div>
