@@ -3,7 +3,6 @@ import { Col, Row } from 'react-bootstrap';
 import Concordium from './Concordium';
 import { useUserContext, UserContextProvider } from '../SSOButton/Providers/user';
 import MetaMask from './MetaMask';
-import 'react-toastify/dist/ReactToastify.css';
 import { useGlobalContext, GlobalContextProvider } from '../SSOButton/Providers/global';
 import { connectWallet, removeWallet } from '../utils/index';
 import DeleteModal from './DeleteModal';
