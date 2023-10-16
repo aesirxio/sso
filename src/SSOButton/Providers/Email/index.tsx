@@ -17,6 +17,11 @@ const SSOEmailProvider = () => {
       const form = event.target;
 
       const formData = new FormData(form);
+      const queryString = typeof window !== 'undefined' && window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const organisationParams = urlParams.get('organisationId');
+      const returnParams = urlParams.get('return');
+      const channelTypeParams = urlParams.get('channel_type');
 
       const reqAuthFormData = {
         username: formData.get('ssoemail'),
@@ -24,6 +29,9 @@ const SSOEmailProvider = () => {
         client_id: client_id,
         client_secret: client_secret,
         grant_type: 'password',
+        ...(channelTypeParams && { channel_type: channelTypeParams }),
+        ...(returnParams && { return: returnParams }),
+        ...(organisationParams && { organisationId: organisationParams }),
       };
 
       const config = {
