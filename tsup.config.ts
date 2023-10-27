@@ -24,6 +24,7 @@ const tsupConfig = defineConfig([
     esbuildOptions(options) {
       env === 'production' ? (options.drop = ['console']) : '';
     },
+    publicDir: 'src/SSOButton/styles',
   },
   {
     format: ['iife'],
