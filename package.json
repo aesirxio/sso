@@ -23,7 +23,7 @@
     "bootstrap": "^5.3.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
-    "ethers": "^6.7.1",
+    "ethers": "^6.8.0",
     "formik": "^2.4.4",
     "friendly-challenge": "^0.9.13",
     "lodash": "^4.17.21",
