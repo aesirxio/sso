@@ -19,7 +19,7 @@ import {
 } from '@concordium/react-components';
 import { getClientApp } from '../../utils';
 
-import { ConcordiumGRPCClient } from '@concordium/web-sdk';
+import { BlockHash, ConcordiumGRPCClient } from '@concordium/web-sdk';
 interface Web3ContextType {
   account: string;
   setActiveConnectorType?: any;
@@ -57,10 +57,10 @@ const Web3Context = createContext<Web3ContextType>({
 const checkNetwork = (hash: string) => {
   switch (network) {
     case 'testnet':
-      return hash === TESTNET.genesisHash;
+      return BlockHash.toHexString(hash) === TESTNET.genesisHash;
 
     default:
-      return hash === MAINNET.genesisHash;
+      return BlockHash.toHexString(hash) === MAINNET.genesisHash;
   }
 };
 
