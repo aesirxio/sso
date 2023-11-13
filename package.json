@@ -8,9 +8,9 @@
   "types": "build/lib/types/index.d.ts",
   "source": "src/index.js",
   "dependencies": {
-    "@concordium/browser-wallet-api-helpers": "^2.8.0",
-    "@concordium/react-components": "^0.3.0",
-    "@concordium/web-sdk": "^6.4.0",
+    "@concordium/browser-wallet-api-helpers": "^3.0.0",
+    "@concordium/react-components": "^0.4.0-rc.7",
+    "@concordium/web-sdk": "^7.0.4-rc.3",
     "@fingerprintjs/fingerprintjs": "3.4.2",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
