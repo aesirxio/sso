@@ -54,7 +54,7 @@ const Web3Context = createContext<Web3ContextType>({
   account: '',
   gRPCClient: {} as ConcordiumGRPCClient,
 });
-const checkNetwork = (hash: string) => {
+const checkNetwork = (hash: any) => {
   switch (network) {
     case 'testnet':
       return BlockHash.toHexString(hash) === TESTNET.genesisHash;
