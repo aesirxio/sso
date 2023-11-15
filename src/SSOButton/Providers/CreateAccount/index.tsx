@@ -19,12 +19,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { debounce } from 'lodash';
 import axios from 'axios';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import CustomField from './CustomField';
 import FriendlyCaptcha from './FriendlyCaptcha';
 import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import io from 'socket.io-client';
+import getFingerprint from '../../../lib/fingerprint';
 
 let socket: any;
 interface Fields {
@@ -231,10 +231,7 @@ const CreateAccount = ({
         data[`field${registerForm.username}_1`] = '@' + data[`field${registerForm.username}_1`];
         data[`field${registerForm.product}_1`] = 'community';
 
-        const fpPromise = FingerprintJS.load({ monitoring: false });
-        const fp = await fpPromise;
-        const result = await fp.get();
-        data.visitorId = result.visitorId;
+        data.visitorId = getFingerprint();
 
         const apiData = {
           id: data[`field${registerForm.username}_1`],
@@ -248,7 +245,7 @@ const CreateAccount = ({
             organization: data[`field${registerForm.email}_1_email`],
           }),
           message: data[`field${registerForm.message}_1`] ?? '',
-          visitorId: result.visitorId,
+          visitorId: data.visitorId,
           ...(shareLink && {
             refShare2Earn: shareLink,
           }),
