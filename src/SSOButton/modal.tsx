@@ -26,6 +26,8 @@ interface SSSOModalProps {
   demoPassword?: string;
   noCreateAccount?: boolean;
   isSignUpForm?: boolean;
+  loginText: string;
+  loginBg?: string;
 }
 
 export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefined);
@@ -40,6 +42,8 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   demoPassword,
   noCreateAccount,
   isSignUpForm = false,
+  loginText,
+  loginBg,
 }) => {
   const handleOnData = (data: any) => {
     onGetData(data);
@@ -71,7 +75,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
                 isSignUpForm: isSignUpForm,
               }}
             >
-              <SSOProviders />
+              <SSOProviders loginText={loginText} loginBg={loginBg} />
             </SSOModalContext.Provider>
           </Suspense>
         </ModalBody>
