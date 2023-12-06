@@ -2640,16 +2640,17 @@ aes-js@^3.1.2:
   resolved "https://registry.npmjs.org/aes-js/-/aes-js-3.1.2.tgz#db9aabde85d5caabbfc0d4f2a4446960f627146a"
   integrity sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ==
 
-aesirx-lib@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/aesirx-lib/-/aesirx-lib-2.0.1.tgz#de4dcadb6552ac8d6135c3b07378f6cd466efd4a"
-  integrity sha512-b3uX0455+vfOz6VKeVTEcprIPSBrNf4klmgYoGybCxsc6Y+2JHlf4uPeelCnUMNg4G6PiNfv6q4p6zGUzWVQVg==
+aesirx-lib@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/aesirx-lib/-/aesirx-lib-2.0.3.tgz#617a2837b1334f084055a6287b454f6650fb8be4"
+  integrity sha512-eOAzBszlP2mn9NAZU+Q9l2jUiX/J0vTXKG5JuKhOUkvyG5f1J1wVGTFC5jrLsCacaidt3XtfHJ+o1l2B12lYBw==
   dependencies:
-    axios "^1.4.0"
+    axios "^1.6.0"
     axios-auth-refresh "^3.3.6"
     date-fns "^2.30.0"
     date-fns-tz "^2.0.0"
     moment "^2.29.4"
+    murmurhash-js "^1.0.0"
     query-string "7"
     react-secure-storage "^1.2.2"
 
@@ -2814,7 +2815,7 @@ axios-auth-refresh@^3.3.6:
   resolved "https://registry.yarnpkg.com/axios-auth-refresh/-/axios-auth-refresh-3.3.6.tgz#a879f6296a889d6616e51069c2a8135b697966e7"
   integrity sha512-2CeBUce/SxIfFxow5/n8vApJ97yYF6qoV4gh1UrswT7aEOnlOdBLxxyhOI4IaxGs6BY0l8YujU2jlc4aCmK17Q==
 
-axios@^1.4.0, axios@^1.6.0:
+axios@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.0.tgz#f1e5292f26b2fd5c2e66876adc5b06cdbd7d2102"
   integrity sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==
