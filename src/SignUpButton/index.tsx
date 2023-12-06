@@ -12,12 +12,14 @@ const SSOSocialProvider = React.lazy(() => import('../SSOButton/Providers/Social
 interface SignUpButtonProps {
   className: string;
   text: string;
+  loginBg?: string;
   productOptions: Array<any>;
 }
 
 const SignUpButton: React.FC<SignUpButtonProps> = ({
   className,
   text = 'Login',
+  loginBg,
   productOptions = [],
 }) => {
   const [show, setShow] = useState(false);
@@ -208,7 +210,11 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                 </div>
               </div>
               <div className="d-none d-lg-block col-lg-5">
-                <img className="w-100 h-100" src={login_bg} alt="Login Background" />
+                <img
+                  className="w-100 h-100"
+                  src={loginBg ? loginBg : login_bg}
+                  alt="Login Background"
+                />
               </div>
             </div>
           </SSOModalContext.Provider>
