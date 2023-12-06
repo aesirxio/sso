@@ -10,16 +10,16 @@ import {
   ConnectorType,
   Network,
   WalletConnector,
-  withJsonRpcClient,
   useConnect,
   useConnection,
   MAINNET,
   TESTNET,
   BrowserWalletConnector,
+  useGrpcClient,
 } from '@concordium/react-components';
 import { getClientApp } from '../../utils';
 
-import { ConcordiumGRPCClient, createConcordiumClient } from '@concordium/web-sdk';
+import { BlockHash, ConcordiumGRPCClient } from '@concordium/web-sdk';
 interface Web3ContextType {
   account: string;
   setActiveConnectorType?: any;
@@ -52,18 +52,15 @@ declare global {
 const { network } = getClientApp();
 const Web3Context = createContext<Web3ContextType>({
   account: '',
-  gRPCClient: createConcordiumClient(
-    process.env.NEXT_PUBLIC_GRPC2_URL ?? '',
-    parseInt(process.env.NEXT_PUBLIC_GRPC2_PORT ?? '0')
-  ),
+  gRPCClient: {} as ConcordiumGRPCClient,
 });
-const checkNetwork = (hash: string) => {
+const checkNetwork = (hash: any) => {
   switch (network) {
     case 'testnet':
-      return hash === TESTNET.genesisHash;
+      return BlockHash.toHexString(hash) === TESTNET.genesisHash;
 
     default:
-      return hash === MAINNET.genesisHash;
+      return BlockHash.toHexString(hash) === MAINNET.genesisHash;
   }
 };
 
@@ -101,6 +98,8 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
 
   const { preregistration } = useUserContext();
 
+  const rpc = useGrpcClient(network);
+
   useEffect(() => {
     if (activeConnector) {
       connect();
@@ -130,14 +129,12 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
   }, []);
 
   useEffect(() => {
-    if (connection) {
+    if (rpc) {
       setRpcGenesisHash(undefined);
-      withJsonRpcClient(connection, async (rpc) => {
-        const status = await rpc.getConsensusStatus();
-
-        return status.genesisBlock;
-      })
-        .then(async (hash) => {
+      rpc
+        .getConsensusStatus()
+        .then((status) => status.genesisBlock)
+        .then(async (hash: any) => {
           if (!checkNetwork(hash)) {
             throw new Error(`Please change the network to ${network} in Wallet`);
           }
@@ -148,7 +145,7 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
             activeConnector instanceof BrowserWalletConnector ? 'browser' : 'walletconnect'
           );
         })
-        .catch((err) => {
+        .catch((err: any) => {
           if (err) {
             notify(`${err.message}`, 'error');
           }
@@ -158,12 +155,7 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
           setActiveConnectorType(undefined);
         });
     }
-  }, [account, connection, genesisHash, network, preregistration?.id, setActiveConnectorType]);
-
-  const gRPCClient = createConcordiumClient(
-    process.env.NEXT_PUBLIC_GRPC2_URL ?? '',
-    parseInt(process.env.NEXT_PUBLIC_GRPC2_PORT ?? '0')
-  );
+  }, [account, rpc, preregistration?.id, setActiveConnectorType]);
 
   return (
     <Web3Context.Provider
@@ -172,7 +164,7 @@ const Web3ContextApp: React.FC<AppProps> = ({ children, ...props }) => {
         setActiveConnectorType: setActiveConnectorType,
         connection: connection,
         isConnecting: isConnecting,
-        gRPCClient: gRPCClient,
+        gRPCClient: rpc,
       }}
     >
       {children}

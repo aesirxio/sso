@@ -9,7 +9,7 @@ const SSOEthereumProvider = React.lazy(() => import('./Ethereum'));
 const SSOEmailProvider = React.lazy(() => import('./Email'));
 const SSOSocialProvider = React.lazy(() => import('./Social'));
 
-const SSOProviders = () => {
+const SSOProviders = ({ loginText, loginBg }: any) => {
   const [expand, setExpand] = useState('');
   const [isAccountExist, setIsAccountExist] = useState({ status: true, type: '' });
   const urlParams = new URLSearchParams(window.location.search);
@@ -31,7 +31,10 @@ const SSOProviders = () => {
               {!expand ? (
                 <>
                   <img src={privacy_icon} alt="Privacy Icon" />
-                  <h3 className="fs-3 fw-semibold mt-2 mb-3 text-primary">Welcome to AesirX SSO</h3>
+                  <h3
+                    className="fs-3 fw-semibold mt-2 mb-3 text-primary"
+                    dangerouslySetInnerHTML={{ __html: `Welcome to ${loginText}` }}
+                  ></h3>
                   <p className="mb-20px fs-14">Select your login method</p>
                   <button
                     type="button"
@@ -191,7 +194,7 @@ const SSOProviders = () => {
           </div>
         </div>
         <div className="d-none d-lg-block col-lg-5">
-          <img className="w-100" src={login_bg} alt="Login Background" />
+          <img className="w-100" src={loginBg ? loginBg : login_bg} alt="Login Background" />
         </div>
       </div>
     </>
