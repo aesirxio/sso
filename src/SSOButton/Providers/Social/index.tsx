@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getClientApp } from '../../../utils';
+import { getClientApp, getMember } from '../../../utils';
 import axios from 'axios';
 import { SSOModalContext } from '../../modal';
 import fb_icon from '../../images/logo_facebook.svg';
@@ -11,10 +11,17 @@ import CreateAccount from '../CreateAccount';
 import arrow_left from '../../images/arrow_left.svg';
 import { toast } from 'react-toastify';
 
-const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setExpand }: any) => {
+const SSOSocialProvider = ({
+  typeSocial,
+  isAccountExist,
+  setIsAccountExist,
+  setExpand,
+  setAccountInfo,
+}: any) => {
   const [loading, setLoading] = useState(false);
   const [idSocial, setIdSocial] = useState('');
-  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle, isRequireEmail } =
+    useContext(SSOModalContext);
   const { endpoint } = getClientApp();
   const [showCreate, setShowCreate] = useState('');
   const [showCreatedMessage, setShowCreatedMessage] = useState(false);
@@ -30,29 +37,41 @@ const SSOSocialProvider = ({ typeSocial, isAccountExist, setIsAccountExist, setE
       );
       response?.data.result[0] &&
         window.open(response?.data.result[0], 'SSO', 'status=1,height=750,width=650');
-      window.addEventListener(
-        'message',
-        (e) => {
-          if (e.origin !== endpoint) return;
-          if (e.data && e.data.socialLogin) {
-            if (isCreate) {
-              setShowCreatedMessage(true);
+
+      const handleLogin = async (e: any) => {
+        if (e.origin !== endpoint) return;
+        if (e.data && e.data.socialLogin) {
+          if (isCreate) {
+            setShowCreatedMessage(true);
+          } else {
+            const dataLogin = JSON.parse(e.data.socialLogin);
+            if (isRequireEmail) {
+              setLoading(true);
+              const member = await getMember(dataLogin?.access_token);
+              if (!member?.email || /@aesirx\.io$/.test(member?.email)) {
+                setExpand('require-email');
+                setAccountInfo({ data: dataLogin, memberId: member?.member_id });
+              } else {
+                handleOnData(dataLogin);
+              }
+              setLoading(false);
             } else {
-              const dataLogin = JSON.parse(e.data.socialLogin);
               handleOnData(dataLogin);
             }
-          } else if (e.data.error) {
-            !noCreateAccount && setIsExist(false);
-            setIsAccountExist({ status: false, type: typeSocial });
-            setIdSocial(e.data.id);
-            if (isCreate) {
-              setExpand(`social-${typeSocial}`);
-              setShowCreate(typeSocial);
-            }
           }
-        },
-        false
-      );
+        } else if (e.data.error) {
+          !noCreateAccount && setIsExist(false);
+          setIsAccountExist({ status: false, type: typeSocial });
+          setIdSocial(e.data.id);
+          if (isCreate) {
+            setExpand(`social-${typeSocial}`);
+            setShowCreate(typeSocial);
+          }
+        }
+        window.removeEventListener('message', handleLogin);
+      };
+
+      window.addEventListener('message', handleLogin, false);
       setLoading(false);
     } catch (error) {
       setLoading(false);

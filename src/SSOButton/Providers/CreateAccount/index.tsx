@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import {
@@ -25,6 +25,7 @@ import FriendlyCaptcha from './FriendlyCaptcha';
 import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import io from 'socket.io-client';
+import { SSOModalContext } from '../../modal';
 
 let socket: any;
 interface Fields {
@@ -57,7 +58,7 @@ const CreateAccount = ({
   const { registerForm, endpoint, web3Endpoint, partnerEndpoint } = getClientApp();
   const debouncedCheckWeb3Id: any = useCallback(debounce(validateWeb3Id, 200), []);
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
-
+  const { isRequireEmail } = useContext(SSOModalContext);
   const [data, setData] = useState<any>([]);
   const [fetch, setFetch] = useState(true);
 
@@ -506,7 +507,11 @@ const CreateAccount = ({
                       formik={formik}
                       defaultProduct={defaultProduct}
                       productOptions={productOptions}
-                      isShowEmail={accountAddress || Object.keys(socialType).length ? false : true}
+                      isShowEmail={
+                        (accountAddress || Object.keys(socialType).length) && !isRequireEmail
+                          ? false
+                          : true
+                      }
                       isProduct={
                         Object.keys(packagesData).length || productOptions?.length ? true : false
                       }

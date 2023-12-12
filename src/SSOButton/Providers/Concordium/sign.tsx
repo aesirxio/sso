@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import {
   checkWalletAccount,
   getChallenge,
+  getMember,
   getStatement,
   shortenString,
   verifyProof,
@@ -16,7 +17,13 @@ import CreateAccount from '../CreateAccount';
 import { stringMessage } from '@concordium/react-components';
 import arrow_left from '../../images/arrow_left.svg';
 
-const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpand }: any) => {
+const SignMessageConcordium = ({
+  account,
+  connection,
+  setIsAccountExist,
+  setExpand,
+  setAccountInfo,
+}: any) => {
   const [status, setStatus] = useState('');
   const [isExist, setIsExist] = useState(true);
   const [proof, setProof] = useState(false);
@@ -24,7 +31,8 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
   const [show, setShow] = useState(false);
 
   const wallet = 'concordium';
-  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle, isRequireEmail } =
+    useContext(SSOModalContext);
 
   const { getWalletNonce, verifySignature } = useWallet(wallet, account);
   const handleConnect = async () => {
@@ -39,7 +47,17 @@ const SignMessageConcordium = ({ account, connection, setIsAccountExist, setExpa
 
         if (signature) {
           const data = await verifySignature(wallet, account, convertedSignature);
-          handleOnData({ ...data, loginType: 'concordium' });
+          if (isRequireEmail) {
+            const member = await getMember(data?.access_token);
+            if (!member?.email || /@aesirx\.io$/.test(member?.email)) {
+              setExpand('require-email');
+              setAccountInfo({ data: data, memberId: member?.member_id });
+            } else {
+              handleOnData({ ...data, loginType: 'concordium' });
+            }
+          } else {
+            handleOnData({ ...data, loginType: 'concordium' });
+          }
         }
       } catch (error) {
         toast(error.message);

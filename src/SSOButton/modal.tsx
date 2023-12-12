@@ -15,6 +15,7 @@ interface SSSOModalContextProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isRequireEmail?: boolean;
   isSignUpForm?: boolean;
 }
 
@@ -25,6 +26,7 @@ interface SSSOModalProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isRequireEmail?: boolean;
   isSignUpForm?: boolean;
   loginText: string;
   loginBg?: string;
@@ -41,6 +43,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   demoUser,
   demoPassword,
   noCreateAccount,
+  isRequireEmail,
   isSignUpForm = false,
   loginText,
   loginBg,
@@ -72,6 +75,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
                 demoUser: demoUser,
                 demoPassword: demoPassword,
                 noCreateAccount: noCreateAccount,
+                isRequireEmail: isRequireEmail,
                 isSignUpForm: isSignUpForm,
               }}
             >

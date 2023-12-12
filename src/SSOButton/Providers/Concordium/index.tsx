@@ -20,6 +20,7 @@ import { BlockHash } from '@concordium/web-sdk';
 interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setIsAccountExist: any;
   setExpand: any;
+  setAccountInfo: any;
   noLogin: any;
   setAccountAddress: any;
   setConnectionProvider: any;
@@ -28,6 +29,7 @@ interface WalletConnectionPropsExtends extends WalletConnectionProps {
 const SSOConcordiumProvider = ({
   setIsAccountExist,
   setExpand,
+  setAccountInfo,
   noLogin,
   setAccountAddress,
   setConnection,
@@ -42,6 +44,7 @@ const SSOConcordiumProvider = ({
           {...props}
           setIsAccountExist={setIsAccountExist}
           setExpand={setExpand}
+          setAccountInfo={setAccountInfo}
           noLogin={noLogin}
           setAccountAddress={setAccountAddress}
           setConnectionProvider={setConnection}
@@ -63,6 +66,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
     setActiveConnectorType,
     setIsAccountExist,
     setExpand,
+    setAccountInfo,
     noLogin,
     setAccountAddress,
     setConnectionProvider,
@@ -177,6 +181,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
                 connection={connection}
                 setIsAccountExist={setIsAccountExist}
                 setExpand={setExpand}
+                setAccountInfo={setAccountInfo}
               />
             )
           ) : (
