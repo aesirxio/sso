@@ -13,6 +13,7 @@ interface SignUpButtonProps {
   className: string;
   text: string;
   loginBg?: string;
+  isRequireEmail?: boolean;
   productOptions: Array<any>;
 }
 
@@ -20,6 +21,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
   className,
   text = 'Login',
   loginBg,
+  isRequireEmail = false,
   productOptions = [],
 }) => {
   const [show, setShow] = useState(false);
@@ -67,6 +69,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
               demoPassword: null,
               noCreateAccount: false,
               isSignUpForm: true,
+              isRequireEmail: isRequireEmail,
             }}
           >
             <div className="row gx-0 w-100">
