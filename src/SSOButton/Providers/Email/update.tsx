@@ -38,14 +38,11 @@ const SSOUpdateEmailProvider = ({ accountInfo }: any) => {
     validationSchema: Yup.object(generateValidationSchema()),
     onSubmit: async (values) => {
       setLoading(true);
-      console.log('values', values);
-      console.log('accountInfo', accountInfo);
       try {
         const response: any = await updateMember(
-          { id: accountInfo?.memberId, ...values },
+          { id: accountInfo?.memberId, sendmail: 1, ...values },
           accountInfo?.data?.access_token
         );
-        console.log('response', response);
         if (response?.result?.success) {
           handleOnData(accountInfo?.data);
         } else {
