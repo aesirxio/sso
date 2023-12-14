@@ -29,6 +29,8 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
         const member = await getMember(res?.access_token);
         if (!member?.email || /@aesirx\.io$/.test(member?.email)) {
           setExpand('require-email');
+          console.log('res', res);
+          console.log('member?.member_id', member?.member_id);
           setAccountInfo({ data: res, memberId: member?.member_id });
         } else {
           handleOnData({ ...res, loginType: 'metamask' });

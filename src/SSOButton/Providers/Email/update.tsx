@@ -39,6 +39,7 @@ const SSOUpdateEmailProvider = ({ accountInfo }: any) => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
+        console.log('accountInfo', accountInfo);
         const response: any = await updateMember(
           { id: accountInfo?.memberId, sendmail: 1, ...values },
           accountInfo?.data?.access_token
