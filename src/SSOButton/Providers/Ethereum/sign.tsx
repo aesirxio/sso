@@ -84,6 +84,7 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
               accountAddress={address}
               connection={connector}
               wallet={'metamask'}
+              isRequireEmail={isRequireEmail}
             />
           </div>
         </>

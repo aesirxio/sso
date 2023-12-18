@@ -112,6 +112,7 @@ const SSOSocialProvider = ({
               isNoWallet={true}
               noLogin={true}
               socialType={{ id: idSocial, type: typeSocial }}
+              isRequireEmail={isRequireEmail}
             />
           </div>
         </>

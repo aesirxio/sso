@@ -145,6 +145,7 @@ const SignMessageConcordium = ({
               accountAddress={account}
               connection={connection}
               wallet={'concordium'}
+              isRequireEmail={isRequireEmail}
             />
           </div>
         </>

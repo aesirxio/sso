@@ -43,7 +43,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   demoUser,
   demoPassword,
   noCreateAccount,
-  isRequireEmail,
+  isRequireEmail = false,
   isSignUpForm = false,
   loginText,
   loginBg,

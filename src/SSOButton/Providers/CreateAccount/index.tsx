@@ -51,6 +51,7 @@ const CreateAccount = ({
   productOptions = [],
   productName,
   socialType = {},
+  isRequireEmail,
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -58,7 +59,6 @@ const CreateAccount = ({
   const { registerForm, endpoint, web3Endpoint, partnerEndpoint } = getClientApp();
   const debouncedCheckWeb3Id: any = useCallback(debounce(validateWeb3Id, 200), []);
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
-  const { isRequireEmail } = useContext(SSOModalContext);
   const [data, setData] = useState<any>([]);
   const [fetch, setFetch] = useState(true);
 

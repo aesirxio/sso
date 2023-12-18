@@ -155,6 +155,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         isNoWallet={true}
                         setShow={toggle}
                         productOptions={productOptions}
+                        isRequireEmail={isRequireEmail}
                       />
                     )}
                     {expand?.includes('social') && (
