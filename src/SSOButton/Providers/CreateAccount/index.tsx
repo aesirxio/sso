@@ -114,6 +114,7 @@ const CreateAccount = ({
     product: packagesData?.license_package ? packagesData?.license_package?.toLowerCase() : '',
     sellix_id: packagesData?.sellix_id,
     product_name: productName,
+    period: packagesData?.license_period ?? 'monthly',
   };
 
   const generateInitialValue = (data: any) => {
@@ -268,19 +269,19 @@ const CreateAccount = ({
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${accountAddress}`,
+              ? `${socialType?.id}`
+              : `${accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}@aesirx.io`
-            : `${accountAddress}@aesirx.io`,
+              ? `${socialType?.id}@aesirx.io`
+              : `${accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${accountAddress}`,
+              ? `${socialType?.id}`
+              : `${accountAddress}`,
           block: 0,
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
@@ -313,8 +314,8 @@ const CreateAccount = ({
               [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
-                ? `${socialType?.id}@aesirx.io`
-                : `${accountAddress}@aesirx.io`,
+                  ? `${socialType?.id}@aesirx.io`
+                  : `${accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
@@ -604,6 +605,7 @@ const CreateAccount = ({
                     data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
                     data-sellix-custom-share_link={shareLink}
                     data-sellix-custom-affiliate_link={affiliateLink}
+                    data-sellix-custom-license_period={license?.period}
                     data-sellix-custom-license_package={license?.product}
                     data-sellix-custom-license_package_name={license?.product_name}
                     variant="success"
