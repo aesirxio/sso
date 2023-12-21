@@ -48,7 +48,13 @@ const SSOSocialProvider = ({
             if (isRequireEmail) {
               setLoading(true);
               const member = await getMember(dataLogin?.access_token);
-              if (!member?.email || /@aesirx\.io$/.test(member?.email)) {
+              if (
+                !member?.email ||
+                (/@aesirx\.io$/.test(member?.email) &&
+                  ((member?.wallet_concordium &&
+                    member?.email?.includes(member?.wallet_concordium)) ||
+                    (member?.wallet_metamask && member?.email?.includes(member?.wallet_metamask))))
+              ) {
                 setExpand('require-email');
                 setAccountInfo({ data: dataLogin, memberId: member?.member_id });
               } else {
@@ -155,10 +161,10 @@ const SSOSocialProvider = ({
                     typeSocial === 'google'
                       ? google_icon
                       : typeSocial === 'facebook'
-                      ? fb_icon
-                      : typeSocial === 'twitter'
-                      ? twitter_icon
-                      : reddit_icon
+                        ? fb_icon
+                        : typeSocial === 'twitter'
+                          ? twitter_icon
+                          : reddit_icon
                   }
                   width={24}
                   height={24}

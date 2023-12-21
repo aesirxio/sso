@@ -27,7 +27,12 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
       const res = await verifySignature(wallet, address, data);
       if (isRequireEmail) {
         const member = await getMember(res?.access_token);
-        if (!member?.email || /@aesirx\.io$/.test(member?.email)) {
+        if (
+          !member?.email ||
+          (/@aesirx\.io$/.test(member?.email) &&
+            ((member?.wallet_concordium && member?.email?.includes(member?.wallet_concordium)) ||
+              (member?.wallet_metamask && member?.email?.includes(member?.wallet_metamask))))
+        ) {
           setExpand('require-email');
           console.log('res', res);
           console.log('member?.member_id', member?.member_id);
@@ -126,8 +131,8 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
                   {status === 'sign'
                     ? `Please sign message via ${connector?.name}`
                     : status === 'loading'
-                    ? 'Connecting...'
-                    : `Please wait to connect... via ${connector?.name}`}
+                      ? 'Connecting...'
+                      : `Please wait to connect... via ${connector?.name}`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (

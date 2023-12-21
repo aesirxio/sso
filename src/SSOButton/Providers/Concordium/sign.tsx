@@ -49,7 +49,13 @@ const SignMessageConcordium = ({
           const data = await verifySignature(wallet, account, convertedSignature);
           if (isRequireEmail) {
             const member = await getMember(data?.access_token);
-            if (!member?.email || /@aesirx\.io$/.test(member?.email)) {
+            if (
+              !member?.email ||
+              (/@aesirx\.io$/.test(member?.email) &&
+                ((member?.wallet_concordium &&
+                  member?.email?.includes(member?.wallet_concordium)) ||
+                  (member?.wallet_metamask && member?.email?.includes(member?.wallet_metamask))))
+            ) {
               setExpand('require-email');
               setAccountInfo({ data: data, memberId: member?.member_id });
             } else {
@@ -169,8 +175,8 @@ const SignMessageConcordium = ({
                   {status === 'sign'
                     ? 'Please sign message on the wallet'
                     : status === 'loading'
-                    ? 'Connecting...'
-                    : `Please wait to connect...`}
+                      ? 'Connecting...'
+                      : `Please wait to connect...`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (
