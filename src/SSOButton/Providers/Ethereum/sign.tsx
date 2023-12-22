@@ -131,8 +131,8 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
                   {status === 'sign'
                     ? `Please sign message via ${connector?.name}`
                     : status === 'loading'
-                      ? 'Connecting...'
-                      : `Please wait to connect... via ${connector?.name}`}
+                    ? 'Connecting...'
+                    : `Please wait to connect... via ${connector?.name}`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (
