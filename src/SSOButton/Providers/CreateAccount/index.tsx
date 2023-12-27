@@ -52,6 +52,7 @@ const CreateAccount = ({
   productName,
   socialType = {},
   isRequireEmail,
+  hideDefaultProduct = false,
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -269,19 +270,19 @@ const CreateAccount = ({
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${accountAddress}`,
+              ? `${socialType?.id}`
+              : `${accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}@aesirx.io`
-            : `${accountAddress}@aesirx.io`,
+              ? `${socialType?.id}@aesirx.io`
+              : `${accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${accountAddress}`,
+              ? `${socialType?.id}`
+              : `${accountAddress}`,
           block: 0,
           ...(wallet === 'concordium'
             ? { wallet_concordium: accountAddress }
@@ -314,8 +315,8 @@ const CreateAccount = ({
               [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
-                ? `${socialType?.id}@aesirx.io`
-                : `${accountAddress}@aesirx.io`,
+                  ? `${socialType?.id}@aesirx.io`
+                  : `${accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
@@ -507,6 +508,7 @@ const CreateAccount = ({
                       field={field}
                       formik={formik}
                       defaultProduct={defaultProduct}
+                      hideDefaultProduct={hideDefaultProduct}
                       productOptions={productOptions}
                       isShowEmail={
                         (accountAddress || Object.keys(socialType).length) && !isRequireEmail
@@ -525,16 +527,16 @@ const CreateAccount = ({
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
-                Accept our{' '}
+                Accept{' '}
                 <a
                   className="fw-semibold text-inherit"
                   target={'_blank'}
                   href="https://aesirx.io/terms-conditions"
                   rel="noreferrer"
                 >
-                  Terms and conditions
+                  Terms
                 </a>{' '}
-                and{' '}
+                &{' '}
                 <a
                   className="fw-semibold text-inherit"
                   target={'_blank'}
@@ -547,7 +549,7 @@ const CreateAccount = ({
             </Form.Check>
             <Form.Check type="checkbox" className="mb-4 fs-7" id="check-newletter">
               <Form.Check.Input type="checkbox" />
-              <Form.Check.Label>Sign up for our newsletter</Form.Check.Label>
+              <Form.Check.Label>Sign up for Newsletter</Form.Check.Label>
             </Form.Check>
             <div className="d-flex align-items-start flex-wrap">
               <div className="me-4 mb-2">

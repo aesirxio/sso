@@ -9,6 +9,7 @@ const CustomField = ({
   isShowEmail,
   isProduct = false,
   defaultProduct,
+  hideDefaultProduct,
   productOptions,
 }: any) => {
   const { registerForm } = getClientApp();
@@ -37,7 +38,9 @@ const CustomField = ({
     );
   }
   return (
-    <Form.Group className="mb-3 w-100">
+    <Form.Group
+      className={`mb-3 w-100 ${hideDefaultProduct && field.fieldtype === 'select' ? 'd-none' : ''}`}
+    >
       <Form.Label className="mb-2">
         {field.name}
         {field.required == '1' && <span className="text-danger">*</span>}
