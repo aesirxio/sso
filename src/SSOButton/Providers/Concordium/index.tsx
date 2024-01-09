@@ -25,6 +25,8 @@ interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setAccountAddress: any;
   setConnectionProvider: any;
   setWalletType: any;
+  noSignUpForm?: any;
+  setWalletState?: any;
 }
 const SSOConcordiumProvider = ({
   setIsAccountExist,
@@ -34,6 +36,8 @@ const SSOConcordiumProvider = ({
   setAccountAddress,
   setConnection,
   setWalletType,
+  noSignUpForm = false,
+  setWalletState,
 }: any) => {
   const { network } = getClientApp();
 
@@ -49,6 +53,8 @@ const SSOConcordiumProvider = ({
           setAccountAddress={setAccountAddress}
           setConnectionProvider={setConnection}
           setWalletType={setWalletType}
+          noSignUpForm={noSignUpForm}
+          setWalletState={setWalletState}
         />
       )}
     </WithWalletConnector>
@@ -71,6 +77,8 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
     setAccountAddress,
     setConnectionProvider,
     setWalletType,
+    noSignUpForm,
+    setWalletState,
   } = props;
 
   const { connection, setConnection, account, genesisHash } = useConnection(
@@ -138,6 +146,11 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
         setWalletType('');
       }
     }
+    if (setWalletState) {
+      if (account && connection) {
+        setWalletState({ wallet: 'concordium', accountAddress: account, connection: connection });
+      }
+    }
   }, [account, connection]);
 
   useEffect(() => {
@@ -182,6 +195,8 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
                 setIsAccountExist={setIsAccountExist}
                 setExpand={setExpand}
                 setAccountInfo={setAccountInfo}
+                noSignUpForm={noSignUpForm}
+                setWalletState={setWalletState}
               />
             )
           ) : (
