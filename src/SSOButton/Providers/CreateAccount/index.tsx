@@ -127,6 +127,8 @@ const CreateAccount = ({
     sellix_id: packagesData?.sellix_id,
     product_name: productName,
     period: packagesData?.license_period ?? 'monthly',
+    scan_type: packagesData?.scan_type,
+    number_domains: packagesData?.number_domains,
   };
 
   const generateInitialValue = (data: any) => {
@@ -664,6 +666,8 @@ const CreateAccount = ({
                         data-sellix-custom-license_period={license?.period}
                         data-sellix-custom-license_package={license?.product}
                         data-sellix-custom-license_package_name={license?.product_name}
+                        data-sellix-custom-scan_type={license?.scan_type}
+                        data-sellix-custom-number_domains={license?.number_domains}
                         data-sellix-custom-signature={signatureLinkAccount}
                         data-sellix-custom-account_address={walletState?.accountAddress}
                         variant="success"
