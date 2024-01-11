@@ -17,7 +17,7 @@ const ConcordiumLogin = ({ onGetData }: any) => {
             demoPassword: null,
             noCreateAccount: false,
             isSignUpForm: false,
-            isRequireEmail: true,
+            isRequireEmail: false,
           }}
         >
           <Suspense fallback={<>Loading...</>}>
