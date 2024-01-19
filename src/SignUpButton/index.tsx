@@ -78,10 +78,11 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                   <div className="py-4 px-lg-4">
                     {!expand ? (
                       <>
-                        <h3 className="fs-3 fw-semibold mt-2 mb-3 text-primary">Sign up</h3>
+                        <h3 className="fs-4 fw-semibold mt-2 mb-3 text-primary">Sign up</h3>
+                        <p className="fs-7">Select your sign up method</p>
                         <button
                           type="button"
-                          className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px"
+                          className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px rounded-pill"
                           onClick={() => {
                             setExpand('wallet');
                           }}
@@ -90,7 +91,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         </button>
                         <button
                           type="button"
-                          className="btn btn-outline w-100 lh-sm fw-semibold mb-18px"
+                          className="btn btn-outline w-100 lh-sm fw-semibold mb-18px rounded-pill"
                           onClick={() => {
                             setExpand('social');
                           }}
@@ -99,7 +100,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         </button>
                         <button
                           type="button"
-                          className="btn btn-outline w-100 lh-sm fw-semibold"
+                          className="btn btn-outline w-100 lh-sm fw-semibold rounded-pill"
                           onClick={() => {
                             setExpand('email');
                           }}

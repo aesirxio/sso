@@ -34,8 +34,6 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
               (member?.wallet_metamask && member?.email?.includes(member?.wallet_metamask))))
         ) {
           setExpand('require-email');
-          console.log('res', res);
-          console.log('member?.member_id', member?.member_id);
           setAccountInfo({ data: res, memberId: member?.member_id });
         } else {
           handleOnData({ ...res, loginType: 'metamask' });
@@ -97,7 +95,7 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
         <>
           <button
             disabled={isLoading}
-            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center text-start"
+            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center text-start rounded-pill"
             onClick={async () => {
               if (!isExist || isSignUpForm) {
                 setStatus('loading');
@@ -131,8 +129,8 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
                   {status === 'sign'
                     ? `Please sign message via ${connector?.name}`
                     : status === 'loading'
-                    ? 'Connecting...'
-                    : `Please wait to connect... via ${connector?.name}`}
+                      ? 'Connecting...'
+                      : `Please wait to connect... via ${connector?.name}`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (

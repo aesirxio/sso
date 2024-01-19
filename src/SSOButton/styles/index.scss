@@ -52,6 +52,7 @@ $btn-close-color: #fff;
   }
   .form-control {
     padding: 13px;
+    border-radius: 50px;
   }
   .btn {
     min-height: 48px;
@@ -132,6 +133,23 @@ $btn-close-color: #fff;
     overflow-x: hidden;
     overflow-y: auto;
     outline: 0;
+  }
+  .popover-dark {
+    .popover {
+      background-color: #222328;
+      border-color: #222328;
+      color: $white;
+      border-radius: 6px;
+    }
+    .bs-popover-top > .popover-arrow::after,
+    .bs-popover-auto[data-popper-placement^='top'] > .popover-arrow::after {
+      border-top-color: #222328;
+    }
+  }
+  .username_left {
+    margin-left: 1px;
+    height: 47px;
+    width: 47px;
   }
 }
 .modal-backdrop {

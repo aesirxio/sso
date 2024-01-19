@@ -143,7 +143,7 @@ const SSOSocialProvider = ({
                 handleSubmit(e);
               }
             }}
-            className="w-100 lh-sm fw-semibold d-flex align-items-center"
+            className="w-100 lh-sm fw-semibold d-flex align-items-center rounded-pill"
           >
             {loading ? (
               <>
@@ -161,10 +161,10 @@ const SSOSocialProvider = ({
                     typeSocial === 'google'
                       ? google_icon
                       : typeSocial === 'facebook'
-                      ? fb_icon
-                      : typeSocial === 'twitter'
-                      ? twitter_icon
-                      : reddit_icon
+                        ? fb_icon
+                        : typeSocial === 'twitter'
+                          ? twitter_icon
+                          : reddit_icon
                   }
                   width={24}
                   height={24}
