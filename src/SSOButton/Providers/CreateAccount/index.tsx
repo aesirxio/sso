@@ -370,16 +370,22 @@ const CreateAccount = ({
                   );
                 }
                 try {
-                  await trackEvent(process.env.REACT_APP_ENDPOINT_ANALYTICS_URL, '', {
-                    event_name: 'Sign Up',
-                    event_type: 'conversion',
-                    attributes: [
-                      { name: 'sop_id', value: data[`field${registerForm.username}_1`] },
-                      ...(walletState?.wallet === 'concordium'
-                        ? [{ name: 'type', value: walletState?.wallet }]
-                        : [{ name: 'type', value: 'email' }]),
-                    ],
-                  });
+                  await trackEvent(
+                    process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                      process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                      'https://api.analytics.aesirx.io',
+                    '',
+                    {
+                      event_name: 'Sign Up',
+                      event_type: 'conversion',
+                      attributes: [
+                        { name: 'sop_id', value: data[`field${registerForm.username}_1`] },
+                        ...(walletState?.wallet === 'concordium'
+                          ? [{ name: 'type', value: walletState?.wallet }]
+                          : [{ name: 'type', value: 'email' }]),
+                      ],
+                    }
+                  );
                 } catch (error: any) {
                   console.error('error', error);
                 }
