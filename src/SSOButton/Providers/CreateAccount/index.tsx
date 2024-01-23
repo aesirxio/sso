@@ -374,7 +374,7 @@ const CreateAccount = ({
                     process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
                       process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
                       'https://api.analytics.aesirx.io',
-                    window?.referer,
+                    location.pathname,
                     {
                       event_name: 'Sign Up',
                       event_type: 'conversion',
