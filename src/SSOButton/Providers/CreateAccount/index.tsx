@@ -492,12 +492,28 @@ const CreateAccount = ({
             ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
             : `@${formik.values[`field${registerForm.username}_1`]}`;
 
-          if (msg === web3id) {
+          if (msg?.id === web3id) {
             const list: any = document.getElementById('sellix-container');
             list && list?.removeChild(list.lastChild);
             toast.success(
               'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
             );
+            try {
+              await trackEvent(
+                process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                  process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                  'https://api.analytics.aesirx.io',
+                location.pathname,
+                {
+                  event_name: msg?.trackEventName,
+                  event_type: 'conversion',
+                  attributes: msg?.trackAttributes ?? [],
+                }
+              );
+            } catch (error) {
+              console.error('error', error);
+            }
+
             setShow && setShow(false);
           }
         });
