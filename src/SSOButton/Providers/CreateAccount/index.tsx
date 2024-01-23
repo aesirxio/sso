@@ -10,6 +10,7 @@ import {
   linkAesirXAccount,
   login,
   mintWeb3ID,
+  trackEvent,
   validateEmail,
   validateWeb3Id,
   verifyProof,
@@ -287,19 +288,19 @@ const CreateAccount = ({
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-              ? `${socialType?.id}`
-              : `${walletState?.accountAddress}`,
+            ? `${socialType?.id}`
+            : `${walletState?.accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-              ? `${socialType?.id}@aesirx.io`
-              : `${walletState?.accountAddress}@aesirx.io`,
+            ? `${socialType?.id}@aesirx.io`
+            : `${walletState?.accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-              ? `${socialType?.id}`
-              : `${walletState?.accountAddress}`,
+            ? `${socialType?.id}`
+            : `${walletState?.accountAddress}`,
           block: 0,
           ...(walletState?.wallet === 'concordium'
             ? { wallet_concordium: walletState?.accountAddress }
@@ -332,8 +333,8 @@ const CreateAccount = ({
               [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
-                  ? `${socialType?.id}@aesirx.io`
-                  : `${walletState?.accountAddress}@aesirx.io`,
+                ? `${socialType?.id}@aesirx.io`
+                : `${walletState?.accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
@@ -367,6 +368,20 @@ const CreateAccount = ({
                   toast.success(
                     'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
                   );
+                }
+                try {
+                  await trackEvent(process.env.REACT_APP_ENDPOINT_ANALYTICS_URL, '', {
+                    event_name: 'Sign Up',
+                    event_type: 'conversion',
+                    attributes: [
+                      { name: 'sop_id', value: data[`field${registerForm.username}_1`] },
+                      ...(walletState?.wallet === 'concordium'
+                        ? [{ name: 'type', value: walletState?.wallet }]
+                        : [{ name: 'type', value: 'email' }]),
+                    ],
+                  });
+                } catch (error: any) {
+                  console.error('error', error);
                 }
                 setIsExist && setIsExist(true);
                 setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
