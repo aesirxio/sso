@@ -15,6 +15,7 @@ interface SignUpButtonProps {
   loginBg?: string;
   isRequireEmail?: boolean;
   productOptions: Array<any>;
+  customClass?: string;
 }
 
 const SignUpButton: React.FC<SignUpButtonProps> = ({
@@ -23,6 +24,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
   loginBg,
   isRequireEmail = false,
   productOptions = [],
+  customClass,
 }) => {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState('');
@@ -53,7 +55,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
           setShow(!show);
         }}
         size={'xl'}
-        className="aesirxsso"
+        className={`aesirxsso ${customClass ?? ''}`}
       >
         <CloseButton
           onClick={() => {
@@ -82,7 +84,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         <p className="fs-7">Select your sign up method</p>
                         <button
                           type="button"
-                          className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px rounded-pill"
+                          className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px"
                           onClick={() => {
                             setExpand('wallet');
                           }}
@@ -91,7 +93,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         </button>
                         <button
                           type="button"
-                          className="btn btn-outline w-100 lh-sm fw-semibold mb-18px rounded-pill"
+                          className="btn btn-outline w-100 lh-sm fw-semibold mb-18px"
                           onClick={() => {
                             setExpand('social');
                           }}
@@ -100,7 +102,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         </button>
                         <button
                           type="button"
-                          className="btn btn-outline w-100 lh-sm fw-semibold rounded-pill"
+                          className="btn btn-outline w-100 lh-sm fw-semibold"
                           onClick={() => {
                             setExpand('email');
                           }}

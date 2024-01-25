@@ -143,7 +143,7 @@ const SSOSocialProvider = ({
                 handleSubmit(e);
               }
             }}
-            className="w-100 lh-sm fw-semibold d-flex align-items-center rounded-pill"
+            className="w-100 lh-sm fw-semibold d-flex align-items-center"
           >
             {loading ? (
               <>

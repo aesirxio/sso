@@ -80,7 +80,7 @@ const CustomField = ({
       <div className="position-relative">
         {field.fieldId == registerForm.username && (
           <div
-            className={`position-absolute top-50 translate-middle-y bg-gray-stroke-2 rounded-start-pill d-flex justify-content-center align-items-center text-primary username_left`}
+            className={`position-absolute top-50 translate-middle-y bg-gray-stroke-2 d-flex justify-content-center align-items-center text-primary username_left`}
           >
             @
           </div>

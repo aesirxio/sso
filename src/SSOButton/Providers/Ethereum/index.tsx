@@ -203,7 +203,7 @@ const SSOEthereumApp = ({
               setConnection(connector);
               setWalletType('metamask');
             }}
-            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center justify-content-start rounded-pill"
+            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center justify-content-start"
           >
             <img className="me-3" src={logo} alt="Ethereum Logo" />
             Ethereum wallets

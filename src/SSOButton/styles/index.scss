@@ -50,9 +50,20 @@ $btn-close-color: #fff;
   .cursor-pointer {
     cursor: pointer;
   }
+  &.aesirxsso-rounded {
+    .form-control {
+      border-radius: 50px;
+    }
+    .btn {
+      border-radius: 50px;
+    }
+    .username_left {
+      border-bottom-left-radius: 50px;
+      border-top-left-radius: 50px;
+    }
+  }
   .form-control {
     padding: 13px;
-    border-radius: 50px;
   }
   .btn {
     min-height: 48px;

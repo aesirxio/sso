@@ -161,7 +161,7 @@ const SignMessageConcordium = ({
           <button
             disabled={status !== '' || loading}
             type="button"
-            className="btn btn-dark btn-concordium w-100 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center text-start rounded-pill"
+            className="btn btn-dark btn-concordium w-100 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center text-start"
             onClick={() => {
               !isExist || isSignUpForm ? handleCreate() : handleConnect();
             }}

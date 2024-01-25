@@ -95,7 +95,7 @@ const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
         <>
           <button
             disabled={isLoading}
-            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center text-start rounded-pill"
+            className="btn btn-ethereum fw-medium px-4 fs-18 lh-sm w-100 btn-secondary text-white d-flex align-items-center text-start"
             onClick={async () => {
               if (!isExist || isSignUpForm) {
                 setStatus('loading');

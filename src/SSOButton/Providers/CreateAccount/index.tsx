@@ -654,7 +654,7 @@ const CreateAccount = ({
                       }
                       type="submit"
                       variant="success"
-                      className="fw-semibold text-white px-4 py-13px lh-sm rounded-pill w-100"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                     >
                       {sending ? 'Creating...' : 'Create account'}
                     </Button>
@@ -668,7 +668,7 @@ const CreateAccount = ({
                       }
                       type="submit"
                       variant="success"
-                      className="fw-semibold text-white px-4 py-13px lh-sm rounded-pill w-100"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                     >
                       {sending ? 'Sending' : 'Send inquiry'}
                     </Button>
@@ -708,7 +708,7 @@ const CreateAccount = ({
                         data-sellix-custom-signature={signatureLinkAccount}
                         data-sellix-custom-account_address={walletState?.accountAddress}
                         variant="success"
-                        className="fw-semibold text-white px-4 py-13px lh-sm rounded-pill w-100"
+                        className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                       >
                         {sending ? 'Sending' : 'Send inquiry'}
                       </Button>

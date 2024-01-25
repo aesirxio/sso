@@ -40,7 +40,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                   <p className="mb-20px fs-14">Select your login method</p>
                   <button
                     type="button"
-                    className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px rounded-pill"
+                    className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px"
                     onClick={() => {
                       setExpand('wallet');
                     }}
@@ -49,7 +49,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-outline w-100 lh-sm fw-semibold mb-18px rounded-pill"
+                    className="btn btn-outline w-100 lh-sm fw-semibold mb-18px"
                     onClick={() => {
                       setExpand('social');
                     }}
@@ -58,7 +58,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-outline w-100 lh-sm fw-semibold rounded-pill"
+                    className="btn btn-outline w-100 lh-sm fw-semibold"
                     onClick={() => {
                       setExpand('email');
                     }}

@@ -88,10 +88,7 @@ const SSOUpdateEmailProvider = ({ accountInfo }: any) => {
           ) : null}
         </Form.Group>
       </div>
-      <button
-        type="submit"
-        className="btn btn-success w-100 lh-sm text-white fw-semibold rounded-pill"
-      >
+      <button type="submit" className="btn btn-success w-100 lh-sm text-white fw-semibold">
         {loading ? (
           <>
             <span
