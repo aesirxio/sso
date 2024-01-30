@@ -117,6 +117,7 @@ const CreateAccount = ({
   const [product, setProduct] = useState<any>();
   const [shareLink, setShareLink] = useState('');
   const [affiliateLink, setAffiliateLink] = useState('');
+  const [staffId, setStaffId] = useState('');
 
   const defaultProduct = packagesData?.default_web3_product
     ? packagesData?.default_web3_product?.toLowerCase()
@@ -461,6 +462,8 @@ const CreateAccount = ({
       const refShare2EarnUrl = params.get('ref') || sessionStorage.getItem('share2earnRef');
       const refAffiliate2EarnUrl =
         params.get('refaffiliate') || sessionStorage.getItem('affiliateRef');
+      const refStaffId = params.get('refstaff') || sessionStorage.getItem('staffRef');
+      setStaffId(refStaffId);
       setShareLink(refShare2EarnUrl);
       setAffiliateLink(refAffiliate2EarnUrl);
     }
@@ -700,6 +703,7 @@ const CreateAccount = ({
                         data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
                         data-sellix-custom-share_link={shareLink}
                         data-sellix-custom-affiliate_link={affiliateLink}
+                        data-sellix-custom-staff_id={staffId}
                         data-sellix-custom-license_period={license?.period}
                         data-sellix-custom-license_package={license?.product}
                         data-sellix-custom-license_package_name={license?.product_name}
