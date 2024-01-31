@@ -13,14 +13,18 @@ interface SignUpButtonProps {
   className: string;
   text: string;
   loginBg?: string;
+  isRequireEmail?: boolean;
   productOptions: Array<any>;
+  customClass?: string;
 }
 
 const SignUpButton: React.FC<SignUpButtonProps> = ({
   className,
   text = 'Login',
   loginBg,
+  isRequireEmail = false,
   productOptions = [],
+  customClass,
 }) => {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState('');
@@ -51,7 +55,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
           setShow(!show);
         }}
         size={'xl'}
-        className="aesirxsso"
+        className={`aesirxsso ${customClass ?? ''}`}
       >
         <CloseButton
           onClick={() => {
@@ -67,6 +71,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
               demoPassword: null,
               noCreateAccount: false,
               isSignUpForm: true,
+              isRequireEmail: isRequireEmail,
             }}
           >
             <div className="row gx-0 w-100">
@@ -75,7 +80,8 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                   <div className="py-4 px-lg-4">
                     {!expand ? (
                       <>
-                        <h3 className="fs-3 fw-semibold mt-2 mb-3 text-primary">Sign up</h3>
+                        <h3 className="fs-4 fw-semibold mt-2 mb-3 text-primary">Sign up</h3>
+                        <p className="fs-7">Select your sign up method</p>
                         <button
                           type="button"
                           className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px"
@@ -152,6 +158,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         isNoWallet={true}
                         setShow={toggle}
                         productOptions={productOptions}
+                        isRequireEmail={isRequireEmail}
                       />
                     )}
                     {expand?.includes('social') && (

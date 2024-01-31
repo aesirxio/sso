@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Bowser from 'bowser';
+import getFingerprint from '../lib/fingerprint';
 const handleWalletResponse = (
   _endPoint: string,
   clientID: string,
@@ -564,6 +566,55 @@ const removeWallet = async (
     throw error;
   }
 };
+const createRequestV2 = (endpoint: string, task: string) => {
+  return `${endpoint}/visitor/v2/${task}`;
+};
+const trackEvent = async (endpoint: string, referer?: string, data?: object) => {
+  const allow = sessionStorage.getItem('aesirx-analytics-allow');
+
+  if (allow === '0') {
+    return null;
+  }
+
+  const { location, document } = window;
+  referer = referer
+    ? location.protocol + '//' + location.host + referer
+    : document.referrer.split('?')[0];
+  const url = location.protocol + '//' + location.host + location.pathname;
+  const user_agent = window.navigator.userAgent;
+  const browser = Bowser.parse(window.navigator.userAgent);
+  const browser_name = browser?.browser?.name;
+  const browser_version = browser?.browser?.version ?? '0';
+  const lang = window.navigator['userLanguage'] || window.navigator.language;
+  const device = browser?.platform?.model ?? browser?.platform?.type;
+  const ip = '';
+
+  const fingerprint = getFingerprint();
+  const headers = { type: 'application/json' };
+  const blobData = new Blob(
+    [
+      JSON.stringify({
+        fingerprint: fingerprint,
+        url: url,
+        ...(referer !== '/' &&
+          referer && {
+            referer: referer,
+          }),
+        user_agent: user_agent,
+        ip: ip,
+        browser_name: browser_name,
+        browser_version: browser_version,
+        lang: lang,
+        device: device,
+        ...data,
+      }),
+    ],
+    headers
+  );
+  const responseStart = navigator.sendBeacon(createRequestV2(endpoint, 'start'), blobData);
+
+  return responseStart;
+};
 
 export {
   handleWalletResponse,
@@ -590,4 +641,5 @@ export {
   updateMember,
   connectWallet,
   removeWallet,
+  trackEvent,
 };

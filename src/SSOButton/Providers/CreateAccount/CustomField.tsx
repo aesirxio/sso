@@ -1,14 +1,16 @@
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { Form } from 'react-bootstrap';
+import React, { useRef } from 'react';
+import { Form, OverlayTrigger, Popover } from 'react-bootstrap';
 import { getClientApp } from '../../../utils';
+import circle_info from '../../images/circle_info.svg';
 const CustomField = ({
   formik,
   field,
   isShowEmail,
   isProduct = false,
   defaultProduct,
+  hideDefaultProduct,
   productOptions,
 }: any) => {
   const { registerForm } = getClientApp();
@@ -36,16 +38,49 @@ const CustomField = ({
       productOptions.includes(product.value)
     );
   }
+  const ref = useRef(null);
   return (
-    <Form.Group className="mb-3 w-100">
-      <Form.Label className="mb-2">
-        {field.name}
-        {field.required == '1' && <span className="text-danger">*</span>}
-      </Form.Label>
+    <Form.Group
+      className={`mb-3 w-100 ${hideDefaultProduct && field.fieldtype === 'select' ? 'd-none' : ''}`}
+    >
+      <div
+        className="d-flex align-items-center justify-content-between mb-2 popover-dark"
+        ref={ref}
+      >
+        <Form.Label className="mb-0">
+          {field.name}
+          {field.required == '1' && <span className="text-danger">*</span>}
+        </Form.Label>
+        {field.fieldId == registerForm.username && (
+          <OverlayTrigger
+            trigger="hover"
+            key={'top'}
+            placement={'top'}
+            container={ref}
+            overlay={
+              <Popover id={`popover-positioned-top`}>
+                <Popover.Body className="text-white">
+                  <p className="mb-0">
+                    <strong>About SoP ID</strong>
+                  </p>
+                  <p className="mb-0">
+                    With a SoP ID, gain access to ID-authenticated digital experiences. Experience
+                    unmatched data privacy with our decentralized approach, & simplify your online
+                    experience with our secure Single Sign On solution.
+                  </p>
+                </Popover.Body>
+              </Popover>
+            }
+          >
+            <img src={circle_info} alt="circle_info Icon" width="16px" height="16px" />
+          </OverlayTrigger>
+        )}
+      </div>
+
       <div className="position-relative">
         {field.fieldId == registerForm.username && (
           <div
-            className={`position-absolute w-40px h-40px top-50 ms-1 translate-middle-y bg-gray-stroke-2 rounded d-flex justify-content-center align-items-center text-primary`}
+            className={`position-absolute top-50 translate-middle-y bg-gray-stroke-2 d-flex justify-content-center align-items-center text-primary username_left`}
           >
             @
           </div>

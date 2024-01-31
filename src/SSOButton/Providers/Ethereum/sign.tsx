@@ -4,19 +4,20 @@ import { verifyMessage } from 'ethers';
 
 import { useAccount } from 'wagmi';
 import useWallet from '../../../Hooks/useWallet';
-import { checkWalletAccount, shortenString } from '../../../utils';
+import { checkWalletAccount, getMember, shortenString } from '../../../utils';
 import { SSOModalContext } from '../../modal';
 import logo from '../../images/ethereum_logo.png';
 import CreateAccount from '../CreateAccount';
 import arrow_left from '../../images/arrow_left.svg';
 import { toast } from 'react-toastify';
 
-const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
+const SignMessage = ({ setIsAccountExist, setExpand, setAccountInfo }: any) => {
   const wallet = 'metamask';
   const { address, connector } = useAccount();
   const { getWalletNonce, verifySignature } = useWallet(wallet, address);
   const [status, setStatus] = useState('');
-  const { noCreateAccount, isSignUpForm, handleOnData, toggle } = useContext(SSOModalContext);
+  const { noCreateAccount, isSignUpForm, handleOnData, toggle, isRequireEmail } =
+    useContext(SSOModalContext);
   const [isExist, setIsExist] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -24,7 +25,22 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
     async onSuccess(data, variables) {
       const address = verifyMessage(variables.message, data);
       const res = await verifySignature(wallet, address, data);
-      handleOnData({ ...res, loginType: 'metamask' });
+      if (isRequireEmail) {
+        const member = await getMember(res?.access_token);
+        if (
+          !member?.email ||
+          (/@aesirx\.io$/.test(member?.email) &&
+            ((member?.wallet_concordium && member?.email?.includes(member?.wallet_concordium)) ||
+              (member?.wallet_metamask && member?.email?.includes(member?.wallet_metamask))))
+        ) {
+          setExpand('require-email');
+          setAccountInfo({ data: res, memberId: member?.member_id });
+        } else {
+          handleOnData({ ...res, loginType: 'metamask' });
+        }
+      } else {
+        handleOnData({ ...res, loginType: 'metamask' });
+      }
     },
   });
 
@@ -71,6 +87,7 @@ const SignMessage = ({ setIsAccountExist, setExpand }: any) => {
               accountAddress={address}
               connection={connector}
               wallet={'metamask'}
+              isRequireEmail={isRequireEmail}
             />
           </div>
         </>

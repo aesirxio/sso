@@ -10,6 +10,8 @@ interface SSOButtonProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isRequireEmail?: boolean;
+  customClass?: string;
 }
 
 const SSOButton: React.FC<SSOButtonProps> = ({
@@ -21,6 +23,8 @@ const SSOButton: React.FC<SSOButtonProps> = ({
   demoUser = '',
   demoPassword = '',
   noCreateAccount = false,
+  isRequireEmail = false,
+  customClass,
 }) => {
   const [show, setShow] = useState(false);
   const toggle = () => {
@@ -41,11 +45,13 @@ const SSOButton: React.FC<SSOButtonProps> = ({
         demoUser={demoUser}
         demoPassword={demoPassword}
         noCreateAccount={noCreateAccount}
+        isRequireEmail={isRequireEmail}
         onGetData={onGetData}
         show={show}
         toggle={toggle}
         loginText={loginText}
         loginBg={loginBg}
+        customClass={customClass}
       />
     </>
   );

@@ -20,18 +20,24 @@ import { BlockHash } from '@concordium/web-sdk';
 interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setIsAccountExist: any;
   setExpand: any;
+  setAccountInfo: any;
   noLogin: any;
   setAccountAddress: any;
   setConnectionProvider: any;
   setWalletType: any;
+  noSignUpForm?: any;
+  setWalletState?: any;
 }
 const SSOConcordiumProvider = ({
   setIsAccountExist,
   setExpand,
+  setAccountInfo,
   noLogin,
   setAccountAddress,
   setConnection,
   setWalletType,
+  noSignUpForm = false,
+  setWalletState,
 }: any) => {
   const { network } = getClientApp();
 
@@ -42,10 +48,13 @@ const SSOConcordiumProvider = ({
           {...props}
           setIsAccountExist={setIsAccountExist}
           setExpand={setExpand}
+          setAccountInfo={setAccountInfo}
           noLogin={noLogin}
           setAccountAddress={setAccountAddress}
           setConnectionProvider={setConnection}
           setWalletType={setWalletType}
+          noSignUpForm={noSignUpForm}
+          setWalletState={setWalletState}
         />
       )}
     </WithWalletConnector>
@@ -63,10 +72,13 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
     setActiveConnectorType,
     setIsAccountExist,
     setExpand,
+    setAccountInfo,
     noLogin,
     setAccountAddress,
     setConnectionProvider,
     setWalletType,
+    noSignUpForm,
+    setWalletState,
   } = props;
 
   const { connection, setConnection, account, genesisHash } = useConnection(
@@ -134,6 +146,11 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
         setWalletType('');
       }
     }
+    if (setWalletState) {
+      if (account && connection) {
+        setWalletState({ wallet: 'concordium', accountAddress: account, connection: connection });
+      }
+    }
   }, [account, connection]);
 
   useEffect(() => {
@@ -177,6 +194,9 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
                 connection={connection}
                 setIsAccountExist={setIsAccountExist}
                 setExpand={setExpand}
+                setAccountInfo={setAccountInfo}
+                noSignUpForm={noSignUpForm}
+                setWalletState={setWalletState}
               />
             )
           ) : (

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useContext, useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import {
@@ -10,6 +10,7 @@ import {
   linkAesirXAccount,
   login,
   mintWeb3ID,
+  trackEvent,
   validateEmail,
   validateWeb3Id,
   verifyProof,
@@ -25,6 +26,7 @@ import FriendlyCaptcha from './FriendlyCaptcha';
 import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import io from 'socket.io-client';
+import { SSOModalContext } from '../../modal';
 
 let socket: any;
 interface Fields {
@@ -36,6 +38,8 @@ interface Fields {
   required: string;
 }
 const listCol = [12, 12, 12, 12, 12, 12, 12, 12, 12];
+const SSOConcordiumProvider = React.lazy(() => import('../Concordium'));
+
 const CreateAccount = ({
   formID = 10,
   setShow,
@@ -50,6 +54,9 @@ const CreateAccount = ({
   productOptions = [],
   productName,
   socialType = {},
+  isRequireEmail,
+  hideDefaultProduct = false,
+  isRequireConcordium = false,
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -57,12 +64,19 @@ const CreateAccount = ({
   const { registerForm, endpoint, web3Endpoint, partnerEndpoint } = getClientApp();
   const debouncedCheckWeb3Id: any = useCallback(debounce(validateWeb3Id, 200), []);
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
-
   const [data, setData] = useState<any>([]);
   const [fetch, setFetch] = useState(true);
 
+  const [walletState, setWalletState] = useState({
+    wallet: wallet,
+    accountAddress: accountAddress,
+    connection: connection,
+  });
+  const [showCreateButton, setShowCreateButton] = useState(isRequireConcordium ? false : true);
+  const [signatureLinkAccount, setSignatureLinkAccount] = useState('');
+
   const getNonce = async (accountAddress: any, connection: any, text: string) => {
-    if (wallet === 'concordium') {
+    if (walletState?.wallet === 'concordium') {
       const nonce = (
         await axios.get(`${web3Endpoint}/account/${accountAddress}/nonce?text=${text}`)
       ).data.nonce;
@@ -103,6 +117,7 @@ const CreateAccount = ({
   const [product, setProduct] = useState<any>();
   const [shareLink, setShareLink] = useState('');
   const [affiliateLink, setAffiliateLink] = useState('');
+  const [staffId, setStaffId] = useState('');
 
   const defaultProduct = packagesData?.default_web3_product
     ? packagesData?.default_web3_product?.toLowerCase()
@@ -113,6 +128,9 @@ const CreateAccount = ({
     product: packagesData?.license_package ? packagesData?.license_package?.toLowerCase() : '',
     sellix_id: packagesData?.sellix_id,
     product_name: productName,
+    period: packagesData?.license_period ?? 'monthly',
+    scan_type: packagesData?.scan_type,
+    number_domains: packagesData?.number_domains,
   };
 
   const generateInitialValue = (data: any) => {
@@ -135,7 +153,7 @@ const CreateAccount = ({
       if (item.required == '1' && item?.fieldId?.toString() !== registerForm.product?.toString()) {
         switch (item.fieldtype) {
           case 'email':
-            if (!accountAddress && !Object.keys(socialType).length) {
+            if (!walletState?.accountAddress && !Object.keys(socialType).length) {
               if (item?.fieldId?.toString() == registerForm.email?.toString()) {
                 validationSchema[`field${item.fieldId}_1_email`] = Yup.string()
                   .email(`Please enter valid email`)
@@ -224,7 +242,11 @@ const CreateAccount = ({
         }
         setLoading('sign');
 
-        const signedNonce = await getNonce(accountAddress, connection, 'Create AesirX Account: {}');
+        const signedNonce = await getNonce(
+          walletState?.accountAddress,
+          walletState?.connection,
+          'Create AesirX Account: {}'
+        );
 
         const data: any = { ...values };
         data.form_id = formID;
@@ -268,22 +290,22 @@ const CreateAccount = ({
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
             ? `${socialType?.id}`
-            : `${accountAddress}`,
+            : `${walletState?.accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
             ? `${socialType?.id}@aesirx.io`
-            : `${accountAddress}@aesirx.io`,
+            : `${walletState?.accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
             ? `${socialType?.id}`
-            : `${accountAddress}`,
+            : `${walletState?.accountAddress}`,
           block: 0,
-          ...(wallet === 'concordium'
-            ? { wallet_concordium: accountAddress }
-            : { wallet_metamask: accountAddress }),
+          ...(walletState?.wallet === 'concordium'
+            ? { wallet_concordium: walletState?.accountAddress }
+            : { wallet_metamask: walletState?.accountAddress }),
           ...(Object.keys(socialType)?.length
             ? { [`social_${socialType?.type}`]: socialType?.id }
             : {}),
@@ -296,8 +318,8 @@ const CreateAccount = ({
             apiData,
             '',
             signedNonce,
-            accountAddress,
-            wallet === 'concordium' ? true : false
+            walletState?.accountAddress,
+            walletState?.wallet === 'concordium' ? true : false
           );
           if (response) {
             await createMember(member);
@@ -313,7 +335,7 @@ const CreateAccount = ({
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
                 ? `${socialType?.id}@aesirx.io`
-                : `${accountAddress}@aesirx.io`,
+                : `${walletState?.accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
@@ -326,7 +348,7 @@ const CreateAccount = ({
               `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
               formData
             );
-            if (wallet === 'concordium') {
+            if (walletState?.wallet === 'concordium') {
               toast.success(
                 `Thank you for signing up, ${
                   data[`field${registerForm.username}_1`]
@@ -337,7 +359,7 @@ const CreateAccount = ({
             } else {
               const responseMintWeb3ID = await mintWeb3ID(jwt);
               if (responseMintWeb3ID?.data?.success) {
-                if (wallet || Object.keys(socialType).length) {
+                if (walletState?.wallet || Object.keys(socialType).length) {
                   toast.success(
                     `Thank you for signing up, ${
                       data[`field${registerForm.username}_1`]
@@ -347,6 +369,26 @@ const CreateAccount = ({
                   toast.success(
                     'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
                   );
+                }
+                try {
+                  await trackEvent(
+                    process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                      process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                      'https://api.analytics.aesirx.io',
+                    location.pathname,
+                    {
+                      event_name: 'Sign Up',
+                      event_type: 'conversion',
+                      attributes: [
+                        { name: 'sop_id', value: data[`field${registerForm.username}_1`] },
+                        ...(walletState?.wallet === 'concordium'
+                          ? [{ name: 'type', value: walletState?.wallet }]
+                          : [{ name: 'type', value: 'email' }]),
+                      ],
+                    }
+                  );
+                } catch (error: any) {
+                  console.error('error', error);
                 }
                 setIsExist && setIsExist(true);
                 setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
@@ -376,10 +418,14 @@ const CreateAccount = ({
   const [proof, setProof] = useState(false);
   const handleProof = async () => {
     try {
-      const challenge = await getChallenge(accountAddress ?? '');
+      const challenge = await getChallenge(walletState?.accountAddress ?? '');
       const statement = await getStatement();
       const provider = await detectConcordiumProvider();
-      const proof = await provider.requestIdProof(accountAddress ?? '', statement, challenge);
+      const proof = await provider.requestIdProof(
+        walletState?.accountAddress ?? '',
+        statement,
+        challenge
+      );
       const re = await verifyProof(challenge, proof);
       if (re) {
         setProof(true);
@@ -416,6 +462,8 @@ const CreateAccount = ({
       const refShare2EarnUrl = params.get('ref') || sessionStorage.getItem('share2earnRef');
       const refAffiliate2EarnUrl =
         params.get('refaffiliate') || sessionStorage.getItem('affiliateRef');
+      const refStaffId = params.get('refstaff') || sessionStorage.getItem('staffRef');
+      setStaffId(refStaffId);
       setShareLink(refShare2EarnUrl);
       setAffiliateLink(refAffiliate2EarnUrl);
     }
@@ -447,12 +495,28 @@ const CreateAccount = ({
             ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
             : `@${formik.values[`field${registerForm.username}_1`]}`;
 
-          if (msg === web3id) {
+          if (msg?.id === web3id) {
             const list: any = document.getElementById('sellix-container');
             list && list?.removeChild(list.lastChild);
             toast.success(
               'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
             );
+            try {
+              await trackEvent(
+                process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                  process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                  'https://api.analytics.aesirx.io',
+                location.pathname,
+                {
+                  event_name: msg?.trackEventName,
+                  event_type: 'conversion',
+                  attributes: msg?.trackAttributes ?? [],
+                }
+              );
+            } catch (error) {
+              console.error('error', error);
+            }
+
             setShow && setShow(false);
           }
         });
@@ -464,14 +528,14 @@ const CreateAccount = ({
   ]);
   return (
     <>
-      {!accountAddress && !isNoWallet && (
+      {!walletState?.accountAddress && !isNoWallet && (
         <>
           <div className="line text-center">
             <span className="bg-white px-2 position-relative text-dark">or</span>
           </div>
         </>
       )}
-      {noLogin && !proof && wallet === 'concordium' && (
+      {noLogin && !proof && walletState?.wallet === 'concordium' && !isRequireConcordium && (
         <div className="d-flex mb-3">
           <Button
             variant="dark"
@@ -505,8 +569,14 @@ const CreateAccount = ({
                       field={field}
                       formik={formik}
                       defaultProduct={defaultProduct}
+                      hideDefaultProduct={hideDefaultProduct}
                       productOptions={productOptions}
-                      isShowEmail={accountAddress || Object.keys(socialType).length ? false : true}
+                      isShowEmail={
+                        (walletState?.accountAddress || Object.keys(socialType).length) &&
+                        !isRequireEmail
+                          ? false
+                          : true
+                      }
                       isProduct={
                         Object.keys(packagesData).length || productOptions?.length ? true : false
                       }
@@ -519,16 +589,16 @@ const CreateAccount = ({
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
-                Accept our{' '}
+                Accept{' '}
                 <a
                   className="fw-semibold text-inherit"
                   target={'_blank'}
                   href="https://aesirx.io/terms-conditions"
                   rel="noreferrer"
                 >
-                  Terms and conditions
+                  Terms
                 </a>{' '}
-                and{' '}
+                &{' '}
                 <a
                   className="fw-semibold text-inherit"
                   target={'_blank'}
@@ -539,74 +609,116 @@ const CreateAccount = ({
                 </a>{' '}
               </Form.Check.Label>
             </Form.Check>
-            <Form.Check type="checkbox" className="mb-4 fs-7" id="check-newletter">
-              <Form.Check.Input type="checkbox" />
-              <Form.Check.Label>Sign up for our newsletter</Form.Check.Label>
-            </Form.Check>
+            {isRequireConcordium ? (
+              <></>
+            ) : (
+              <>
+                <Form.Check type="checkbox" className="mb-4 fs-7" id="check-newletter">
+                  <Form.Check.Input type="checkbox" />
+                  <Form.Check.Label>Sign up for Newsletter</Form.Check.Label>
+                </Form.Check>
+              </>
+            )}
             <div className="d-flex align-items-start flex-wrap">
-              <div className="me-4 mb-2">
+              <div className={`me-4 mb-2 ${isRequireConcordium ? 'w-100' : ''}`}>
                 <FriendlyCaptcha setCaptcha={setCaptcha} />
               </div>
-              {!isSellix && !license?.sellix_id ? (
-                <Button
-                  disabled={
-                    sending ||
-                    !captcha ||
-                    !formik.isValid ||
-                    (noLogin && !proof && wallet === 'concordium')
-                  }
-                  type="submit"
-                  variant="success"
-                  className="fw-semibold text-white px-4 py-13px lh-sm me-4"
-                >
-                  {sending ? 'Creating...' : 'Create account'}
-                </Button>
-              ) : !captcha || !formik.isValid ? (
-                <Button
-                  disabled={
-                    sending ||
-                    !captcha ||
-                    !formik.isValid ||
-                    (noLogin && !proof && wallet === 'concordium')
-                  }
-                  type="submit"
-                  variant="success"
-                  className="fw-semibold text-white px-4 py-13px lh-sm me-4"
-                >
-                  {sending ? 'Sending' : 'Send inquiry'}
-                </Button>
-              ) : (
-                <div key={product?.sku}>
-                  <Button
-                    disabled={sending || !captcha || !formik.isValid}
-                    data-sellix-product={license?.sellix_id ? license?.sellix_id : product?.sku}
-                    data-sellix-custom-package={formik.values[`field${registerForm.product}_1`]}
-                    data-sellix-custom-form_id={formID}
-                    data-sellix-custom-requested_username={
-                      formik.values[`field${registerForm.username}_1`]
-                        ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
-                        : `@${formik.values[`field${registerForm.username}_1`]}`
-                    }
-                    data-sellix-custom-firstname={
-                      formik.values[`field${registerForm.first_name}_1`]
-                    }
-                    data-sellix-custom-surname={formik.values[`field${registerForm.last_name}_1`]}
-                    data-sellix-custom-product={formik.values[`field${registerForm.product}_1`]}
-                    data-sellix-custom-email={formik.values[`field${registerForm.email}_1_email`]}
-                    data-sellix-custom-organization={
-                      formik.values[`field${registerForm.organization}_1`]
-                    }
-                    data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
-                    data-sellix-custom-share_link={shareLink}
-                    data-sellix-custom-affiliate_link={affiliateLink}
-                    data-sellix-custom-license_package={license?.product}
-                    data-sellix-custom-license_package_name={license?.product_name}
-                    variant="success"
-                    className="fw-semibold text-white px-4 py-13px lh-sm me-4"
-                  >
-                    {sending ? 'Sending' : 'Send inquiry'}
-                  </Button>
+              {isRequireConcordium && !showCreateButton && (
+                <div className="w-auto">
+                  <Suspense fallback={<>Loading...</>}>
+                    <SSOConcordiumProvider
+                      noSignUpForm={true}
+                      setWalletState={setWalletState}
+                      setIsAccountExist={() => {}}
+                      setExpand={async () => {
+                        const signedNonce = await getNonce(
+                          walletState?.accountAddress,
+                          walletState?.connection,
+                          'Create AesirX Account: {}'
+                        );
+                        if (signedNonce) {
+                          setSignatureLinkAccount(signedNonce);
+                          signedNonce && setShowCreateButton(true);
+                        }
+                      }}
+                    />
+                  </Suspense>
                 </div>
+              )}
+              {showCreateButton && (
+                <>
+                  {!isSellix && !license?.sellix_id ? (
+                    <Button
+                      disabled={
+                        sending ||
+                        !captcha ||
+                        !formik.isValid ||
+                        (noLogin && !proof && walletState?.wallet === 'concordium')
+                      }
+                      type="submit"
+                      variant="success"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                    >
+                      {sending ? 'Creating...' : 'Create account'}
+                    </Button>
+                  ) : !captcha || !formik.isValid ? (
+                    <Button
+                      disabled={
+                        sending ||
+                        !captcha ||
+                        !formik.isValid ||
+                        (noLogin && !proof && walletState?.wallet === 'concordium')
+                      }
+                      type="submit"
+                      variant="success"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                    >
+                      {sending ? 'Sending' : 'Send inquiry'}
+                    </Button>
+                  ) : (
+                    <div key={product?.sku}>
+                      <Button
+                        disabled={sending || !captcha || !formik.isValid}
+                        data-sellix-product={license?.sellix_id ? license?.sellix_id : product?.sku}
+                        data-sellix-custom-package={formik.values[`field${registerForm.product}_1`]}
+                        data-sellix-custom-form_id={formID}
+                        data-sellix-custom-requested_username={
+                          formik.values[`field${registerForm.username}_1`]
+                            ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
+                            : `@${formik.values[`field${registerForm.username}_1`]}`
+                        }
+                        data-sellix-custom-firstname={
+                          formik.values[`field${registerForm.first_name}_1`]
+                        }
+                        data-sellix-custom-surname={
+                          formik.values[`field${registerForm.last_name}_1`]
+                        }
+                        data-sellix-custom-product={formik.values[`field${registerForm.product}_1`]}
+                        data-sellix-custom-email={
+                          formik.values[`field${registerForm.email}_1_email`]
+                        }
+                        data-sellix-custom-organization={
+                          formik.values[`field${registerForm.organization}_1`]
+                        }
+                        data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
+                        data-sellix-custom-share_link={shareLink}
+                        data-sellix-custom-affiliate_link={affiliateLink}
+                        data-sellix-custom-staff_id={staffId}
+                        data-sellix-custom-license_period={license?.period}
+                        data-sellix-custom-license_package={license?.product}
+                        data-sellix-custom-license_package_name={license?.product_name}
+                        data-sellix-custom-scan_type={license?.scan_type}
+                        data-sellix-custom-number_domains={license?.number_domains}
+                        data-sellix-custom-signature={signatureLinkAccount}
+                        data-sellix-custom-account_address={walletState?.accountAddress}
+                        variant="success"
+                        className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                      >
+                        {sending ? 'Sending' : 'Send inquiry'}
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </Form>
