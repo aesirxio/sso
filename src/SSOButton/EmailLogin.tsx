@@ -6,8 +6,15 @@ interface EmailLoginProps {
   btnClass: string;
   spacingClass: string;
   noLabel: boolean;
+  forgotPasswordLink?: string;
 }
-const EmailLogin: React.FC<EmailLoginProps> = ({ onGetData, btnClass, spacingClass, noLabel }) => {
+const EmailLogin: React.FC<EmailLoginProps> = ({
+  onGetData,
+  btnClass,
+  spacingClass,
+  noLabel,
+  forgotPasswordLink,
+}) => {
   const handleOnData = (data: any) => {
     onGetData(data);
   };
@@ -27,7 +34,12 @@ const EmailLogin: React.FC<EmailLoginProps> = ({ onGetData, btnClass, spacingCla
         >
           <div className="control-group">
             <Suspense fallback={<>Loading...</>}>
-              <SSOEmailProvider btnClass={btnClass} spacingClass={spacingClass} noLabel={noLabel} />
+              <SSOEmailProvider
+                btnClass={btnClass}
+                spacingClass={spacingClass}
+                noLabel={noLabel}
+                forgotPasswordLink={forgotPasswordLink}
+              />
             </Suspense>
           </div>
         </SSOModalContext.Provider>

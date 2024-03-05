@@ -4,7 +4,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SSOModalContext } from '../../modal';
 
-const SSOEmailProvider = ({ btnClass = '', spacingClass = '', noLabel = false }: any) => {
+const SSOEmailProvider = ({
+  btnClass = '',
+  spacingClass = '',
+  noLabel = false,
+  forgotPasswordLink = '',
+}: any) => {
   const [loading, setLoading] = useState(false);
   const { handleOnData, demoUser, demoPassword } = useContext(SSOModalContext);
 
@@ -93,7 +98,11 @@ const SSOEmailProvider = ({ btnClass = '', spacingClass = '', noLabel = false }:
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://dapp.shield.aesirx.io/auth/forgot-password"
+          href={`${
+            forgotPasswordLink
+              ? forgotPasswordLink
+              : 'https://dapp.shield.aesirx.io/auth/forgot-password'
+          }`}
           className="text-decoration-none"
         >
           Forgot password ?
