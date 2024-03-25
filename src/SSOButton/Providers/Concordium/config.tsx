@@ -13,7 +13,7 @@ const WALLET_CONNECT_OPTS: SignClientTypes.Options = {
     name: 'AesirX SSO',
     description: 'AesirX SSO is our Open Source Single Sign On service.',
     url: '#',
-    icons: ['https://walletconnect.com/walletconnect-logo.png'],
+    icons: [''],
   },
 };
 

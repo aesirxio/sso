@@ -83,7 +83,11 @@ const SSOModal: React.FC<SSSOModalProps> = ({
                 isSignUpForm: isSignUpForm,
               }}
             >
-              <SSOProviders forgotPasswordLink={forgotPasswordLink} loginText={loginText} loginBg={loginBg} />
+              <SSOProviders
+                forgotPasswordLink={forgotPasswordLink}
+                loginText={loginText}
+                loginBg={loginBg}
+              />
             </SSOModalContext.Provider>
           </Suspense>
         </ModalBody>

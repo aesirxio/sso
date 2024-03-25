@@ -26,7 +26,7 @@ const SSOButton: React.FC<SSOButtonProps> = ({
   noCreateAccount = false,
   isRequireEmail = false,
   customClass,
-  forgotPasswordLink
+  forgotPasswordLink,
 }) => {
   const [show, setShow] = useState(false);
   const toggle = () => {
