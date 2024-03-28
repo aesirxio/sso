@@ -15,6 +15,7 @@ interface SSSOModalContextProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isRequireEmail?: boolean;
   isSignUpForm?: boolean;
 }
 
@@ -25,9 +26,12 @@ interface SSSOModalProps {
   demoUser?: string;
   demoPassword?: string;
   noCreateAccount?: boolean;
+  isRequireEmail?: boolean;
   isSignUpForm?: boolean;
   loginText: string;
   loginBg?: string;
+  customClass?: string;
+  forgotPasswordLink?: string;
 }
 
 export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefined);
@@ -41,9 +45,12 @@ const SSOModal: React.FC<SSSOModalProps> = ({
   demoUser,
   demoPassword,
   noCreateAccount,
+  isRequireEmail = false,
   isSignUpForm = false,
   loginText,
   loginBg,
+  customClass,
+  forgotPasswordLink,
 }) => {
   const handleOnData = (data: any) => {
     onGetData(data);
@@ -60,7 +67,7 @@ const SSOModal: React.FC<SSSOModalProps> = ({
           toggle();
         }}
         size={'xl'}
-        className="aesirxsso"
+        className={`aesirxsso ${customClass ?? ''}`}
       >
         <CloseButton onClick={toggle} />
         <ModalBody className="p-0 bg-white rounded-3">
@@ -72,10 +79,15 @@ const SSOModal: React.FC<SSSOModalProps> = ({
                 demoUser: demoUser,
                 demoPassword: demoPassword,
                 noCreateAccount: noCreateAccount,
+                isRequireEmail: isRequireEmail,
                 isSignUpForm: isSignUpForm,
               }}
             >
-              <SSOProviders loginText={loginText} loginBg={loginBg} />
+              <SSOProviders
+                forgotPasswordLink={forgotPasswordLink}
+                loginText={loginText}
+                loginBg={loginBg}
+              />
             </SSOModalContext.Provider>
           </Suspense>
         </ModalBody>

@@ -7,10 +7,12 @@ import cancel from '../images/cancel.svg';
 const SSOConcordiumProvider = React.lazy(() => import('./Concordium'));
 const SSOEthereumProvider = React.lazy(() => import('./Ethereum'));
 const SSOEmailProvider = React.lazy(() => import('./Email'));
+const SSOUpdateEmailProvider = React.lazy(() => import('./Email/update'));
 const SSOSocialProvider = React.lazy(() => import('./Social'));
 
-const SSOProviders = ({ loginText, loginBg }: any) => {
+const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
   const [expand, setExpand] = useState('');
+  const [accountInfo, setAccountInfo] = useState({});
   const [isAccountExist, setIsAccountExist] = useState({ status: true, type: '' });
   const urlParams = new URLSearchParams(window.location.search);
   let login = ['concordium', 'metamask', 'regular'];
@@ -101,6 +103,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                         <SSOEthereumProvider
                           setIsAccountExist={setIsAccountExist}
                           setExpand={setExpand}
+                          setAccountInfo={setAccountInfo}
                         />
                       </Suspense>
                     </div>
@@ -112,6 +115,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                         <SSOConcordiumProvider
                           setIsAccountExist={setIsAccountExist}
                           setExpand={setExpand}
+                          setAccountInfo={setAccountInfo}
                         />
                       </Suspense>
                     </div>
@@ -121,7 +125,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
               {expand === 'email' && (
                 <div className="control-group">
                   <Suspense fallback={<>Loading...</>}>
-                    <SSOEmailProvider />
+                    <SSOEmailProvider forgotPasswordLink={forgotPasswordLink} />
                   </Suspense>
                 </div>
               )}
@@ -148,6 +152,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                           isAccountExist={isAccountExist}
                           setIsAccountExist={setIsAccountExist}
                           setExpand={setExpand}
+                          setAccountInfo={setAccountInfo}
                         />
                       </Suspense>
                     </div>
@@ -160,6 +165,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                           isAccountExist={isAccountExist}
                           setIsAccountExist={setIsAccountExist}
                           setExpand={setExpand}
+                          setAccountInfo={setAccountInfo}
                         />
                       </Suspense>
                     </div>
@@ -172,6 +178,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                           isAccountExist={isAccountExist}
                           setIsAccountExist={setIsAccountExist}
                           setExpand={setExpand}
+                          setAccountInfo={setAccountInfo}
                         />
                       </Suspense>
                     </div>
@@ -184,11 +191,21 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
                           isAccountExist={isAccountExist}
                           setIsAccountExist={setIsAccountExist}
                           setExpand={setExpand}
+                          setAccountInfo={setAccountInfo}
                         />
                       </Suspense>
                     </div>
                   )}
                 </div>
+              )}
+              {expand?.includes('require-email') && (
+                <>
+                  <div className="control-group">
+                    <Suspense fallback={<>Loading...</>}>
+                      <SSOUpdateEmailProvider accountInfo={accountInfo} />
+                    </Suspense>
+                  </div>
+                </>
               )}
             </div>
           </div>

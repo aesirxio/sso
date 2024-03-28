@@ -4,7 +4,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SSOModalContext } from '../../modal';
 
-const SSOEmailProvider = () => {
+const SSOEmailProvider = ({
+  btnClass = '',
+  spacingClass = '',
+  noLabel = false,
+  forgotPasswordLink = '',
+}: any) => {
   const [loading, setLoading] = useState(false);
   const { handleOnData, demoUser, demoPassword } = useContext(SSOModalContext);
 
@@ -48,6 +53,7 @@ const SSOEmailProvider = () => {
       handleOnData(result);
       setLoading(false);
     } catch (error) {
+      console.log('errorerrorerror', error);
       toast('Wrong authentication', { closeOnClick: false });
       setLoading(false);
       return false;
@@ -61,10 +67,12 @@ const SSOEmailProvider = () => {
           <h5 className="mb-3 text-primary">Demo password: {demoPassword} </h5>
         </>
       )}
-      <div className="mb-4">
-        <label htmlFor="ssoemail" className="form-label text-primary mb-2">
-          Email address
-        </label>
+      <div className={`${spacingClass ? spacingClass : 'mb-4'}`}>
+        {!noLabel && (
+          <label htmlFor="ssoemail" className="form-label text-primary mb-2">
+            Email address
+          </label>
+        )}
         <input
           type="email"
           className="form-control lh-sm border"
@@ -72,10 +80,12 @@ const SSOEmailProvider = () => {
           defaultValue={demoUser}
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="ssoepassword" className="form-label text-primary mb-2">
-          Password
-        </label>
+      <div className={`${spacingClass ? spacingClass : 'mb-4'}`}>
+        {!noLabel && (
+          <label htmlFor="ssoepassword" className="form-label text-primary mb-2">
+            Password
+          </label>
+        )}
         <input
           type="password"
           className="form-control lh-sm border"
@@ -84,17 +94,24 @@ const SSOEmailProvider = () => {
           required
         />
       </div>
-      <p className="text-end mb-4">
+      <p className={`text-end ${spacingClass ? spacingClass : 'mb-4'}`}>
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://dapp.shield.aesirx.io/auth/forgot-password"
+          href={`${
+            forgotPasswordLink
+              ? forgotPasswordLink
+              : 'https://dapp.shield.aesirx.io/auth/forgot-password'
+          }`}
           className="text-decoration-none"
         >
           Forgot password ?
         </a>
       </p>
-      <button type="submit" className="btn btn-success w-100 lh-sm text-white fw-semibold">
+      <button
+        type="submit"
+        className={`${btnClass ? btnClass : 'btn btn-success w-100 lh-sm text-white fw-semibold'}`}
+      >
         {loading ? (
           <>
             <span

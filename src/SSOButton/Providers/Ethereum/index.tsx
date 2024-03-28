@@ -138,6 +138,7 @@ const SSOEthereumProvider = ({
   setAccountAddress,
   setConnection,
   setWalletType,
+  setAccountInfo,
 }: any) => {
   return (
     <>
@@ -150,6 +151,7 @@ const SSOEthereumProvider = ({
           setAccountAddress={setAccountAddress}
           setConnection={setConnection}
           setWalletType={setWalletType}
+          setAccountInfo={setAccountInfo}
         />
       </WagmiConfig>
 
@@ -166,6 +168,7 @@ const SSOEthereumApp = ({
   setAccountAddress,
   setConnection,
   setWalletType,
+  setAccountInfo,
 }: any) => {
   const { address, isConnected, connector } = useAccount();
 
@@ -208,7 +211,11 @@ const SSOEthereumApp = ({
         )}
       </>
     ) : (
-      <SignMessage setIsAccountExist={setIsAccountExist} setExpand={setExpand} />
+      <SignMessage
+        setIsAccountExist={setIsAccountExist}
+        setExpand={setExpand}
+        setAccountInfo={setAccountInfo}
+      />
     )
   ) : (
     <ConnectMetamask />
