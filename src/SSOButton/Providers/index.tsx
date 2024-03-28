@@ -10,7 +10,7 @@ const SSOEmailProvider = React.lazy(() => import('./Email'));
 const SSOUpdateEmailProvider = React.lazy(() => import('./Email/update'));
 const SSOSocialProvider = React.lazy(() => import('./Social'));
 
-const SSOProviders = ({ loginText, loginBg }: any) => {
+const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
   const [expand, setExpand] = useState('');
   const [accountInfo, setAccountInfo] = useState({});
   const [isAccountExist, setIsAccountExist] = useState({ status: true, type: '' });
@@ -125,7 +125,7 @@ const SSOProviders = ({ loginText, loginBg }: any) => {
               {expand === 'email' && (
                 <div className="control-group">
                   <Suspense fallback={<>Loading...</>}>
-                    <SSOEmailProvider />
+                    <SSOEmailProvider forgotPasswordLink={forgotPasswordLink} />
                   </Suspense>
                 </div>
               )}
