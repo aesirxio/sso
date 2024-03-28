@@ -4,6 +4,8 @@ import SSOModal from './modal';
 interface SSOButtonProps {
   className: string;
   text: string;
+  loginText: string;
+  loginBg?: string;
   onGetData: (data: any) => void;
   demoUser?: string;
   demoPassword?: string;
@@ -13,6 +15,8 @@ interface SSOButtonProps {
 const SSOButton: React.FC<SSOButtonProps> = ({
   className,
   text = 'Login',
+  loginText = 'AesirX SSO',
+  loginBg,
   onGetData,
   demoUser = '',
   demoPassword = '',
@@ -40,6 +44,8 @@ const SSOButton: React.FC<SSOButtonProps> = ({
         onGetData={onGetData}
         show={show}
         toggle={toggle}
+        loginText={loginText}
+        loginBg={loginBg}
       />
     </>
   );

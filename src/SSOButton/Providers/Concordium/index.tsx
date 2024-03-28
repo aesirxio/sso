@@ -8,14 +8,15 @@ import {
   useConnection,
   useConnect,
   WalletConnectionProps,
-  withJsonRpcClient,
   ConnectorType,
+  useGrpcClient,
 } from '@concordium/react-components';
 import ConnectConcordium from './connect';
 import SignMessageConcordium from './sign';
 import secureLocalStorage from 'react-secure-storage';
 import { getClientApp, shortenString } from '../../../utils';
 import ComponentTags from '../../../components/ComponentTags';
+import { BlockHash } from '@concordium/web-sdk';
 interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setIsAccountExist: any;
   setExpand: any;
@@ -77,28 +78,28 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
 
   const [rpcGenesisHash, setRpcGenesisHash] = useState();
   const [rpcError, setRpcError] = useState('');
+  const rpc = useGrpcClient(network);
 
   useEffect(() => {
-    if (connection) {
+    if (rpc) {
       setRpcGenesisHash(undefined);
-      withJsonRpcClient(connection, async (rpc) => {
-        const status = await rpc.getConsensusStatus();
-        return status.genesisBlock;
-      })
+      rpc
+        .getConsensusStatus()
+        .then((status) => {
+          return status.genesisBlock;
+        })
         .then((hash: any) => {
           const { network } = getClientApp();
 
           let r = false;
-
           switch (network) {
             case 'testnet':
-              r = hash === TESTNET.genesisHash;
+              r = BlockHash.toHexString(hash) === TESTNET.genesisHash;
               break;
 
             default:
-              r = hash === MAINNET.genesisHash;
+              r = BlockHash.toHexString(hash) === MAINNET.genesisHash;
           }
-
           if (!r) {
             const { network } = getClientApp();
             throw new Error(`Please change the network to ${network} in Wallet`);
@@ -113,7 +114,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
           setRpcError(err.message);
         });
     }
-  }, [connection, genesisHash, network]);
+  }, [rpc]);
 
   useEffect(() => {
     if (activeConnector) {
