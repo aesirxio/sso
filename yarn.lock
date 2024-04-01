@@ -1103,22 +1103,22 @@
   dependencies:
     "@protobuf-ts/runtime-rpc" "^2.9.1"
 
-"@concordium/react-components@^0.4.0-rc.7":
-  version "0.4.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@concordium/react-components/-/react-components-0.4.0-rc.7.tgz#0e696996318a896ee2e1dfd01ed23837c1d69efc"
-  integrity sha512-RCKfch4e6Ypo7TeZnZQJcU68MrmMLiC4T0Q0YIqUI0f27zClTHsv8ObMCeUzjN/N0OIylxssFvoMr1pRuq9dwg==
+"@concordium/react-components@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@concordium/react-components/-/react-components-0.5.1.tgz#3d8c1e3a27dca842049ff6a229c4b472ed1aa56f"
+  integrity sha512-bzUmmJgYxDC8Q1wkOZfEv7i1Eg4hrX472MO2zYFNn2oLdR8ShS5ndE0ablVI2Sj/nyh9d4748FjaiW4gp/Gmuw==
   dependencies:
-    "@concordium/wallet-connectors" "^0.4.0-rc.6"
+    "@concordium/wallet-connectors" "^0.5.1"
 
 "@concordium/rust-bindings@2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@concordium/rust-bindings/-/rust-bindings-2.0.1.tgz#267fbd6339e14673debe5c3529dcebcf254e11b0"
   integrity sha512-4ZzHt31fUZ5DD8DSCITc7A+n9dY5+FyEfdYjucW0K8g+A9mdy1Rbcj1DrNI1MeKnoK8XdA1+X0pDrBAgVKwRgg==
 
-"@concordium/wallet-connectors@^0.4.0-rc.6":
-  version "0.4.0-rc.6"
-  resolved "https://registry.yarnpkg.com/@concordium/wallet-connectors/-/wallet-connectors-0.4.0-rc.6.tgz#fedf832d4ffb73147edd2e874eb887e0496c6636"
-  integrity sha512-HZTZzYwyBUPFNlCgDwmyzpbLjxEDlC6qSbYKr9i9Z0oUvGaStUTkfWEIkhDz8dEt9PM7JKDvK3iAyFRNZTpZsA==
+"@concordium/wallet-connectors@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@concordium/wallet-connectors/-/wallet-connectors-0.5.1.tgz#fc2a41b8754e3bd4b3c32b08121c25a8e2775b4b"
+  integrity sha512-CUxjN4cbcWOZfZ6BsZTQSuYrm6DJt5UCs2YDjA81UDqfW1hAiJ6LiFS/cf58TCXEun9IHYBXc7TwUfNwOrdJcA==
   dependencies:
     "@concordium/browser-wallet-api-helpers" "^3.0.0"
     "@walletconnect/qrcode-modal" "^1.8.0"
