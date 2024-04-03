@@ -16,6 +16,7 @@ import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers
 import CreateAccount from '../CreateAccount';
 import { stringMessage } from '@concordium/react-components';
 import arrow_left from '../../images/arrow_left.svg';
+import { isAndroid, isMobile } from 'react-device-detect';
 
 const SignMessageConcordium = ({
   account,
@@ -81,7 +82,7 @@ const SignMessageConcordium = ({
     try {
       const checkAccount = await checkWalletAccount(account, wallet);
       if (!checkAccount?.data?.result) {
-        if (!proof) {
+        if (!proof && !(isMobile && isAndroid)) {
           const responseProof = await handleProof();
           if (responseProof) {
             setShow(true);
@@ -177,8 +178,8 @@ const SignMessageConcordium = ({
                   {status === 'sign'
                     ? 'Please sign message on the wallet'
                     : status === 'loading'
-                    ? 'Connecting...'
-                    : `Please wait to connect...`}
+                      ? 'Connecting...'
+                      : `Please wait to connect...`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (
