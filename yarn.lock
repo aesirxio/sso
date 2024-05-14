@@ -1124,10 +1124,10 @@
     "@walletconnect/qrcode-modal" "^1.8.0"
     "@walletconnect/sign-client" "^2.1.4"
 
-"@concordium/web-sdk@^7.0.4-rc.3":
-  version "7.0.4-rc.3"
-  resolved "https://registry.yarnpkg.com/@concordium/web-sdk/-/web-sdk-7.0.4-rc.3.tgz#f99c5655b646f1a7772eafa423cca5396ab01fcf"
-  integrity sha512-Y9Lt0lzjQoeeGxYxOKmV4YhSkpfrN4OozzJFltgcUZtUnBxmUk9KWTmNOucnpuO3P0wUXxYfbVFyAP6NX+xF/A==
+"@concordium/web-sdk@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@concordium/web-sdk/-/web-sdk-7.1.0.tgz#1d4b74547bf54e7784037c504447e439849a5e45"
+  integrity sha512-79STpoz6qxOGt9OvRhalPaCkIgPFbbNDaFRL4/7Jq4dr62PqAo1u/rbo79kX3ySWPxu1CkjY2XSQ6yk539ljrw==
   dependencies:
     "@concordium/rust-bindings" "2.0.1"
     "@grpc/grpc-js" "^1.9.4"

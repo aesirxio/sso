@@ -27,6 +27,7 @@ import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import io from 'socket.io-client';
 import { SSOModalContext } from '../../modal';
+import { AccountAddress, ConcordiumGRPCClient } from '@concordium/web-sdk';
 
 let socket: any;
 interface Fields {
@@ -420,7 +421,16 @@ const CreateAccount = ({
     try {
       const challenge = await getChallenge(walletState?.accountAddress ?? '');
       const statement = await getStatement();
-      const provider = await detectConcordiumProvider();
+      const provider: any = await detectConcordiumProvider();
+      const client = new ConcordiumGRPCClient(provider.grpcTransport);
+      const accountAddr = AccountAddress.fromBase58(walletState?.accountAddress);
+      const accountInfo: any = await client.getAccountInfo(accountAddr);
+      const nationality: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.nationality;
+      if (!nationality) {
+        statement[0].attributeTag = 'countryOfResidence';
+      }
       const proof = await provider.requestIdProof(
         walletState?.accountAddress ?? '',
         statement,
