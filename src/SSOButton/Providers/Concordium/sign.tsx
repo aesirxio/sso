@@ -109,7 +109,7 @@ const SignMessageConcordium = ({
     try {
       const challenge = await getChallenge(account ?? '');
       const statement = await getStatement();
-      const provider = await detectConcordiumProvider();
+      const provider: any = await detectConcordiumProvider();
       const client = new ConcordiumGRPCClient(provider.grpcTransport);
       const accountAddr = AccountAddress.fromBase58(account);
       const accountInfo: any = await client.getAccountInfo(accountAddr);

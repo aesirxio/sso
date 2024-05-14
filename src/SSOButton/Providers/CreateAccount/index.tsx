@@ -421,7 +421,7 @@ const CreateAccount = ({
     try {
       const challenge = await getChallenge(walletState?.accountAddress ?? '');
       const statement = await getStatement();
-      const provider = await detectConcordiumProvider();
+      const provider: any = await detectConcordiumProvider();
       const client = new ConcordiumGRPCClient(provider.grpcTransport);
       const accountAddr = AccountAddress.fromBase58(walletState?.accountAddress);
       const accountInfo: any = await client.getAccountInfo(accountAddr);
