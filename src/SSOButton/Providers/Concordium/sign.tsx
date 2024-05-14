@@ -17,6 +17,7 @@ import CreateAccount from '../CreateAccount';
 import { stringMessage } from '@concordium/react-components';
 import arrow_left from '../../images/arrow_left.svg';
 import { isAndroid, isMobile } from 'react-device-detect';
+import { AccountAddress, ConcordiumGRPCClient } from '@concordium/web-sdk';
 
 const SignMessageConcordium = ({
   account,
@@ -109,6 +110,15 @@ const SignMessageConcordium = ({
       const challenge = await getChallenge(account ?? '');
       const statement = await getStatement();
       const provider = await detectConcordiumProvider();
+      const client = new ConcordiumGRPCClient(provider.grpcTransport);
+      const accountAddr = AccountAddress.fromBase58(account);
+      const accountInfo: any = await client.getAccountInfo(accountAddr);
+      const nationality: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.nationality;
+      if (!nationality) {
+        statement[0].attributeTag = 'countryOfResidence';
+      }
       const proof = await provider.requestIdProof(account ?? '', statement, challenge);
       const re = await verifyProof(challenge, proof);
 
