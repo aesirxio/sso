@@ -595,7 +595,10 @@ const CreateAccount = ({
                 );
               })}
             </Row>
-            <p className="fst-italic mb-3 fs-7">Disclaimer: The ID @Username is public and helps anonymize and pseudonymize data to protect your privacy.</p>
+            <p className="fst-italic mb-3 fs-7">
+              Disclaimer: The ID @Username is public and helps anonymize and pseudonymize data to
+              protect your privacy.
+            </p>
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
