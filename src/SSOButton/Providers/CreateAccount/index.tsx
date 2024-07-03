@@ -428,8 +428,15 @@ const CreateAccount = ({
       const nationality: string =
         accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
           ?.nationality;
+      const countryOfResidence: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.countryOfResidence;
       if (!nationality) {
-        statement[0].attributeTag = 'countryOfResidence';
+        if (countryOfResidence) {
+          statement[0].attributeTag = 'countryOfResidence';
+        } else {
+          statement[0].attributeTag = 'idDocIssuer';
+        }
       }
       const proof = await provider.requestIdProof(
         walletState?.accountAddress ?? '',
