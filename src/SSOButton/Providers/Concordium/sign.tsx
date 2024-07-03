@@ -108,7 +108,7 @@ const SignMessageConcordium = ({
     setLoading(true);
     try {
       const challenge = await getChallenge(account ?? '');
-      const statement = await getStatement(account ?? '');
+      const statement = await getStatement();
       const provider: any = await detectConcordiumProvider();
       const client = new ConcordiumGRPCClient(provider.grpcTransport);
       const accountAddr = AccountAddress.fromBase58(account);
@@ -116,8 +116,15 @@ const SignMessageConcordium = ({
       const nationality: string =
         accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
           ?.nationality;
+      const countryOfResidence: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.countryOfResidence;
       if (!nationality) {
-        statement[0].attributeTag = 'countryOfResidence';
+        if (countryOfResidence) {
+          statement[0].attributeTag = 'countryOfResidence';
+        } else {
+          statement[0].attributeTag = 'idDocIssuer';
+        }
       }
       const proof = await provider.requestIdProof(account ?? '', statement, challenge);
       const re = await verifyProof(challenge, proof);
@@ -188,8 +195,8 @@ const SignMessageConcordium = ({
                   {status === 'sign'
                     ? 'Please sign message on the wallet'
                     : status === 'loading'
-                    ? 'Connecting...'
-                    : `Please wait to connect...`}
+                      ? 'Connecting...'
+                      : `Please wait to connect...`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (
