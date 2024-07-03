@@ -191,10 +191,10 @@ const getChallenge = async (walletAccount: string) => {
   }
 };
 
-const getStatement = async () => {
+const getStatement = async (walletAccount: string) => {
   const { web3Endpoint } = getClientApp();
   try {
-    return (await axios.get(`${web3Endpoint}/statement`)).data;
+    return (await axios.get(`${web3Endpoint}/statement?account=${walletAccount}`)).data;
   } catch (error: any) {
     console.log('getChallenge', error);
     throw error;
