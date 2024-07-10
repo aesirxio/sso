@@ -58,6 +58,11 @@ const CreateAccount = ({
   isRequireEmail,
   hideDefaultProduct = false,
   isRequireConcordium = false,
+  alertButton = {
+    isShow: false,
+    handleClick: undefined,
+    alertWarning: undefined,
+  },
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -695,6 +700,14 @@ const CreateAccount = ({
                     >
                       {sending ? 'Sending' : 'Send inquiry'}
                     </Button>
+                  ) : alertButton?.isShow && alertButton?.handleClick ? (
+                    <Button
+                      onClick={alertButton?.handleClick}
+                      variant="success"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                    >
+                      Send inquiry
+                    </Button>
                   ) : (
                     <div key={product?.sku}>
                       <Button
@@ -738,6 +751,7 @@ const CreateAccount = ({
                       </Button>
                     </div>
                   )}
+                  {alertButton?.alertWarning && alertButton?.alertWarning}
                 </>
               )}
             </div>
