@@ -30,7 +30,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
     isShow: false,
     handleClick: undefined,
     alertWarning: undefined,
-  }
+  },
 }) => {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState('');
