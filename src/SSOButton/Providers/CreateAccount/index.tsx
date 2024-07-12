@@ -58,6 +58,11 @@ const CreateAccount = ({
   isRequireEmail,
   hideDefaultProduct = false,
   isRequireConcordium = false,
+  alertButton = {
+    isShow: false,
+    handleClick: undefined,
+    alertWarning: undefined,
+  },
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
@@ -428,8 +433,15 @@ const CreateAccount = ({
       const nationality: string =
         accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
           ?.nationality;
+      const countryOfResidence: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.countryOfResidence;
       if (!nationality) {
-        statement[0].attributeTag = 'countryOfResidence';
+        if (countryOfResidence) {
+          statement[0].attributeTag = 'countryOfResidence';
+        } else {
+          statement[0].attributeTag = 'idDocIssuer';
+        }
       }
       const proof = await provider.requestIdProof(
         walletState?.accountAddress ?? '',
@@ -595,7 +607,10 @@ const CreateAccount = ({
                 );
               })}
             </Row>
-            <p className="fst-italic mb-3 fs-7">Disclaimer : The ID @Username is public</p>
+            <p className="fst-italic mb-3 fs-7">
+              Disclaimer: The ID @Username is public and helps anonymize and pseudonymize data to
+              protect your privacy.
+            </p>
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
@@ -685,6 +700,14 @@ const CreateAccount = ({
                     >
                       {sending ? 'Sending' : 'Send inquiry'}
                     </Button>
+                  ) : alertButton?.isShow && alertButton?.handleClick ? (
+                    <Button
+                      onClick={alertButton?.handleClick}
+                      variant="success"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                    >
+                      Send inquiry
+                    </Button>
                   ) : (
                     <div key={product?.sku}>
                       <Button
@@ -728,6 +751,7 @@ const CreateAccount = ({
                       </Button>
                     </div>
                   )}
+                  {alertButton?.alertWarning && alertButton?.alertWarning}
                 </>
               )}
             </div>
