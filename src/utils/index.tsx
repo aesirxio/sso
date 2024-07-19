@@ -140,6 +140,12 @@ const getClientApp = () => {
       process.env.NEXT_PUBLIC_PARTNERS_URL ||
       'https://partners.aesirx.io';
 
+  const socketEndpoint = window['socketEndpoint']
+    ? window['socketEndpoint']
+    : process.env.REACT_APP_SOCKET_URL ||
+      process.env.NEXT_PUBLIC_SOCKET_URL ||
+      'https://partners.aesirx.io';
+
   const registerForm = {
     username: window['registerUsername']
       ? window['registerUsername']
@@ -178,6 +184,7 @@ const getClientApp = () => {
     dappEndpoint,
     registerForm,
     partnerEndpoint,
+    socketEndpoint,
   };
 };
 
