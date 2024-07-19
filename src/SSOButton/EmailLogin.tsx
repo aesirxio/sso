@@ -7,6 +7,8 @@ interface EmailLoginProps {
   spacingClass: string;
   noLabel: boolean;
   forgotPasswordLink?: string;
+  demoUser?: string;
+  demoPassword?: string;
 }
 const EmailLogin: React.FC<EmailLoginProps> = ({
   onGetData,
@@ -14,6 +16,8 @@ const EmailLogin: React.FC<EmailLoginProps> = ({
   spacingClass,
   noLabel,
   forgotPasswordLink,
+  demoUser,
+  demoPassword,
 }) => {
   const handleOnData = (data: any) => {
     onGetData(data);
@@ -25,8 +29,8 @@ const EmailLogin: React.FC<EmailLoginProps> = ({
           value={{
             handleOnData: handleOnData,
             toggle: () => {},
-            demoUser: '',
-            demoPassword: '',
+            demoUser: demoUser ?? '',
+            demoPassword: demoPassword ?? '',
             noCreateAccount: false,
             isSignUpForm: false,
             isRequireEmail: false,
