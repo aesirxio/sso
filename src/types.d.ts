@@ -6,6 +6,7 @@ declare global {
     web3Endpoint: string;
     dappEndpoint: string;
     partnerEndpoint: string;
+    socketEndpoint: string;
     registerUsername: string;
     registerFirstname: string;
     registerLastname: string;
