@@ -144,7 +144,7 @@ const getClientApp = () => {
     ? window['socketEndpoint']
     : process.env.REACT_APP_SOCKET_URL ||
       process.env.NEXT_PUBLIC_SOCKET_URL ||
-      'https://partners.aesirx.io';
+      'https://socket.aesirx.io';
 
   const registerForm = {
     username: window['registerUsername']
