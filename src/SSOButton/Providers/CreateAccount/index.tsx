@@ -58,6 +58,7 @@ const CreateAccount = ({
   isRequireEmail,
   hideDefaultProduct = false,
   isRequireConcordium = false,
+  defaultValues = [],
   alertButton = {
     isShow: false,
     handleClick: undefined,
@@ -142,13 +143,17 @@ const CreateAccount = ({
   const generateInitialValue = (data: any) => {
     const initialValue: { [key: string]: string } = {};
     data?.forEach((item: Fields) => {
+      let defaultValue = '';
+      if (defaultValues?.length) {
+        defaultValue = defaultValues.find((field: any) => field.id == item.fieldId)?.value ?? '';
+      }
       if (item.fieldtype == 'email') {
         initialValue[`field${item.fieldId}_1_email`] = '';
       } else if (item.fieldtype == 'select') {
         initialValue[`field${item.fieldId}_1`] =
           Object.keys(packagesData).length || productOptions.length ? defaultProduct : '';
       } else {
-        initialValue[`field${item.fieldId}_1`] = '';
+        initialValue[`field${item.fieldId}_1`] = defaultValue;
       }
     });
     return initialValue;
@@ -295,19 +300,19 @@ const CreateAccount = ({
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${walletState?.accountAddress}`,
+              ? `${socialType?.id}`
+              : `${walletState?.accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}@aesirx.io`
-            : `${walletState?.accountAddress}@aesirx.io`,
+              ? `${socialType?.id}@aesirx.io`
+              : `${walletState?.accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${walletState?.accountAddress}`,
+              ? `${socialType?.id}`
+              : `${walletState?.accountAddress}`,
           block: 0,
           ...(walletState?.wallet === 'concordium'
             ? { wallet_concordium: walletState?.accountAddress }
@@ -340,8 +345,8 @@ const CreateAccount = ({
               [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
-                ? `${socialType?.id}@aesirx.io`
-                : `${walletState?.accountAddress}@aesirx.io`,
+                  ? `${socialType?.id}@aesirx.io`
+                  : `${walletState?.accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
