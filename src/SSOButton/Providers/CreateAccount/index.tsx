@@ -58,6 +58,7 @@ const CreateAccount = ({
   isRequireEmail,
   hideDefaultProduct = false,
   isRequireConcordium = false,
+  defaultValues = [],
   alertButton = {
     isShow: false,
     handleClick: undefined,
@@ -142,13 +143,17 @@ const CreateAccount = ({
   const generateInitialValue = (data: any) => {
     const initialValue: { [key: string]: string } = {};
     data?.forEach((item: Fields) => {
+      let defaultValue = '';
+      if (defaultValues?.length) {
+        defaultValue = defaultValues.find((field: any) => field.id == item.fieldId)?.value ?? '';
+      }
       if (item.fieldtype == 'email') {
         initialValue[`field${item.fieldId}_1_email`] = '';
       } else if (item.fieldtype == 'select') {
         initialValue[`field${item.fieldId}_1`] =
           Object.keys(packagesData).length || productOptions.length ? defaultProduct : '';
       } else {
-        initialValue[`field${item.fieldId}_1`] = '';
+        initialValue[`field${item.fieldId}_1`] = defaultValue;
       }
     });
     return initialValue;
