@@ -16,6 +16,7 @@ interface SignUpButtonProps {
   isRequireEmail?: boolean;
   productOptions: Array<any>;
   customClass?: string;
+  alertButton?: any;
 }
 
 const SignUpButton: React.FC<SignUpButtonProps> = ({
@@ -25,6 +26,11 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
   isRequireEmail = false,
   productOptions = [],
   customClass,
+  alertButton = {
+    isShow: false,
+    handleClick: undefined,
+    alertWarning: undefined,
+  },
 }) => {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState('');
@@ -158,6 +164,7 @@ const SignUpButton: React.FC<SignUpButtonProps> = ({
                         isNoWallet={true}
                         setShow={toggle}
                         productOptions={productOptions}
+                        alertButton={alertButton}
                         isRequireEmail={isRequireEmail}
                       />
                     )}
