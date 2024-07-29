@@ -553,9 +553,6 @@ const CreateAccount = ({
     formik.values[`field${registerForm.username}_1`],
     formik.values[`field${registerForm.email}_1_email`],
   ]);
-
-  console.log('formik', formik?.values);
-
   return (
     <>
       {!walletState?.accountAddress && !isNoWallet && (
