@@ -27,6 +27,7 @@ interface WalletConnectionPropsExtends extends WalletConnectionProps {
   setWalletType: any;
   noSignUpForm?: any;
   setWalletState?: any;
+  disabled?: boolean;
 }
 const SSOConcordiumProvider = ({
   setIsAccountExist,
@@ -38,6 +39,7 @@ const SSOConcordiumProvider = ({
   setWalletType,
   noSignUpForm = false,
   setWalletState,
+  disabled,
 }: any) => {
   const { network } = getClientApp();
 
@@ -55,6 +57,7 @@ const SSOConcordiumProvider = ({
           setWalletType={setWalletType}
           noSignUpForm={noSignUpForm}
           setWalletState={setWalletState}
+          disabled={disabled}
         />
       )}
     </WithWalletConnector>
@@ -79,6 +82,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
     setWalletType,
     noSignUpForm,
     setWalletState,
+    disabled,
   } = props;
 
   const { connection, setConnection, account, genesisHash } = useConnection(
@@ -177,6 +181,7 @@ const ConcordiumApp = (props: WalletConnectionPropsExtends) => {
           activeConnectorType={activeConnectorType}
           activeConnector={activeConnector}
           noLogin={noLogin}
+          disabled={disabled}
         />
       ) : (
         <>
