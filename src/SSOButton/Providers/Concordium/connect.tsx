@@ -11,6 +11,7 @@ const ConnectConcordium = ({
   activeConnectorType,
   activeConnector,
   noLogin,
+  disabled,
 }: any) => {
   return (
     <>
@@ -19,7 +20,7 @@ const ConnectConcordium = ({
           <Col lg={`${noLogin ? '6' : '12'}`}>
             {isDesktop ? (
               <button
-                disabled={isConnecting}
+                disabled={isConnecting || disabled}
                 type="button"
                 className={`btn btn-dark btn-concordium fw-medium text-nowrap py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-start w-100 ${
                   noLogin ? 'mb-3 mb-lg-0' : 'mb-3'

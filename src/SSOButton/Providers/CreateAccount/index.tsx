@@ -235,6 +235,7 @@ const CreateAccount = ({
   const formik = useFormik({
     initialValues: generateInitialValue(data),
     enableReinitialize: true,
+    validateOnMount: true,
     validationSchema: Yup.object(generateValidationSchema(data)),
     onSubmit: async (values) => {
       let isSuccess = true;
@@ -660,6 +661,7 @@ const CreateAccount = ({
                       noSignUpForm={true}
                       setWalletState={setWalletState}
                       setIsAccountExist={() => {}}
+                      disabled={!formik.isValid}
                       setExpand={async () => {
                         const signedNonce = await getNonce(
                           walletState?.accountAddress,
