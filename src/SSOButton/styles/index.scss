@@ -152,8 +152,10 @@ $btn-close-color: #fff;
       color: $white;
       border-radius: 6px;
     }
-    .bs-popover-top > .popover-arrow::after,
-    .bs-popover-auto[data-popper-placement^='top'] > .popover-arrow::after {
+    .popover-body {
+      color: $white !important;
+    }
+    .popover-arrow::after {
       border-top-color: #222328;
     }
   }
