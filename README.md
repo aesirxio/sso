@@ -13,15 +13,15 @@
 ```
 <script>
   window.aesirxEndpoint="https://example.com"
-  window.aesirxClientSecret="[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]"
-  window.aesirxClientID="[REPLACE THIS WITH THE PROVIDED CLIENT_ID]"
+  window.aesirxClientSecret="[Replace this with the provided SSO CLIENT ID]"
+  window.aesirxClientID="[Replace this with the provided SSO CLIENT SECRET]"
   window.aesirxAllowedLogins=['concordium', 'metamask', 'regular']
 </script>
 <script async defer src="YOUR_PROJECT_PATH/sso.js"></script>
 ```
 
-1. `CLIENT_ID` replace this with the provided `CLIENT_ID` from https://dapp.shield.aesirx.io/
-2. `CLIENT_SECRET` replace this with the provided `CLIENT_SECRET` from https://dapp.shield.aesirx.io/
+1. `SSO CLIENT ID` replace this with the provided `SSO CLIENT ID` from https://dapp.shield.aesirx.io/licenses
+2. `SSO CLIENT SECRET` replace this with the provided `SSO CLIENT SECRET` from https://dapp.shield.aesirx.io/licenses
 3. `aesirxAllowedLogins` are for which logins do you want to use and you have wallets set up
 
 - `concordium` - Concordium wallet login
@@ -48,8 +48,8 @@
 ##### Add the environment variable file (`.env`)
 
 ```
-REACT_APP_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
-REACT_APP_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
+REACT_APP_SSO_CLIENT_ID=[Replace this with the provided SSO CLIENT ID from https://dapp.shield.aesirx.io/licenses]
+REACT_APP_SSO_CLIENT_SECRET=[Replace this the provided SSO CLIENT SECRECT from https://dapp.shield.aesirx.io/licenses]
 ```
 
 
@@ -89,8 +89,8 @@ import { SSOButton } from 'aesirx-sso';
 ##### Add the environment variable file (`.env`)
 
 ```
-NEXT_PUBLIC_SSO_CLIENT_ID=[REPLACE THIS WITH THE PROVIDED CLIENT_ID]
-NEXT_PUBLIC_SSO_CLIENT_SECRET=[REPLACE THIS WITH THE PROVIDED CLIENT_SECRET]
+NEXT_PUBLIC_SSO_CLIENT_ID=[Replace this with the provided SSO CLIENT ID from https://dapp.shield.aesirx.io/licenses]
+NEXT_PUBLIC_SSO_CLIENT_SECRET=[Replace this the provided SSO CLIENT SECRECT from https://dapp.shield.aesirx.io/licenses]
 ```
 
 ##### Using `<SSOButton />` to create Login Button
