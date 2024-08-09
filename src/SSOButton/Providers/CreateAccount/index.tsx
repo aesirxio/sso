@@ -27,6 +27,7 @@ import { stringMessage } from '@concordium/react-components';
 import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers';
 import io from 'socket.io-client';
 import { SSOModalContext } from '../../modal';
+import { AccountAddress, ConcordiumGRPCClient } from '@concordium/web-sdk';
 
 let socket: any;
 interface Fields {
@@ -57,11 +58,17 @@ const CreateAccount = ({
   isRequireEmail,
   hideDefaultProduct = false,
   isRequireConcordium = false,
+  defaultValues = [],
+  alertButton = {
+    isShow: false,
+    handleClick: undefined,
+    alertWarning: undefined,
+  },
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
   const [loading, setLoading] = useState('');
-  const { registerForm, endpoint, web3Endpoint, partnerEndpoint } = getClientApp();
+  const { registerForm, endpoint, web3Endpoint, partnerEndpoint, socketEndpoint } = getClientApp();
   const debouncedCheckWeb3Id: any = useCallback(debounce(validateWeb3Id, 200), []);
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
   const [data, setData] = useState<any>([]);
@@ -136,13 +143,17 @@ const CreateAccount = ({
   const generateInitialValue = (data: any) => {
     const initialValue: { [key: string]: string } = {};
     data?.forEach((item: Fields) => {
+      let defaultValue = '';
+      if (defaultValues?.length) {
+        defaultValue = defaultValues.find((field: any) => field.id == item.fieldId)?.value ?? '';
+      }
       if (item.fieldtype == 'email') {
         initialValue[`field${item.fieldId}_1_email`] = '';
       } else if (item.fieldtype == 'select') {
         initialValue[`field${item.fieldId}_1`] =
           Object.keys(packagesData).length || productOptions.length ? defaultProduct : '';
       } else {
-        initialValue[`field${item.fieldId}_1`] = '';
+        initialValue[`field${item.fieldId}_1`] = defaultValue;
       }
     });
     return initialValue;
@@ -224,6 +235,7 @@ const CreateAccount = ({
   const formik = useFormik({
     initialValues: generateInitialValue(data),
     enableReinitialize: true,
+    validateOnMount: true,
     validationSchema: Yup.object(generateValidationSchema(data)),
     onSubmit: async (values) => {
       let isSuccess = true;
@@ -420,7 +432,23 @@ const CreateAccount = ({
     try {
       const challenge = await getChallenge(walletState?.accountAddress ?? '');
       const statement = await getStatement();
-      const provider = await detectConcordiumProvider();
+      const provider: any = await detectConcordiumProvider();
+      const client = new ConcordiumGRPCClient(provider.grpcTransport);
+      const accountAddr = AccountAddress.fromBase58(walletState?.accountAddress);
+      const accountInfo: any = await client.getAccountInfo(accountAddr);
+      const nationality: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.nationality;
+      const countryOfResidence: string =
+        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
+          ?.countryOfResidence;
+      if (!nationality) {
+        if (countryOfResidence) {
+          statement[0].attributeTag = 'countryOfResidence';
+        } else {
+          statement[0].attributeTag = 'idDocIssuer';
+        }
+      }
       const proof = await provider.requestIdProof(
         walletState?.accountAddress ?? '',
         statement,
@@ -475,13 +503,13 @@ const CreateAccount = ({
       formik.values[`field${registerForm.email}_1_email`]
     ) {
       const createSocketServer = async () => {
-        await axios.get(`${partnerEndpoint}/api/socket`);
+        await axios.get(`${socketEndpoint}/api/socket`);
       };
 
       createSocketServer();
 
-      if (!socket && partnerEndpoint) {
-        socket = io(partnerEndpoint, {
+      if (!socket && socketEndpoint) {
+        socket = io(socketEndpoint, {
           reconnection: true,
           secure: true,
           rejectUnauthorized: false,
@@ -585,7 +613,10 @@ const CreateAccount = ({
                 );
               })}
             </Row>
-            <p className="fst-italic mb-3 fs-7">Disclaimer : The ID @Username is public</p>
+            <p className="fst-italic mb-3 fs-7">
+              Disclaimer: The ID @Username is public and helps anonymize and pseudonymize data to
+              protect your privacy.
+            </p>
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
@@ -630,6 +661,7 @@ const CreateAccount = ({
                       noSignUpForm={true}
                       setWalletState={setWalletState}
                       setIsAccountExist={() => {}}
+                      disabled={!formik.isValid}
                       setExpand={async () => {
                         const signedNonce = await getNonce(
                           walletState?.accountAddress,
@@ -675,6 +707,14 @@ const CreateAccount = ({
                     >
                       {sending ? 'Sending' : 'Send inquiry'}
                     </Button>
+                  ) : alertButton?.isShow && alertButton?.handleClick ? (
+                    <Button
+                      onClick={alertButton?.handleClick}
+                      variant="success"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                    >
+                      Send inquiry
+                    </Button>
                   ) : (
                     <div key={product?.sku}>
                       <Button
@@ -718,6 +758,7 @@ const CreateAccount = ({
                       </Button>
                     </div>
                   )}
+                  {alertButton?.alertWarning && alertButton?.alertWarning}
                 </>
               )}
             </div>

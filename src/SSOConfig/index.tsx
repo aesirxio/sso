@@ -2,7 +2,6 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Concordium from './Concordium';
 import { useUserContext, UserContextProvider } from '../SSOButton/Providers/user';
-import MetaMask from './MetaMask';
 import { useGlobalContext, GlobalContextProvider } from '../SSOButton/Providers/global';
 import { connectWallet, removeWallet } from '../utils/index';
 import DeleteModal from './DeleteModal';
@@ -13,6 +12,7 @@ import Social from './Social';
 import Web3ContextProvider from '../SSOButton/Providers/web3';
 import { Spinner } from '../components/Spinner';
 import { notify } from '../components/Toast';
+const MetaMask = React.lazy(() => import('./MetaMask'));
 
 const SSO = () => {
   return (

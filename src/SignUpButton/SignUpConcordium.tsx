@@ -6,12 +6,14 @@ interface SignUpConcordiumProps {
   isRequireEmail?: boolean;
   productOptions: Array<any>;
   packagesData: any;
+  defaultValues: Array<any>;
 }
 
 const SignUpConcordium: React.FC<SignUpConcordiumProps> = ({
   isRequireEmail = false,
   productOptions = [],
   packagesData,
+  defaultValues = [],
 }) => {
   return (
     <>
@@ -34,6 +36,7 @@ const SignUpConcordium: React.FC<SignUpConcordiumProps> = ({
             packagesData={packagesData}
             productOptions={productOptions}
             isRequireEmail={isRequireEmail}
+            defaultValues={defaultValues}
             isRequireConcordium={true}
           />
         </SSOModalContext.Provider>
