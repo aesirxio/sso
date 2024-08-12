@@ -59,11 +59,17 @@ const CreateAccount = ({
   isRequireEmail,
   hideDefaultProduct = false,
   isRequireConcordium = false,
+  defaultValues = [],
+  alertButton = {
+    isShow: false,
+    handleClick: undefined,
+    alertWarning: undefined,
+  },
 }: any) => {
   const [sending, setSending] = useState(false);
   const [captcha, setCaptcha] = useState<any>();
   const [loading, setLoading] = useState('');
-  const { registerForm, endpoint, web3Endpoint, partnerEndpoint } = getClientApp();
+  const { registerForm, endpoint, web3Endpoint, partnerEndpoint, socketEndpoint } = getClientApp();
   const debouncedCheckWeb3Id: any = useCallback(debounce(validateWeb3Id, 200), []);
   const debouncedCheckEmail: any = useCallback(debounce(validateEmail, 200), []);
   const [data, setData] = useState<any>([]);
@@ -138,13 +144,17 @@ const CreateAccount = ({
   const generateInitialValue = (data: any) => {
     const initialValue: { [key: string]: string } = {};
     data?.forEach((item: Fields) => {
+      let defaultValue = '';
+      if (defaultValues?.length) {
+        defaultValue = defaultValues.find((field: any) => field.id == item.fieldId)?.value ?? '';
+      }
       if (item.fieldtype == 'email') {
         initialValue[`field${item.fieldId}_1_email`] = '';
       } else if (item.fieldtype == 'select') {
         initialValue[`field${item.fieldId}_1`] =
           Object.keys(packagesData).length || productOptions.length ? defaultProduct : '';
       } else {
-        initialValue[`field${item.fieldId}_1`] = '';
+        initialValue[`field${item.fieldId}_1`] = defaultValue;
       }
     });
     return initialValue;
@@ -226,6 +236,7 @@ const CreateAccount = ({
   const formik = useFormik({
     initialValues: generateInitialValue(data),
     enableReinitialize: true,
+    validateOnMount: true,
     validationSchema: Yup.object(generateValidationSchema(data)),
     onSubmit: async (values) => {
       let isSuccess = true;
@@ -493,13 +504,13 @@ const CreateAccount = ({
       formik.values[`field${registerForm.email}_1_email`]
     ) {
       const createSocketServer = async () => {
-        await axios.get(`${partnerEndpoint}/api/socket`);
+        await axios.get(`${socketEndpoint}/api/socket`);
       };
 
       createSocketServer();
 
-      if (!socket && partnerEndpoint) {
-        socket = io(partnerEndpoint, {
+      if (!socket && socketEndpoint) {
+        socket = io(socketEndpoint, {
           reconnection: true,
           secure: true,
           rejectUnauthorized: false,
@@ -651,6 +662,7 @@ const CreateAccount = ({
                       noSignUpForm={true}
                       setWalletState={setWalletState}
                       setIsAccountExist={() => {}}
+                      disabled={!formik.isValid}
                       setExpand={async () => {
                         const signedNonce = await getNonce(
                           walletState?.accountAddress,
@@ -696,6 +708,14 @@ const CreateAccount = ({
                     >
                       {sending ? 'Sending' : 'Send inquiry'}
                     </Button>
+                  ) : alertButton?.isShow && alertButton?.handleClick ? (
+                    <Button
+                      onClick={alertButton?.handleClick}
+                      variant="success"
+                      className="fw-semibold text-white px-4 py-13px lh-sm w-100"
+                    >
+                      Send inquiry
+                    </Button>
                   ) : (
                     <div key={product?.sku}>
                       <Button
@@ -739,6 +759,7 @@ const CreateAccount = ({
                       </Button>
                     </div>
                   )}
+                  {alertButton?.alertWarning && alertButton?.alertWarning}
                 </>
               )}
             </div>

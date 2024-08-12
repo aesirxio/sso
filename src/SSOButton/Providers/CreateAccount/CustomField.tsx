@@ -55,11 +55,11 @@ const CustomField = ({
           <OverlayTrigger
             trigger="hover"
             key={'top'}
-            placement={'top'}
+            placement={'auto-end'}
             container={ref}
             overlay={
               <Popover id={`popover-positioned-top`}>
-                <Popover.Body className="text-white">
+                <Popover.Body>
                   <p className="mb-0">
                     <strong>About SoP ID</strong>
                   </p>
