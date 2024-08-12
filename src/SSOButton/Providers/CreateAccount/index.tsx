@@ -28,6 +28,7 @@ import { detectConcordiumProvider } from '@concordium/browser-wallet-api-helpers
 import io from 'socket.io-client';
 import { SSOModalContext } from '../../modal';
 import { AccountAddress, ConcordiumGRPCClient } from '@concordium/web-sdk';
+import { env } from 'aesirx-lib';
 
 let socket: any;
 interface Fields {
@@ -373,8 +374,8 @@ const CreateAccount = ({
                 }
                 try {
                   await trackEvent(
-                    process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
-                      process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                    env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                      env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
                       'https://api.analytics.aesirx.io',
                     location.pathname,
                     {
@@ -520,8 +521,8 @@ const CreateAccount = ({
             );
             try {
               await trackEvent(
-                process.env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
-                  process.env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                  env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
                   'https://api.analytics.aesirx.io',
                 location.pathname,
                 {
