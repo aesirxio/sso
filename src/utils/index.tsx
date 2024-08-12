@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Bowser from 'bowser';
 import getFingerprint from '../lib/fingerprint';
+import { env } from 'aesirx-lib';
 const handleWalletResponse = (
   _endPoint: string,
   clientID: string,
@@ -104,70 +105,62 @@ const shortenString = (str: any, first: any = 6, last: any = 4) => {
 };
 
 const getClientApp = () => {
-  console.log('process.env', process.env);
+  console.log('env', env);
   const endpoint = window['aesirxEndpoint']
     ? window['aesirxEndpoint']
-    : process.env.REACT_APP_ENDPOINT_URL ||
-      process.env.NEXT_PUBLIC_ENDPOINT_URL ||
-      'https://api.aesirx.io';
+    : env.REACT_APP_ENDPOINT_URL || env.NEXT_PUBLIC_ENDPOINT_URL || 'https://api.aesirx.io';
 
   const client_id = window['aesirxClientID']
     ? window['aesirxClientID']
-    : process.env.REACT_APP_SSO_CLIENT_ID || process.env.NEXT_PUBLIC_SSO_CLIENT_ID || '';
+    : env.REACT_APP_SSO_CLIENT_ID || env.NEXT_PUBLIC_SSO_CLIENT_ID || '';
   const client_secret = window['aesirxClientSecret']
     ? window['aesirxClientSecret']
-    : process.env.REACT_APP_SSO_CLIENT_SECRET || process.env.NEXT_PUBLIC_SSO_CLIENT_SECRET || '';
+    : env.REACT_APP_SSO_CLIENT_SECRET || env.NEXT_PUBLIC_SSO_CLIENT_SECRET || '';
 
   const network =
-    process.env.REACT_APP_SSO_CONCORDIUM_NETWORK ||
-    process.env.NEXT_PUBLIC_CONCORDIUM_NETWORK ||
-    'mainnet';
+    env.REACT_APP_SSO_CONCORDIUM_NETWORK || env.NEXT_PUBLIC_CONCORDIUM_NETWORK || 'mainnet';
   const web3Endpoint = window['web3Endpoint']
     ? window['web3Endpoint']
-    : process.env.REACT_APP_WEB3_API_ENDPOINT ||
-      process.env.NEXT_PUBLIC_WEB3_API_ENDPOINT ||
+    : env.REACT_APP_WEB3_API_ENDPOINT ||
+      env.NEXT_PUBLIC_WEB3_API_ENDPOINT ||
       'https://web3id.backend.aesirx.io:8001';
 
   const dappEndpoint = window['dappEndpoint']
     ? window['dappEndpoint']
-    : process.env.REACT_APP_WEB3_DAPP_URL ||
-      process.env.NEXT_PUBLIC_DAPP_URL ||
-      'https://dapp.shield.aesirx.io';
+    : env.REACT_APP_WEB3_DAPP_URL || env.NEXT_PUBLIC_DAPP_URL || 'https://dapp.shield.aesirx.io';
 
   const partnerEndpoint = window['partnerEndpoint']
     ? window['partnerEndpoint']
-    : process.env.REACT_APP_PARTNERS_URL ||
-      process.env.NEXT_PUBLIC_PARTNERS_URL ||
-      'https://partners.aesirx.io';
+    : env.REACT_APP_PARTNERS_URL || env.NEXT_PUBLIC_PARTNERS_URL || 'https://partners.aesirx.io';
 
   const registerForm = {
     username: window['registerUsername']
       ? window['registerUsername']
-      : process.env.REACT_APP_USERNAME || process.env.NEXT_PUBLIC_USERNAME || 55,
+      : env.REACT_APP_USERNAME || env.NEXT_PUBLIC_USERNAME || 55,
     first_name: window['registerFirstname']
       ? window['registerFirstname']
-      : process.env.REACT_APP_FIRSTNAME || process.env.NEXT_PUBLIC_FIRSTNAME || 53,
+      : env.REACT_APP_FIRSTNAME || env.NEXT_PUBLIC_FIRSTNAME || 53,
     last_name: window['registerLastname']
       ? window['registerLastname']
-      : process.env.REACT_APP_LASTNAME || process.env.NEXT_PUBLIC_LASTNAME || 66,
+      : env.REACT_APP_LASTNAME || env.NEXT_PUBLIC_LASTNAME || 66,
     product: window['registerProduct']
       ? window['registerProduct']
-      : process.env.REACT_APP_PRODUCT || process.env.NEXT_PUBLIC_PRODUCT || 54,
+      : env.REACT_APP_PRODUCT || env.NEXT_PUBLIC_PRODUCT || 54,
     email: window['registerEmail']
       ? window['registerEmail']
-      : process.env.REACT_APP_EMAIL || process.env.NEXT_PUBLIC_EMAIL || 56,
+      : env.REACT_APP_EMAIL || env.NEXT_PUBLIC_EMAIL || 56,
     organization: window['registerOrganization']
       ? window['registerOrganization']
-      : process.env.REACT_APP_ORGANIZATION || process.env.NEXT_PUBLIC_ORGANIZATION || 57,
+      : env.REACT_APP_ORGANIZATION || env.NEXT_PUBLIC_ORGANIZATION || 57,
     message: window['registerMessage']
       ? window['registerMessage']
-      : process.env.REACT_APP_MESSAGE || process.env.NEXT_PUBLIC_MESSAGE || 58,
+      : env.REACT_APP_MESSAGE || env.NEXT_PUBLIC_MESSAGE || 58,
     order_id: window['registerOrderid']
       ? window['registerOrderid']
-      : process.env.REACT_APP_ORDER_ID || process.env.NEXT_PUBLIC_ORDER_ID || 64,
+      : env.REACT_APP_ORDER_ID || env.NEXT_PUBLIC_ORDER_ID || 64,
     code: window['registerCode']
       ? window['registerCode']
-      : process.env.REACT_APP_CODE || process.env.NEXT_PUBLIC_CODE || 65,
+      : env.REACT_APP_CODE || env.NEXT_PUBLIC_CODE || 65,
   };
   return {
     endpoint,
