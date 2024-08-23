@@ -2860,10 +2860,10 @@ aes-js@^3.1.2:
   resolved "https://registry.npmjs.org/aes-js/-/aes-js-3.1.2.tgz#db9aabde85d5caabbfc0d4f2a4446960f627146a"
   integrity sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ==
 
-aesirx-lib@^2.0.13:
-  version "2.0.13"
-  resolved "https://registry.yarnpkg.com/aesirx-lib/-/aesirx-lib-2.0.13.tgz#b230afafdd59802a1ce46923e9c3e93a7484a7f2"
-  integrity sha512-FgRdLzetxoF1lYwGAxswygbWWmFX/YzEWue4ftMKtZDTPXUPNVr3Vmpm5fyV/mvcfp7PwnythRR1gMxTT9nNyQ==
+aesirx-lib@^2.0.14:
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/aesirx-lib/-/aesirx-lib-2.0.14.tgz#5fa0e90f4409048126d99c05e698df4c372013ad"
+  integrity sha512-NHsKM/Y2AiXdhfFphJGONzA/FJJCANj6jv0orbXW0PSO2DapB95tvJ9zP98U24W8VP5qPqRa1BUiOrrAUiHB2A==
   dependencies:
     axios "^1.6.0"
     axios-auth-refresh "^3.3.6"
