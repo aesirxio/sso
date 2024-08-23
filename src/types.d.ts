@@ -30,7 +30,3 @@ declare global {
 }
 declare module '*.png';
 declare module '*.svg';
-declare module 'aesirx-lib' {
-  const content: any;
-  export default content;
-}
