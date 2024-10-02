@@ -302,19 +302,19 @@ const CreateAccount = ({
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${walletState?.accountAddress}`,
+              ? `${socialType?.id}`
+              : `${walletState?.accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}@aesirx.io`
-            : `${walletState?.accountAddress}@aesirx.io`,
+              ? `${socialType?.id}@aesirx.io`
+              : `${walletState?.accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-            ? `${socialType?.id}`
-            : `${walletState?.accountAddress}`,
+              ? `${socialType?.id}`
+              : `${walletState?.accountAddress}`,
           block: 0,
           ...(walletState?.wallet === 'concordium'
             ? { wallet_concordium: walletState?.accountAddress }
@@ -347,8 +347,8 @@ const CreateAccount = ({
               [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
-                ? `${socialType?.id}@aesirx.io`
-                : `${walletState?.accountAddress}@aesirx.io`,
+                  ? `${socialType?.id}@aesirx.io`
+                  : `${walletState?.accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
