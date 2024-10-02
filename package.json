@@ -43,6 +43,9 @@
     "wagmi": "^1.3.2",
     "yup": "^1.3.2"
   },
+  "resolutions": {
+    "ws": "8.17.1"
+  },
   "tsup": {
     "entry": [
       "src/index.tsx"
