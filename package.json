@@ -19,7 +19,7 @@
     "@web3modal/ethereum": "^2.7.0",
     "@web3modal/react": "^2.7.0",
     "aesirx-lib": "^2.0.14",
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
