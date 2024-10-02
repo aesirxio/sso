@@ -21,9 +21,8 @@
     "moduleResolution": "node",
   },
  
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*", "src/aesirx-lib.d.ts"],
+  
   "files": [
     "src/types.d.ts",
   ],
