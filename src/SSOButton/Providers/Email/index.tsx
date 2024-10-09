@@ -3,6 +3,7 @@ import { getClientApp } from '../../../utils';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SSOModalContext } from '../../modal';
+import { env } from 'aesirx-lib';
 
 const SSOEmailProvider = ({
   btnClass = '',
@@ -38,10 +39,10 @@ const SSOEmailProvider = ({
         ...(returnParams && { return: returnParams }),
         ...(organisationParams && { organisationId: organisationParams }),
       };
-
+      const ssoState = env.REACT_APP_HEADER_JWT === 'true' ? 'noscopes' : '';
       const config = {
         method: 'post',
-        url: `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=token&api=oauth2`,
+        url: `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=token&api=oauth2${ssoState === 'noscopes' ? '&state=noscopes' : ''}`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
