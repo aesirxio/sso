@@ -11,7 +11,7 @@
     "@concordium/browser-wallet-api-helpers": "3.0.1",
     "@concordium/react-components": "0.4.0-rc.7",
     "@concordium/web-sdk": "7.1.0",
-    "@fingerprintjs/fingerprintjs": "3.4.2",
+    "@fingerprintjs/fingerprintjs": "4.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
