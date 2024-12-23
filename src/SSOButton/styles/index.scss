@@ -180,6 +180,14 @@ $btn-close-color: #fff;
     height: 100%;
   }
 }
+body {
+  --wcm-z-index: 1060;
+}
+.modal-sso-open {
+  .wcm-overlay {
+    z-index: 1060;
+  }
+}
 @include media-breakpoint-down(lg) {
   .aesirxsso {
     .modal-dialog {
