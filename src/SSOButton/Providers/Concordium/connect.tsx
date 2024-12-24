@@ -48,11 +48,12 @@ const ConnectConcordium = ({
                   </>
                 )}
               </button>
-            ) : isAndroid ? (
+            ) : (
               <>
                 <button
                   className={`btn btn-dark btn-concordium flex-grow-1 fw-medium py-2 px-4 fs-18 lh-sm text-white d-flex align-items-center justify-content-start w-100`}
                   onClick={() => handleOnConnect(WALLET_CONNECT, 'walletconnect')}
+                  disabled={isConnecting || disabled}
                 >
                   {!activeConnectorError && activeConnectorType && !activeConnector ? (
                     <span
@@ -72,8 +73,6 @@ const ConnectConcordium = ({
                   )}
                 </button>
               </>
-            ) : (
-              <></>
             )}
           </Col>
         </Row>
