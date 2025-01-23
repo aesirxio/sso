@@ -706,7 +706,7 @@ const CreateAccount = ({
                       variant="success"
                       className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                     >
-                      {sending ? 'Sending' : 'Send inquiry'}
+                      {sending ? 'Sending' : 'Proceed to Purchase'}
                     </Button>
                   ) : alertButton?.isShow && alertButton?.handleClick ? (
                     <Button
@@ -714,7 +714,7 @@ const CreateAccount = ({
                       variant="success"
                       className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                     >
-                      Send inquiry
+                      Proceed to Purchase
                     </Button>
                   ) : (
                     <div key={product?.sku}>
@@ -755,7 +755,7 @@ const CreateAccount = ({
                         variant="success"
                         className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                       >
-                        {sending ? 'Sending' : 'Send inquiry'}
+                        {sending ? 'Sending' : 'Proceed to Purchase'}
                       </Button>
                     </div>
                   )}
