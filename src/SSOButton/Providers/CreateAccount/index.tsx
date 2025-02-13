@@ -10,6 +10,7 @@ import {
   linkAesirXAccount,
   login,
   mintWeb3ID,
+  paymentStripeSubscription,
   trackEvent,
   validateEmail,
   validateWeb3Id,
@@ -555,6 +556,40 @@ const CreateAccount = ({
     formik.values[`field${registerForm.username}_1`],
     formik.values[`field${registerForm.email}_1_email`],
   ]);
+
+  const handleStripe = async () => {
+    try {
+      const metadata = {
+        package: formik.values[`field${registerForm.product}_1`],
+        form_id: formID,
+        requested_username: formik.values[`field${registerForm.username}_1`]
+          ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
+          : `@${formik.values[`field${registerForm.username}_1`]}`,
+        firstname: formik.values[`field${registerForm.first_name}_1`],
+        surname: formik.values[`field${registerForm.last_name}_1`],
+        product: formik.values[`field${registerForm.product}_1`],
+        email: formik.values[`field${registerForm.email}_1_email`],
+        organization: formik.values[`field${registerForm.organization}_1`],
+        message: formik.values[`field${registerForm.message}_1`],
+        share_link: shareLink,
+        affiliate_link: affiliateLink,
+        staff_id: staffId,
+        license_period: license?.period,
+        license_package: license?.product,
+        license_package_name: license?.product_name,
+        scan_type: license?.scan_type,
+        number_domains: license?.number_domains,
+        signature: signatureLinkAccount,
+        account_address: walletState?.accountAddress,
+      };
+      const productId = license?.sellix_id ? license?.sellix_id : product?.sku;
+
+      const result = await paymentStripeSubscription(productId, metadata);
+      window.open(result?.data?.url, '_blank');
+    } catch (error) {
+      toast.error('Something is wrong. Please try again or contact us');
+    }
+  };
   return (
     <>
       {!walletState?.accountAddress && !isNoWallet && (
@@ -720,38 +755,7 @@ const CreateAccount = ({
                     <div key={product?.sku}>
                       <Button
                         disabled={sending || !captcha || !formik.isValid}
-                        data-sellix-product={license?.sellix_id ? license?.sellix_id : product?.sku}
-                        data-sellix-custom-package={formik.values[`field${registerForm.product}_1`]}
-                        data-sellix-custom-form_id={formID}
-                        data-sellix-custom-requested_username={
-                          formik.values[`field${registerForm.username}_1`]
-                            ? `@${formik.values[`field${registerForm.username}_1`].trim()}`
-                            : `@${formik.values[`field${registerForm.username}_1`]}`
-                        }
-                        data-sellix-custom-firstname={
-                          formik.values[`field${registerForm.first_name}_1`]
-                        }
-                        data-sellix-custom-surname={
-                          formik.values[`field${registerForm.last_name}_1`]
-                        }
-                        data-sellix-custom-product={formik.values[`field${registerForm.product}_1`]}
-                        data-sellix-custom-email={
-                          formik.values[`field${registerForm.email}_1_email`]
-                        }
-                        data-sellix-custom-organization={
-                          formik.values[`field${registerForm.organization}_1`]
-                        }
-                        data-sellix-custom-message={formik.values[`field${registerForm.message}_1`]}
-                        data-sellix-custom-share_link={shareLink}
-                        data-sellix-custom-affiliate_link={affiliateLink}
-                        data-sellix-custom-staff_id={staffId}
-                        data-sellix-custom-license_period={license?.period}
-                        data-sellix-custom-license_package={license?.product}
-                        data-sellix-custom-license_package_name={license?.product_name}
-                        data-sellix-custom-scan_type={license?.scan_type}
-                        data-sellix-custom-number_domains={license?.number_domains}
-                        data-sellix-custom-signature={signatureLinkAccount}
-                        data-sellix-custom-account_address={walletState?.accountAddress}
+                        onClick={handleStripe}
                         variant="success"
                         className="fw-semibold text-white px-4 py-13px lh-sm w-100"
                       >
