@@ -624,6 +624,7 @@ const paymentStripeSubscription = async (product_id: string, metadata: object) =
       metadata,
     });
   } catch (error) {
+    console.log('checkout link error', error);
     throw error;
   }
 };
