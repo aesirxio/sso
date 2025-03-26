@@ -371,42 +371,44 @@ const CreateAccount = ({
               setIsExist && setIsExist(true);
               setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
             } else {
-              const responseMintWeb3ID = await mintWeb3ID(jwt);
-              if (responseMintWeb3ID?.data?.success) {
-                if (walletState?.wallet || Object.keys(socialType).length) {
-                  toast.success(
-                    `Thank you for signing up, ${
-                      data[`field${registerForm.username}_1`]
-                    }! You can now log in to access all of our features and benefits.`
-                  );
-                } else {
-                  toast.success(
-                    'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
-                  );
-                }
-                try {
-                  await trackEvent(
-                    env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
-                      env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
-                      'https://api.analytics.aesirx.io',
-                    location.pathname,
-                    {
-                      event_name: 'Sign Up',
-                      event_type: 'conversion',
-                      attributes: [
-                        { name: 'sop_id', value: data[`field${registerForm.username}_1`] },
-                        ...(walletState?.wallet === 'concordium'
-                          ? [{ name: 'type', value: walletState?.wallet }]
-                          : [{ name: 'type', value: 'email' }]),
-                      ],
-                    }
-                  );
-                } catch (error: any) {
-                  console.error('error', error);
-                }
-                setIsExist && setIsExist(true);
-                setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
+              try {
+                await mintWeb3ID(jwt);
+              } catch (error) {
+                console.log('mint web3 error', error);
               }
+              if (walletState?.wallet || Object.keys(socialType).length) {
+                toast.success(
+                  `Thank you for signing up, ${
+                    data[`field${registerForm.username}_1`]
+                  }! You can now log in to access all of our features and benefits.`
+                );
+              } else {
+                toast.success(
+                  'Please check your email (also check your SPAM folder) to finalize your AesirX Single Sign On account and continue your registration for AesirX Shield of Privacy'
+                );
+              }
+              try {
+                await trackEvent(
+                  env.REACT_APP_ENDPOINT_ANALYTICS_URL ||
+                    env.NEXT_PUBLIC_ENDPOINT_ANALYTICS_URL ||
+                    'https://api.analytics.aesirx.io',
+                  location.pathname,
+                  {
+                    event_name: 'Sign Up',
+                    event_type: 'conversion',
+                    attributes: [
+                      { name: 'sop_id', value: data[`field${registerForm.username}_1`] },
+                      ...(walletState?.wallet === 'concordium'
+                        ? [{ name: 'type', value: walletState?.wallet }]
+                        : [{ name: 'type', value: 'email' }]),
+                    ],
+                  }
+                );
+              } catch (error: any) {
+                console.error('error', error);
+              }
+              setIsExist && setIsExist(true);
+              setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
             }
           }
         } catch (error) {
