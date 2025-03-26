@@ -371,6 +371,7 @@ const CreateAccount = ({
               setIsExist && setIsExist(true);
               setIsAccountExist && setIsAccountExist({ status: true, type: 'metamask' });
             } else {
+              // eslint-disable-next-line no-useless-catch
               try {
                 await mintWeb3ID(jwt);
               } catch (error) {
