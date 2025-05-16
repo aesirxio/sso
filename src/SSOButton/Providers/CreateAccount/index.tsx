@@ -362,7 +362,7 @@ const CreateAccount = ({
             // eslint-disable-next-line no-useless-catch
             try {
               await axios.post(
-                `http://localhost:4000/api/registersso`,
+                `${partnerEndpoint}/api/registersso`,
                 {
                   username: member.username,
                   buyer_id: createResponse?.result?.user_id,
