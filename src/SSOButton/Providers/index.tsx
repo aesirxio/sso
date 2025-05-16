@@ -42,6 +42,15 @@ const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
                     type="button"
                     className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px"
                     onClick={() => {
+                      setExpand('email');
+                    }}
+                  >
+                    Log in with Email and Password
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline w-100 lh-sm fw-semibold mb-18px"
+                    onClick={() => {
                       setExpand('wallet');
                     }}
                   >
@@ -49,21 +58,12 @@ const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-outline w-100 lh-sm fw-semibold mb-18px"
+                    className="btn btn-outline w-100 lh-sm fw-semibold"
                     onClick={() => {
                       setExpand('social');
                     }}
                   >
                     Log in with Social Media
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline w-100 lh-sm fw-semibold"
-                    onClick={() => {
-                      setExpand('email');
-                    }}
-                  >
-                    Log in with email & password
                   </button>
                 </>
               ) : expand === 'social' || expand === 'wallet' || expand === 'email' ? (
