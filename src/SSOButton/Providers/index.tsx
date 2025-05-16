@@ -51,19 +51,19 @@ const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
                     type="button"
                     className="btn btn-outline w-100 lh-sm fw-semibold mb-18px"
                     onClick={() => {
-                      setExpand('wallet');
+                      setExpand('social');
                     }}
                   >
-                    Log in with Web3 Wallets
+                    Log in with Social Media
                   </button>
                   <button
                     type="button"
                     className="btn btn-outline w-100 lh-sm fw-semibold"
                     onClick={() => {
-                      setExpand('social');
+                      setExpand('wallet');
                     }}
                   >
-                    Log in with Social Media
+                    Log in with Web3 Wallets
                   </button>
                 </>
               ) : expand === 'social' || expand === 'wallet' || expand === 'email' ? (
