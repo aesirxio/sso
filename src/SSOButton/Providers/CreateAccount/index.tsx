@@ -336,8 +336,8 @@ const CreateAccount = ({
             walletState?.wallet === 'concordium' ? true : false
           );
           if (response) {
-            await createMember(member);
-            const { jwt } = await login(member?.email, member?.password);
+            const createResponse = await createMember(member);
+            const { jwt, access_token } = await login(member?.email, member?.password);
             await linkAesirXAccount(apiData.id, jwt);
             const redFormData = {
               form_id: formID,
@@ -357,6 +357,27 @@ const CreateAccount = ({
             const formData = new FormData();
             for (const key in redFormData) {
               formData.append(key, redFormData[key] ?? '');
+            }
+            // Register SSO license for auto create client id and client secrect
+            // eslint-disable-next-line no-useless-catch
+            try {
+              await axios.post(
+                `${partnerEndpoint}/api/registersso`,
+                {
+                  username: member.username,
+                  buyer_id: createResponse?.result?.user_id,
+                  userToken: access_token,
+                  member_id: createResponse?.result?.id,
+                },
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + jwt,
+                  },
+                }
+              );
+            } catch (error) {
+              console.log('register sso error', error);
             }
             await axios.post(
               `${endpoint}/index.php?option=com_redform&task=redform.save&format=json`,
