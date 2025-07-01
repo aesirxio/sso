@@ -368,13 +368,8 @@ const CreateAccount = ({
                   buyer_id: createResponse?.result?.user_id,
                   userToken: access_token,
                   member_id: createResponse?.result?.id,
+                  web3id: data[`field${registerForm.username}_1`],
                 },
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + jwt,
-                  },
-                }
               );
             } catch (error) {
               console.log('register sso error', error);
