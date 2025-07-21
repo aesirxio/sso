@@ -83,7 +83,7 @@ const SignMessageConcordium = ({
     try {
       const checkAccount = await checkWalletAccount(account, wallet);
       if (!checkAccount?.data?.result) {
-        if (!proof && !(isMobile && isAndroid)) {
+        if (!proof) {
           const responseProof = await handleProof();
           if (responseProof) {
             setShow(true);
@@ -193,7 +193,7 @@ const SignMessageConcordium = ({
                 ></span>
                 <span className="ms-1">
                   {status === 'sign'
-                    ? 'Please sign message on the wallet'
+                    ? `Please sign message on the wallet ${isMobile ? 'and wait for verification.' : ''}`
                     : status === 'loading'
                       ? 'Connecting...'
                       : `Please wait to connect...`}
