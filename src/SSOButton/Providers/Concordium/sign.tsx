@@ -83,7 +83,7 @@ const SignMessageConcordium = ({
     try {
       const checkAccount = await checkWalletAccount(account, wallet);
       if (!checkAccount?.data?.result) {
-        if (!proof) {
+        if (!proof && !(isMobile && isAndroid)) {
           const responseProof = await handleProof();
           if (responseProof) {
             setShow(true);
