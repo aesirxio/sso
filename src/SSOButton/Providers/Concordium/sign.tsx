@@ -193,10 +193,12 @@ const SignMessageConcordium = ({
                 ></span>
                 <span className="ms-1">
                   {status === 'sign'
-                    ? `Please sign message on the wallet ${isMobile ? 'and wait for verification.' : ''}`
+                    ? `Please sign message on the wallet ${
+                        isMobile ? 'and wait for verification.' : ''
+                      }`
                     : status === 'loading'
-                      ? 'Connecting...'
-                      : `Please wait to connect...`}
+                    ? 'Connecting...'
+                    : `Please wait to connect...`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (

@@ -303,19 +303,19 @@ const CreateAccount = ({
           username: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-              ? `${socialType?.id}`
-              : `${walletState?.accountAddress}`,
+            ? `${socialType?.id}`
+            : `${walletState?.accountAddress}`,
           password: passwordGenerate,
           email: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-              ? `${socialType?.id}@aesirx.io`
-              : `${walletState?.accountAddress}@aesirx.io`,
+            ? `${socialType?.id}@aesirx.io`
+            : `${walletState?.accountAddress}@aesirx.io`,
           organisation: data[`field${registerForm.email}_1_email`]
             ? data[`field${registerForm.email}_1_email`]
             : Object.keys(socialType)?.length
-              ? `${socialType?.id}`
-              : `${walletState?.accountAddress}`,
+            ? `${socialType?.id}`
+            : `${walletState?.accountAddress}`,
           block: 0,
           ...(walletState?.wallet === 'concordium'
             ? { wallet_concordium: walletState?.accountAddress }
@@ -348,8 +348,8 @@ const CreateAccount = ({
               [`field${registerForm.email}_1[email]`]: data[`field${registerForm.email}_1_email`]
                 ? data[`field${registerForm.email}_1_email`]
                 : Object.keys(socialType).length
-                  ? `${socialType?.id}@aesirx.io`
-                  : `${walletState?.accountAddress}@aesirx.io`,
+                ? `${socialType?.id}@aesirx.io`
+                : `${walletState?.accountAddress}@aesirx.io`,
               [`field${registerForm.organization}_1`]: data[`field${registerForm.organization}_1`],
               [`field${registerForm.message}_1`]: data[`field${registerForm.message}_1`],
               [`field${registerForm.order_id}_1`]: data[`field${registerForm.order_id}_1`] ?? '',
@@ -361,16 +361,13 @@ const CreateAccount = ({
             // Register SSO license for auto create client id and client secrect
             // eslint-disable-next-line no-useless-catch
             try {
-              await axios.post(
-                `${partnerEndpoint}/api/registersso`,
-                {
-                  username: member.username,
-                  buyer_id: createResponse?.result?.user_id,
-                  userToken: access_token,
-                  member_id: createResponse?.result?.id,
-                  web3id: data[`field${registerForm.username}_1`],
-                },
-              );
+              await axios.post(`${partnerEndpoint}/api/registersso`, {
+                username: member.username,
+                buyer_id: createResponse?.result?.user_id,
+                userToken: access_token,
+                member_id: createResponse?.result?.id,
+                web3id: data[`field${registerForm.username}_1`],
+              });
             } catch (error) {
               console.log('register sso error', error);
             }
