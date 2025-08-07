@@ -206,16 +206,16 @@ const CreateAccount = ({
                 .max(30, `Your ${item.name} is too long`)
                 .test(
                   'is_@',
-                  'Will automatically add @ before your web3id. Please delete it.',
+                  'Will automatically add @ before your Username. Please delete it.',
                   (value) => (value?.charAt(0) ? value?.charAt(0) !== '@' : true)
                 )
                 .test(
                   'unique',
-                  'This ID is already taken',
+                  'This Username is already taken',
                   async (value) => await debouncedCheckWeb3Id(`@${value}`)
                 )
-                .matches(/^[a-zA-Z0-9_]{3,20}$/, 'Your username is not in the correct format')
-                .required(`Please enter your username`);
+                .matches(/^[a-zA-Z0-9_]{3,20}$/, 'Your Username is not in the correct format')
+                .required(`Please enter your Username`);
               break;
             }
             validationSchema[`field${item.fieldId}_1`] = Yup.string().test(
@@ -361,16 +361,13 @@ const CreateAccount = ({
             // Register SSO license for auto create client id and client secrect
             // eslint-disable-next-line no-useless-catch
             try {
-              await axios.post(
-                `${partnerEndpoint}/api/registersso`,
-                {
-                  username: member.username,
-                  buyer_id: createResponse?.result?.user_id,
-                  userToken: access_token,
-                  member_id: createResponse?.result?.id,
-                  web3id: data[`field${registerForm.username}_1`],
-                },
-              );
+              await axios.post(`${partnerEndpoint}/api/registersso`, {
+                username: member.username,
+                buyer_id: createResponse?.result?.user_id,
+                userToken: access_token,
+                member_id: createResponse?.result?.id,
+                web3id: data[`field${registerForm.username}_1`],
+              });
             } catch (error) {
               console.log('register sso error', error);
             }
@@ -668,10 +665,6 @@ const CreateAccount = ({
                 );
               })}
             </Row>
-            <p className="fst-italic mb-3 fs-7">
-              Disclaimer: The ID @Username is public and helps anonymize and pseudonymize data to
-              protect your privacy.
-            </p>
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
@@ -695,16 +688,6 @@ const CreateAccount = ({
                 </a>{' '}
               </Form.Check.Label>
             </Form.Check>
-            {isRequireConcordium ? (
-              <></>
-            ) : (
-              <>
-                <Form.Check type="checkbox" className="mb-4 fs-7" id="check-newletter">
-                  <Form.Check.Input type="checkbox" />
-                  <Form.Check.Label>Sign up for Newsletter</Form.Check.Label>
-                </Form.Check>
-              </>
-            )}
             <div className="d-flex align-items-start flex-wrap">
               <div className={`me-4 mb-2 ${isRequireConcordium ? 'w-100' : ''}`}>
                 <FriendlyCaptcha setCaptcha={setCaptcha} />

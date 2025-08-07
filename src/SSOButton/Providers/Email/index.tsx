@@ -42,7 +42,9 @@ const SSOEmailProvider = ({
       const ssoState = env.REACT_APP_HEADER_JWT === 'true' ? 'noscopes' : '';
       const config = {
         method: 'post',
-        url: `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=token&api=oauth2${ssoState === 'noscopes' ? '&state=noscopes' : ''}`,
+        url: `${endpoint}/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=token&api=oauth2${
+          ssoState === 'noscopes' ? '&state=noscopes' : ''
+        }`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
