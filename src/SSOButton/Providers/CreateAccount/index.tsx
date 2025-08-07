@@ -667,6 +667,7 @@ const CreateAccount = ({
                   </Col>
                 );
               })}
+            </Row>
             <Form.Check className="mb-10px fs-7" type="checkbox" id="check-subsribe">
               <Form.Check.Input type="checkbox" required />
               <Form.Check.Label>
