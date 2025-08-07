@@ -197,8 +197,8 @@ const SignMessageConcordium = ({
                         isMobile ? 'and wait for verification.' : ''
                       }`
                     : status === 'loading'
-                    ? 'Connecting...'
-                    : `Please wait to connect...`}
+                      ? 'Connecting...'
+                      : `Please wait to connect...`}
                 </span>
               </div>
             ) : !isExist || isSignUpForm ? (
