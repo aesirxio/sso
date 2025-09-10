@@ -83,7 +83,7 @@ const SignMessageConcordium = ({
     try {
       const checkAccount = await checkWalletAccount(account, wallet);
       if (!checkAccount?.data?.result) {
-        if (!proof && !(isMobile && isAndroid)) {
+        if (!proof) {
           const responseProof = await handleProof();
           if (responseProof) {
             setShow(true);
@@ -109,27 +109,20 @@ const SignMessageConcordium = ({
     try {
       const challenge = await getChallenge(account ?? '');
       const statement = await getStatement();
-      const provider: any = await detectConcordiumProvider();
-      const client = new ConcordiumGRPCClient(provider.grpcTransport);
-      const accountAddr = AccountAddress.fromBase58(account);
-      const accountInfo: any = await client.getAccountInfo(accountAddr);
-      const nationality: string =
-        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
-          ?.nationality;
-      const countryOfResidence: string =
-        accountInfo?.accountCredentials[0]?.value?.contents?.commitments?.cmmAttributes
-          ?.countryOfResidence;
-      if (!nationality) {
-        if (countryOfResidence) {
-          statement[0].attributeTag = 'countryOfResidence';
-        } else {
-          statement[0].attributeTag = 'idDocIssuer';
-        }
-      }
-      const proof = await provider.requestIdProof(account ?? '', statement, challenge);
-      const re = await verifyProof(challenge, proof);
-
-      if (re) {
+      const formattedStatement = [
+        {
+          statement: statement,
+          idQualifier: {
+            type: 'cred',
+            issuers: [0, 1, 3, 4],
+          },
+        },
+      ];
+      const presentation = await connection.requestVerifiablePresentation(
+        challenge,
+        formattedStatement
+      );
+      if (presentation) {
         setProof(true);
         setLoading(false);
       }
