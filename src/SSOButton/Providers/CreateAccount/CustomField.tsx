@@ -61,12 +61,9 @@ const CustomField = ({
               <Popover id={`popover-positioned-top`}>
                 <Popover.Body>
                   <p className="mb-0">
-                    <strong>About SoP ID</strong>
-                  </p>
-                  <p className="mb-0">
-                    With a SoP ID, gain access to ID-authenticated digital experiences. Experience
-                    unmatched data privacy with our decentralized approach, & simplify your online
-                    experience with our secure Single Sign On solution.
+                    Your Username is your Shield of Privacy ID (SoP ID) that you use across all
+                    AesirX services. It helps to anonymize and pseudonymize data to protect your
+                    privacy. Note: it cannot be changed later and the @handle is public.
                   </p>
                 </Popover.Body>
               </Popover>
