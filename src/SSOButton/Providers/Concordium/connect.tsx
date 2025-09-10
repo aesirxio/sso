@@ -77,9 +77,9 @@ const ConnectConcordium = ({
           </Col>
         </Row>
       </div>
-      {isMobile && isAndroid && (
+      {isMobile && (
         <div className="bg-success-light p-3 mt-3 fs-14 text-start">
-          <p className="mb-1 fw-bold">Note for Concordium Wallet:</p>
+          <p className="mb-1 fw-bold">Note for Concordium/CryptoX Mobile Wallet:</p>
           <p className="mb-0">
             Please connect & sign your signature on the app then switch back to the browser to
             continue

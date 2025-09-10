@@ -42,10 +42,10 @@ const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
                     type="button"
                     className="btn btn-success w-100 lh-sm text-white fw-semibold mb-18px"
                     onClick={() => {
-                      setExpand('wallet');
+                      setExpand('email');
                     }}
                   >
-                    Log in with Web3 Wallets
+                    Log in with Email and Password
                   </button>
                   <button
                     type="button"
@@ -60,10 +60,10 @@ const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
                     type="button"
                     className="btn btn-outline w-100 lh-sm fw-semibold"
                     onClick={() => {
-                      setExpand('email');
+                      setExpand('wallet');
                     }}
                   >
-                    Log in with email & password
+                    Log in with Web3 Wallets
                   </button>
                 </>
               ) : expand === 'social' || expand === 'wallet' || expand === 'email' ? (

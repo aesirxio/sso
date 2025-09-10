@@ -616,6 +616,19 @@ const trackEvent = async (endpoint: string, referer?: string, data?: object) => 
   return responseStart;
 };
 
+const paymentStripeSubscription = async (product_id: string, metadata: object) => {
+  try {
+    const { partnerEndpoint } = getClientApp();
+    return await axios.post(`${partnerEndpoint}/api/stripe/checkout`, {
+      product_id: product_id,
+      metadata,
+    });
+  } catch (error) {
+    console.log('checkout link error', error);
+    throw error;
+  }
+};
+
 export {
   handleWalletResponse,
   handleRegularReponse,
@@ -642,4 +655,5 @@ export {
   connectWallet,
   removeWallet,
   trackEvent,
+  paymentStripeSubscription,
 };
