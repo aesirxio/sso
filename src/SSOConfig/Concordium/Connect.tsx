@@ -17,7 +17,7 @@ const Connect = (props: any) => {
             onClick={() => props.setActiveConnectorType(BROWSER_WALLET)}
           >
             <Image src={concordium_logo} alt="concordium-logo" width={20} height={21} />
-            <span className="ms-2">Concordium Browser Wallet</span>
+            <span className="ms-2">Browser Wallet</span>
           </Button>
         </>
       )}
