@@ -44,7 +44,7 @@ const ConnectConcordium = ({
                       alt="Concordium"
                       width={24}
                     />
-                    Concordium Browser Wallet
+                    Browser Wallet
                   </>
                 )}
               </button>
