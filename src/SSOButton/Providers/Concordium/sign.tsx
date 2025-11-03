@@ -114,7 +114,7 @@ const SignMessageConcordium = ({
           statement: statement,
           idQualifier: {
             type: 'cred',
-            issuers: [0, 1, 3, 4],
+            issuers: [0, 1, 2, 3, 4],
           },
         },
       ];
