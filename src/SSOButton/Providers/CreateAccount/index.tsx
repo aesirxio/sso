@@ -30,7 +30,7 @@ import io from 'socket.io-client';
 import { SSOModalContext } from '../../modal';
 import { AccountAddress, ConcordiumGRPCClient } from '@concordium/web-sdk';
 import { env } from 'aesirx-lib';
-
+import SSOConcordiumProvider from '../Concordium';
 let socket: any;
 interface Fields {
   defaultValue: any;
@@ -41,7 +41,6 @@ interface Fields {
   required: string;
 }
 const listCol = [12, 12, 12, 12, 12, 12, 12, 12, 12];
-const SSOConcordiumProvider = React.lazy(() => import('../Concordium'));
 
 const CreateAccount = ({
   formID = 10,

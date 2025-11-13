@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { SSOModalContext } from './modal';
-const SSOConcordiumProvider = React.lazy(() => import('../SSOButton/Providers/Concordium'));
-
+import SSOConcordiumProvider from '../SSOButton/Providers/Concordium';
 const ConcordiumLogin = ({ onGetData }: any) => {
   const handleOnData = (data: any) => {
     onGetData(data);
