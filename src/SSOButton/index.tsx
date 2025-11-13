@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SSOModal from './modal';
 
 interface SSOButtonProps {
