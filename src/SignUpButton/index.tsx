@@ -5,10 +5,10 @@ import arrow_left from '../SSOButton/images/arrow_left.svg';
 import login_bg from '../SSOButton/images/login_bg.png';
 import { SSOModalContext } from '../SSOButton/modal';
 import CreateAccount from '../SSOButton/Providers/CreateAccount';
-const SSOConcordiumProvider = React.lazy(() => import('../SSOButton/Providers/Concordium'));
-const SSOEthereumProvider = React.lazy(() => import('../SSOButton/Providers/Ethereum'));
-const SSOEmailProvider = React.lazy(() => import('../SSOButton/Providers/Email'));
-const SSOSocialProvider = React.lazy(() => import('../SSOButton/Providers/Social'));
+import SSOConcordiumProvider from '../SSOButton/Providers/Concordium';
+import SSOEthereumProvider from '../SSOButton/Providers/Ethereum';
+import SSOSocialProvider from '../SSOButton/Providers/Social';
+
 interface SignUpButtonProps {
   className: string;
   text: string;

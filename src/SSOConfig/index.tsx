@@ -12,7 +12,7 @@ import Social from './Social';
 import Web3ContextProvider from '../SSOButton/Providers/web3';
 import { Spinner } from '../components/Spinner';
 import { notify } from '../components/Toast';
-const MetaMask = React.lazy(() => import('./MetaMask'));
+import MetaMask from './MetaMask';
 
 const SSO = () => {
   return (
