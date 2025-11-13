@@ -4,11 +4,11 @@ import privacy_icon from '../images/privacy_icon.png';
 import arrow_left from '../images/arrow_left.svg';
 import login_bg from '../images/login_bg.png';
 import cancel from '../images/cancel.svg';
-const SSOConcordiumProvider = React.lazy(() => import('./Concordium'));
-const SSOEthereumProvider = React.lazy(() => import('./Ethereum'));
-const SSOEmailProvider = React.lazy(() => import('./Email'));
-const SSOUpdateEmailProvider = React.lazy(() => import('./Email/update'));
-const SSOSocialProvider = React.lazy(() => import('./Social'));
+import SSOConcordiumProvider from './Concordium';
+import SSOEthereumProvider from './Ethereum';
+import SSOEmailProvider from './Email';
+import SSOUpdateEmailProvider from './Email/update';
+import SSOSocialProvider from './Social';
 
 const SSOProviders = ({ loginText, loginBg, forgotPasswordLink }: any) => {
   const [expand, setExpand] = useState('');

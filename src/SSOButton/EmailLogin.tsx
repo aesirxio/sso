@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { SSOModalContext } from './modal';
-const SSOEmailProvider = React.lazy(() => import('../SSOButton/Providers/Email'));
+import SSOEmailProvider from '../SSOButton/Providers/Email';
 interface EmailLoginProps {
   onGetData: any;
   btnClass: string;

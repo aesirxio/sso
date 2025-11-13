@@ -36,7 +36,7 @@ interface SSSOModalProps {
 
 export const SSOModalContext = React.createContext<SSSOModalContextProps>(undefined);
 
-const SSOProviders = React.lazy(() => import('./Providers'));
+import SSOProviders from './Providers';
 
 const SSOModal: React.FC<SSSOModalProps> = ({
   onGetData,
